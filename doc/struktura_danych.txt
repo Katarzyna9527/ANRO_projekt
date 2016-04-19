@@ -1,0 +1,79 @@
+Struktura danych
+
+Mapa => Œwiat³a przy inicjalizacji
+
+LightNode 
+{
+int ID;
+int[]  neighboursID;
+}
+Pierwszy element to strona pó³nocna i poruszamy siê z ruchem wskazówek 0 albo wartoœci ujemne uznajemy za brak po³¹czenia w tê stronê.
+
+Mapa => Skrzy¿owanie przy inicjalizacji
+CrossNode
+{
+LightNode lightNode 
+int[] lenghts
+}
+
+Podczas pracy skrzy¿owania i œwiate³, te drugie publikuj¹ na topic “**/ID”, gdzie ID to ID odebrany przy inicjalizacji od mapy.
+
+Œwiat³a => Skrzy¿owanie i Wizualizacja
+
+State
+{ 
+bool A	// czy mo¿esz przejchaæ do A
+bool B	// czy mo¿esz przejechaæ do B
+bool C 
+bool D
+}
+
+
+LightState
+{
+State n
+State e 
+State s
+State w 
+}
+
+
+
+
+
+Samochód => Skrzy¿owanie
+CrossReq
+{
+	Int ID
+Int direction //przy pierwszym zapytaniu = -1
+Bool isCrossed
+}
+
+Skrzy¿owanie =>Samochód 
+CrossResponse
+{
+	Int[] avaibleDirections
+
+Int lenght
+	Int nextCrossID
+Int previusAutoID
+}
+
+
+Samochód =>samochód  //sprawdziæ czy nie gadam z samym sob¹ 
+{
+Int lenghtFromBeginning
+Bool isCrossed
+}
+
+Jak opuœci³ dorgê samochód do wysy³a info tym, którzy siê pytali.
+
+
+Wizualizacja pobiera mapê na pocz¹tku
+Potem nas³uchuje topicu, do którego pisz¹ samochody
+{
+Id samochodu
+Pocz¹tek
+Koniec
+Ile od pocz¹tku
+}

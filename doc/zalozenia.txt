@@ -1,0 +1,53 @@
+ANRO- symulacja ruchu ulicznego
+
+Uczestnicy 
+Karolina Borkowska
+Katarzyna Dziewulska
+Kamilka Lis
+Kinga Staszkiewicz
+Adam Kowalewski
+Piotr Kuc
+Maciej K³os
+Mateusz Morusiewicz
+Jakub Pankiewicz
+Arkadiusz Œwierczek
+
+
+Wstêp
+Celem projektu jest zasymulowanie ruchu ulicznego z udzia³em samochodów i skrzy¿owañ z sygnalizacj¹ œwietln¹. Wykorzystamy do tego œrodowisko ROS.
+Struktura projektu
+Podczas wspólnych negocjacji ustaliliœmy, ¿e dzielimy projekt na kilka modu³ów:
+-samochód 
+-skrzy¿owanie
+-œwiat³a
+-mapa
+Mapa bêdzie zawiera³a informacje o rozmieszczeniu skrzy¿owañ wraz z d³ugoœci¹ ulic.
+Œwiat³a bêd¹ dostarcza³y informacje o swoim aktualnym stanie. Zak³adamy, ¿e pierwsza wersja symulacji nie bêdzie zawiera³a skrzy¿owañ bez œwiate³. Miêdzy skrzy¿owaniem a samochodem istnieje dwustronna komunikacja. Samochód subskrybuje siê do skrzy¿owania, do którego siê zbli¿a wysy³aj¹c mu jednoczeœnie informacjê o swojej prêdkoœci i z którego skrzy¿owania doje¿d¿a. Przy doje¿d¿aniu do œrodka skrzy¿owania samochód informuje asynchronicznie skrzy¿owanie o chêci przejechania  w wybranym kierunku. Tak d³ugo, jak skrzy¿owanie nie wyœle potwierdzenia to samochód zwalnia a¿ do ca³kowitego zatrzymania. Skrzy¿owanie po wys³aniu potwierdzenia wysy³a tak¿e informacje o kolejnym skrzy¿owaniu i odleg³oœci do niego.
+
+Samochód bêdzie zawiera³ informacjê o swojej prêdkoœci, pocz¹tkowym skrzy¿owaniu oraz skrzy¿owaniu do którego siê zbli¿a. Kierunek skrêtu na najbli¿szym skrzy¿owaniu bêdzie losowy  w oparciu o mo¿liwych skrêtach, które dostarczy skrzy¿owanie. Samochód bêdzie tak¿e zawiera³ infromacjê o odleg³oœci od pocz¹tku oraz ca³kowitej odleg³oœci dziel¹c¹ skrzy¿owania. Bêdzie to potrzebne przy wizualizacji.
+
+Wizualizacja pobierze na pocz¹tku informacjê od mapy, a potem bêdzuie cyklicznie pytaæ wszystkie samochody o swojej pozycji oraz œwiat³a o stanie.
+
+
+
+Harmonogram
+Termin oddania pierwszej dzia³aj¹cej wersji planowany jest na 9 maja.
+Podzia³ zadañ
+
+Podzilei³em grupê na zespo³y, g³ównie 2 osobowe
+
+
+Zespó³ odpowiedzialny za wizualizacjê -3 sooby
+Zespó³ odpowiedzialny za pojazdy- 2 osoby
+Zespó³ odpowiedzialny za œwiat³a - 2 osoby
+Zespó³ odpowiedzialny za skrzy¿owanie/mapê - 3 osoby
+
+W przypadku gdy grupa zg³osi problem albo zauwa¿ê, ¿e nie zd¹¿y na czas to przydzielê wiêcej osób do niej.
+
+5. Napotkane problemy i sposoby rozwi¹zania
+
+Kinga zauwa¿y³a, ¿e przy obecnych za³o¿eniach, nasz model nie pozwala na przemieszczanie siê samochodów wewn¹trz skrzy¿owania. Razem wymyœlilismy obejœcie problemu bez mieszania w koncepcji projektu. Za³o¿yuliœmy, ¿e to bêdzie obs³u¿one w wizualizacji i to ona zamaskuje ten problem.
+
+6. Pomys³y rozwoju projektu
+
+//Adam todo
