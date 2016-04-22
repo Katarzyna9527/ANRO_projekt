@@ -1,14 +1,15 @@
 #include "ros/ros.h"
 #include <vector>
-#include <uint8>
+#include <cstdint>
+#include <iostream>
+#include <cstddef>
 
+#include "map/map_config.h"
+#include "map/cross_msg.h"
 
-#include "map/msg/node.msg"
-#include "map/srv/map_config.msg"
-
-bool getConfig(map::GetMapConfig::Request  &req,
-         map::GetMapConfig::Response &res)
-{
+bool getConfig(map::map_config::Request  &req,
+         map::map_config::Response &res) {
+/*
 	auto nodes = new std::vector<map::node>();
 
 	for (auto it = map->nodes.cbegin(); it != map->nodes.cend(); ++it) {
@@ -17,34 +18,37 @@ bool getConfig(map::GetMapConfig::Request  &req,
 		**(nodes->end()).lengths = **it.getLengths();
 	}
 
-	res.nodes = *nodes;
+	res.crossings = NULL/nodes;
+/
 int id
 int[] neighbours
 int[] lengths
-uint8 node_id
-  ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
-  ROS_INFO("sending back response: [%ld]", (long int)res.sum);
+uint8 node_id */
+  //ROS_INFO("request: %ld", req.req);
+  ROS_INFO("stub");
   return true;
 }
 
-class Crossing;
+class Crossing {
+
+};
 
 class Map
 {
-	static Map* singleton = nullptr;
-	Map();
+	//static Map* singleton;
+	//Map() {}
 	
-	std::vector<Crossing*>  crossings;
+	//std::vector<Crossing*>  crossings;
 
-public:
-	Map* getInstance();
+//public:
+	//Map* getInstance() {}
 
 };
 
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "map_server");
+  ros::init(argc, argv, "map_config");
   ros::NodeHandle n;
 
   ros::ServiceServer service = n.advertiseService("get_map_conifg", getConfig);
