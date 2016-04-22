@@ -77,7 +77,7 @@ public:
 		res.crossings = map.getCrossings();
 		res.number_of_crossings = map.getNumberOfCrossings();
 	
-		ROS_INFO("request : %d", req.req);
+		ROS_INFO("Map server received request %d", req.req);
 		return true;
 	}
 };

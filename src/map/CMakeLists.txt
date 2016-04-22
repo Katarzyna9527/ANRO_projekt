@@ -127,6 +127,7 @@ add_dependencies(${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 add_executable(map_node src/map_node.cpp)
+add_executable(map_test src/map_test.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -137,6 +138,9 @@ target_link_libraries(map_node
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(map_test
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
