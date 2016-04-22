@@ -11,7 +11,29 @@ bool getConfig(map::map_config::Request  &req,
          map::map_config::Response &res);
 
 class Crossing {
+private:
+	int16_t ID;
+	std::vector<int16_t>* neighbours;
+	std::vector<int16_t>* lengths;
 
+public:
+	Crossing(int16_t ID, std::vector<int16_t>* neighbours, std::vector<int16_t>* lengths)
+	{
+		this->neighbours = neighbours;
+		this->lengths = lengths;
+		this->ID = ID;
+	}
+
+	~Crossing()
+	{
+		delete neighbours;
+		delete lengths;
+	}	
+
+	int16_t getID() { return ID; }
+	std::vector<int16_t>& getNeighbours() { return *neighbours; }
+	std::vector<int16_t>& getLengths() { return *lengths; }
+	
 };
 
 class Map
@@ -29,17 +51,18 @@ public:
 	}
 
 	std::vector<map::cross_msg> getCrossings() {
+		auto retvec = *new std::vector<map::cross_msg>();
 		for (auto it = crossings.cbegin(); it != crossings.cend(); ++it) {
-			//int16_t id = (**it).getID();
-			//std::vector<int16_t> neighbours = (**it).getNeighbours();
-			//std::vector<int16_t> lengths = (**it).getLengths();
+			int16_t id = (**it).getID();
+			std::vector<int16_t>& neighbours = (**it).getNeighbours();
+			std::vector<int16_t>& lengths = (**it).getLengths();
 	
-			//res.crossings.push(*new map::node());
-			//**(nodes->end()).neighbours = **it.getNeighbours();
-			//**(nodes->end()).lengths = **it.getLengths();
+			retvec.push_back(*new map::cross_msg());
+			retvec.end()->neighbours = (**it).getNeighbours();
+			retvec.end()->lengths = (**it).getLengths();
 		}
 
-		return *new std::vector<map::cross_msg>();
+		return retvec;
 	}
 
 	int16_t getNumberOfCrossings() {
