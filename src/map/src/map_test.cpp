@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "map_config_test");
 
 	ros::NodeHandle n;
-	ros::ServiceClient client = n.serviceClient<map::map_config>("get_map_conifg");
+	ros::ServiceClient client = n.serviceClient<map::map_config>("get_map_config");
 	map::map_config srv;
 
 	uint8_t ReqID = 0;
