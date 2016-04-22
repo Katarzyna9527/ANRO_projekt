@@ -6,7 +6,7 @@ LightNode
 {
 int ID;
 int[]  neighboursID;
-}
+} // jak dla mnie CrossNode #Morusak
 Pierwszy element to strona pó³nocna i poruszamy siê z ruchem wskazówek 0 albo wartoœci ujemne uznajemy za brak po³¹czenia w tê stronê.
 
 Mapa => Skrzy¿owanie przy inicjalizacji

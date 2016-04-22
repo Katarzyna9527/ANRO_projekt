@@ -1,4 +1,4 @@
 uint8 req
 ---
-node[] nodes
-path[] paths
+cross_node[] crossings
+int number_of_crossings
