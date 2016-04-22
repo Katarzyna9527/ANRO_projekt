@@ -6,8 +6,6 @@
 #include "map/msg/node.msg"
 #include "map/srv/map_config.msg"
 
-static Map* map;
-
 bool getConfig(map::GetMapConfig::Request  &req,
          map::GetMapConfig::Response &res)
 {
@@ -19,11 +17,10 @@ bool getConfig(map::GetMapConfig::Request  &req,
 		**(nodes->end()).lengths = **it.getLengths();
 	}
 
-
-	res.paths = *paths;
 	res.nodes = *nodes;
-uint8[] neighbours
-uint8[] lengths
+int id
+int[] neighbours
+int[] lengths
 uint8 node_id
   ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
   ROS_INFO("sending back response: [%ld]", (long int)res.sum);
@@ -31,18 +28,18 @@ uint8 node_id
 }
 
 class Crossing;
-class Path;
 
 class Map
 {
-	std::vector<Crossing*>  crossings;
-	std::vector<Path*>      paths;
-
+	static Map* singleton = nullptr;
+	Map();
 	
+	std::vector<Crossing*>  crossings;
 
+public:
+	Map* getInstance();
 
-
-}
+};
 
 
 int main(int argc, char **argv)

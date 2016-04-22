@@ -1,4 +1,4 @@
 uint8 req
 ---
 cross_node[] crossings
-int number_of_crossings
+int16 number_of_crossings
