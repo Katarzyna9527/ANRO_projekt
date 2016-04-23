@@ -36,8 +36,7 @@ State e
 State s
 State w 
 }
-
-
+// moze prosciej bedzie ustalajac wszystkie mozliwe stany swiatel? sa tylko cztery: polnoc-poludnie w lewo i wschod-zachod w prawo, polnoc-poludnie prosto i w prawo, wschod-zachod stoi i symetrycznie / Morusiewicz
 
 
 
@@ -59,12 +58,15 @@ Int lenght
 Int previusAutoID
 }
 
+// mozna rozdzielic na dwa oddzielne serwisy skrzyzowania - jeden do pytania o mozliwe kierunki i inne samochody na drodze (zaraz po wjechaniu) i drugi do sprawdzenia mozliwosci przejechania skrzyzowania - rozwiazuje problem czy poprz. samochód juz przejechal / Morusiewicz
 
 Samochód =>samochód  //sprawdziæ czy nie gadam z samym sob¹ 
 {
 Int lenghtFromBeginning
 Bool isCrossed
 }
+// moze ten sam topic co i wizualizacja? Tam tez beda postowane pozycja i skrzyzowania
+
 
 Jak opuœci³ dorgê samochód do wysy³a info tym, którzy siê pytali.
 
