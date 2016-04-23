@@ -189,3 +189,7 @@ add_executable(crossings_node src/crossings_node.cpp)
 target_link_libraries(crossings_node ${catkin_LIBRARIES})
 add_dependencies(crossings_node crossings_gencpp)
 
+add_executable(tmp_node src/tmp_node.cpp)
+target_link_libraries(tmp_node ${catkin_LIBRARIES})
+add_dependencies(tmp_node tmp_gencpp)
+
