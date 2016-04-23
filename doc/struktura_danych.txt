@@ -1,81 +1,61 @@
 Struktura danych
 
-Mapa => Œwiat³a przy inicjalizacji
+Mapa => ÅšwiatÅ‚a przy inicjalizacji oraz Mapa => SkrzyÅ¼owanie przy inicjalizacji
 
 LightNode 
 {
-int ID;
-int[]  neighboursID;
-} // jak dla mnie CrossNode #Morusak
-Pierwszy element to strona pó³nocna i poruszamy siê z ruchem wskazówek 0 albo wartoœci ujemne uznajemy za brak po³¹czenia w tê stronê.
-
-Mapa => Skrzy¿owanie przy inicjalizacji
-CrossNode
-{
-LightNode lightNode 
-int[] lenghts
+	int16 ID;
+	int16[]  neighboursID; //zawsze 4 elementowy
+	int16[] lenghts;//zawsze 4 elementowy
 }
 
-Podczas pracy skrzy¿owania i œwiate³, te drugie publikuj¹ na topic “**/ID”, gdzie ID to ID odebrany przy inicjalizacji od mapy.
+Pierwszy element to strona pÃ³Å‚nocna i poruszamy siÄ™ z ruchem wskazÃ³wek 0 albo wartoÅ›ci ujemne uznajemy za brak poÅ‚Ä…czenia w tÄ™ stronÄ™.
+Podczas pracy skrzyÅ¼owania i Å›wiateÅ‚, te drugie publikujÄ… na topic â€œ**/IDâ€, gdzie ID to ID odebrany przy inicjalizacji od mapy.
 
-Œwiat³a => Skrzy¿owanie i Wizualizacja
+ÅšwiatÅ‚a => SkrzyÅ¼owanie i Wizualizacja
 
 State
 { 
-bool A	// czy mo¿esz przejchaæ do A
-bool B	// czy mo¿esz przejechaæ do B
-bool C 
-bool D
+	Bool A;	// czy moÅ¼esz przejchaÄ‡ do A
+	Bool B;	// czy moÅ¼esz przejechaÄ‡ do B
+	Bool C;
+	Bool D;
 }
-
 
 LightState
 {
-State n
-State e 
-State s
-State w 
-}
-// moze prosciej bedzie ustalajac wszystkie mozliwe stany swiatel? sa tylko cztery: polnoc-poludnie w lewo i wschod-zachod w prawo, polnoc-poludnie prosto i w prawo, wschod-zachod stoi i symetrycznie / Morusiewicz
-
-
-
-Samochód => Skrzy¿owanie
-CrossReq
-{
-	Int ID
-Int direction //przy pierwszym zapytaniu = -1
-Bool isCrossed
+	State n;
+	State e;
+	State s;
+	State w;
 }
 
-Skrzy¿owanie =>Samochód 
-CrossResponse
-{
-	Int[] avaibleDirections
+W zwiÄ…zku z moim bÃ³Å‚Ä™dem i poÅ‚Ä…czeniu miliona koncepcji na raz oraz zÅ‚ym zrozumieniu tematu jestem zmuszony przebudowaÄ‡ struktury danych. Powtarzam, Å¼e bedziemy pracowaÄ‡ na topicach, a wiÄ™c musimy komunikowaÄ‡ siÄ™ jednÄ… strukturÄ… w odrÄ™bie jednego topicu. 
 
-Int lenght
-	Int nextCrossID
-Int previusAutoID
+AutoCrossMessage
+{
+	Int16 autoID;			//samochÃ³d  zgÅ‚aszajÄ…cy albo do ktÃ³rego kierowana jest odpowiedÅº
+	Int16 direction;		//przy pierwszym zapytaniu = -1
+	Bool isCrossed;			//informuje o tym, czy samochÃ³d opuÅ›ciÅ‚ skrzyÅ¼owanie
+	Int[] avaibleDirections;	//dostÄ™pne skrÄ™ty
+	Int lenght;			//odlegÅ‚oÅ›Ä‡ do naspnego skrzyÅ¼owania
+	Int nextCrossID;		//
+	Int previusAutoID;		//
 }
 
-// mozna rozdzielic na dwa oddzielne serwisy skrzyzowania - jeden do pytania o mozliwe kierunki i inne samochody na drodze (zaraz po wjechaniu) i drugi do sprawdzenia mozliwosci przejechania skrzyzowania - rozwiazuje problem czy poprz. samochód juz przejechal / Morusiewicz
-
-Samochód =>samochód  //sprawdziæ czy nie gadam z samym sob¹ 
+SamochÃ³d =>samochÃ³d  //sprawdziÄ‡ czy nie gadam z samym sobÄ… 
 {
-Int lenghtFromBeginning
-Bool isCrossed
+	Int lenghtFromBeginning
+	Bool isCrossed
 }
-// moze ten sam topic co i wizualizacja? Tam tez beda postowane pozycja i skrzyzowania
 
+Jak opuÅ›ciÅ‚ dorgÄ™ samochÃ³d do wysyÅ‚a info tym, ktÃ³rzy siÄ™ pytali.
 
-Jak opuœci³ dorgê samochód do wysy³a info tym, którzy siê pytali.
-
-
-Wizualizacja pobiera mapê na pocz¹tku
-Potem nas³uchuje topicu, do którego pisz¹ samochody
+Wizualizacja pobiera mapÄ™ na poczÄ…tku
+Potem nasÅ‚uchuje topicu, do ktÃ³rego piszÄ… samochody
 {
-Id samochodu
-Pocz¹tek
-Koniec
-Ile od pocz¹tku
+	int16 autoID;			//ID samochodu
+	int16 startCrossID; 		//poczatkowe skrzyÅ¼owanie
+	int16 endCrossID		//koÅ„cowe skrzyÅ¼owanie
+	int32 distance;			//pokonany dystans
 }
