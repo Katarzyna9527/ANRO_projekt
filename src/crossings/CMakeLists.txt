@@ -193,3 +193,4 @@ add_executable(tmp_node src/tmp_node.cpp)
 target_link_libraries(tmp_node ${catkin_LIBRARIES})
 add_dependencies(tmp_node tmp_gencpp)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
