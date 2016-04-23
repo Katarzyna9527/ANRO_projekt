@@ -13,6 +13,12 @@ Opis komunikacji skrzyżowanie z światłami
 
 Każdy obiekt świateł posiada osobny topic, na który wystawia aktualną stan świateł, czyli dozwolone kierunki. Światła dostarczają informacje o możliwych kierunkach skrętu. 
 
+
+Opis komunikacji samochodu z innymi samochodami
+//niestety o tym temacie mało ustaliliśmy i mało zapisaliśmy.
+
+Każdy samochód traktujemy jako serwis. Samochód po dostaniu ID poprzedniego samochodu podąrzającego tą samą trasą wysyła zapytanie z informacjami o pocątkowym i końcowym skrzyżowaniu. W odpowiedzi będzie zawierała się infromacja o odległości od początku. Jeśli ona będzie ojemna to traktujemy, że samochód już nie podąża tą trasą. Jeśli dostaniemy informację to powinniśmy cyklicznie sprawdzać odległość. Warto zauważyć, że musimy sprawdzić, czy nie gadamy z samym sobą.
+
 Wizualizacja
 
 każdy samochód oraz światła publikują swoje dane na potrzeby wizualizacji. Światła wysyłają dokładnie te same dane, co w przypadku komunikacji ze skrzyżowaniami. Samochody natomiast 30 razy na sekunde publikują informację o swoim początkowym skrzyżowaniu oraz końcowym wraz z odległością od poczatku.
