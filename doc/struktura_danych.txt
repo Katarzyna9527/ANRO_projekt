@@ -64,3 +64,9 @@ Potem nasłuchuje topicu, do którego piszą samochody
 	Int16 endCrossID		//końcowe skrzyżowanie
 	Int32 distance;			//pokonany dystans
 }
+
+
+UWAGA ważne
+Jeśli zakłądamy, że każdy nowy obiekt pyta się mapy o dane to:
+1. mapa musi przechowywać dane i nadawać np pokolei kolejne indeksy
+2. LightNode będzie tylko odpowiedzią na rządanie 
