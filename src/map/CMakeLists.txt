@@ -98,8 +98,8 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES map
+  INCLUDE_DIRS src/crossing 
+  LIBRARIES crossing 
   CATKIN_DEPENDS roscpp std_msgs message_runtime
 #  DEPENDS system_lib
 )
@@ -113,12 +113,12 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-)
+  src/crossing
+  )
+
 
 ## Declare a C++ library
-# add_library(map
-#   src/${PROJECT_NAME}/map.cpp
-# )
+ add_library(crossing src/crossing/crossing.cpp )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -134,11 +134,13 @@ add_executable(map_test src/map_test.cpp)
 # add_dependencies(map_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(map_node
+target_link_libraries(
+        map_node crossing
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(map_test
+target_link_libraries(
+        map_test crossing
   ${catkin_LIBRARIES}
 )
 #############
@@ -156,11 +158,13 @@ target_link_libraries(map_test
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS map map_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+ install(TARGETS crossing 
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ )
+
+
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/

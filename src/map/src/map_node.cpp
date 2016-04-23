@@ -9,34 +9,10 @@
 #include "map/map_config.h"
 #include "map/cross_msg.h"
 
+#include "crossing/crossing.h"
+
 bool getConfig(map::map_config::Request  &req,
          map::map_config::Response &res);
-
-class Crossing {
-private:
-	int16_t ID;
-	std::vector<int16_t>* neighbours;
-	std::vector<int16_t>* lengths;
-
-public:
-	Crossing(int16_t ID, std::vector<int16_t>* neighbours, std::vector<int16_t>* lengths)
-	{
-		this->neighbours = neighbours;
-		this->lengths = lengths;
-		this->ID = ID;
-	}
-
-	~Crossing()
-	{
-		delete neighbours;
-		delete lengths;
-	}	
-
-	int16_t getID() { return ID; }
-	std::vector<int16_t>& getNeighbours() { return *neighbours; }
-	std::vector<int16_t>& getLengths() { return *lengths; }
-	
-};
 
 class Map
 {
