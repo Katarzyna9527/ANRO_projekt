@@ -25,13 +25,15 @@ I tak, jeśli chodzi o komunikację : samochód <=> skrzyżowanie mamy do dyspoz
 
 	<JAK TO MA DZIAŁAĆ?>
 
+W przypadku, gdy auto chce pokonać pewne skrzyżowanie o pewnym ID:
+
 1) Auto wysyła cross_request z polem 'required_direction' ustawionym na (-1)
 	1.b) Dopóki skrzyżowanie nie odeśle odpowiedzi, auto staje.
 2) Skrzyżowanie odsyła cross_response z wypełnionymi polami 'availableDirections'
 3) Auto podejmuje decyzję o tym, gdzie chce pojechać
 4) Auto wysyła ponownie cross_request z ustawionym kierunkiem, gdzie chce jechać.
 	4.b) Dopóki skrzyżowanie nie odeśle odpowiedzi, auto staje
-5) Skrzyżowanie zaklepuje miejsce dla tego auta na skrzyżowaniu w ramach tego skrętu. Jednocześnie odsyła cross_response z wypełnionymi polami "nextCrossID", "distanceToNextCross" oraz "previousID"
+5) Serwer Skrzyżowań zaklepuje miejsce dla tego auta na skrzyżowaniu w ramach tego skrętu. Jednocześnie odsyła cross_response z wypełnionymi polami "nextCrossID", "distanceToNextCross" oraz "previousID"
 6) Skręt na danym skrzyżowaniu jest tak długo zajęty, dopóki auto nie poinformuje o jego pokonaniu. Czyni to poprzez ponowne wysłanie "cross_request" z polem "isAfterCrossing" ustawionym na TRUE
 
-
+// Todo: Opis, jak działać będzie komunikacja ze swiatłami.
