@@ -1,0 +1,11 @@
+ <link name="droga_{id}_{dir}">   
+    <visual>
+      <geometry>
+        <box size="{width} {height} .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+

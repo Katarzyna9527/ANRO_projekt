@@ -1,0 +1,1872 @@
+<?xml version="1.0"?>
+<robot name="lights">
+
+<link name="base_link">   
+</link>
+
+<link name="world">   
+<visual>
+<geometry>
+<box size="100 100 .01"/>
+</geometry>
+<material name="green">
+<color rgba="0 0.5 0 1" />
+</material>
+</visual>
+</link>
+
+<!-- links  -->
+  <link name="kafelek_1">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_1">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_1_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+ <link name="droga_1_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="kafelek_2">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_2">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_2_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_2_E">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_2_E">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_2_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_2_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_2_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_2_S">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_2_S">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_2_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_2_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_2_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_2_W">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_2_W">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_2_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_2_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+  <link name="kafelek_3">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_3">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_3_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_3_N">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_3_N">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_3_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_3_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_3_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_3_E">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_3_E">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_3_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_3_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_3_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_3_S">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_3_S">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_3_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_3_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+  <link name="kafelek_4">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_4">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_4_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_4_E">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_4_E">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_4_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_4_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_4_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_4_S">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_4_S">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_4_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_4_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_4_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_4_W">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_4_W">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_4_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_4_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+  <link name="kafelek_5">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_5">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_5_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+ <link name="droga_5_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="kafelek_6">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_6">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_6_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_6_N">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_6_N">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_6_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_6_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_6_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_6_E">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_6_E">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_6_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_6_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_6_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_6_W">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_6_W">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_6_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_6_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+  <link name="kafelek_7">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_7">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_7_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+ <link name="droga_7_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="kafelek_8">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_8">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_8_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+ <link name="droga_8_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="kafelek_9">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_9">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_9_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_9_N">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_9_N">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_9_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_9_N">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_9_E">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_9_E">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_9_E">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_9_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_9_E">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_9_S">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_9_S">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_9_S">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_9_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_9_S">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_9_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_base_9_W">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="latarnia_9_W">
+    <visual>
+      <geometry>
+        <box size=".2 .1 .5"/>
+      </geometry>
+      <material name="grey">
+       <color rgba=".2 .2 .2 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="red_light_9_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="red">
+       <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="green_light_9_W">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.08"/>
+      </geometry>
+      <material name="green">
+       <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+
+  <link name="kafelek_10">   
+    <visual>
+      <geometry>
+        <box size="5 5 .01"/>
+      </geometry>
+     <material name="grey">
+      <color rgba="0.3 0.3 0.3 1" />
+    </material>
+    </visual>
+  </link>
+
+  <link name="droga_10">   
+    <visual>
+      <geometry>
+        <box size="4 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+ <link name="droga_10_N">   
+    <visual>
+      <geometry>
+        <box size="0.5 4 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+ <link name="droga_10_W">   
+    <visual>
+      <geometry>
+        <box size="4 0.5 .01"/>
+      </geometry>
+     <material name="black">
+      <color rgba="0 0 0 1" />
+    </material>
+    </visual>
+  </link>
+
+
+<joint name="base_link_to_world" type="fixed">
+<origin rpy="0 0 0" xyz="0.0 0.0 -0.005"/>
+<parent link="base_link"/>
+<child link="world"/>
+</joint>
+
+<!-- joints  -->
+ <joint name="world_to_kafelek_1" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_1"/>
+  </joint> 
+
+ <joint name="kafelek_1_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_1"/>
+    <child link="droga_1"/>
+  </joint>
+ <joint name="kafelek_1_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_1"/>
+    <child link="droga_1_E"/>
+  </joint>
+ <joint name="kafelek_1_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_1"/>
+    <child link="droga_1_S"/>
+  </joint>
+ <joint name="world_to_kafelek_2" type="fixed">
+    <origin rpy="0 0 0" xyz="0 15 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_2"/>
+  </joint> 
+
+ <joint name="kafelek_2_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_2"/>
+    <child link="droga_2"/>
+  </joint>
+ <joint name="kafelek_2_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_2"/>
+    <child link="droga_2_E"/>
+  </joint>
+  <joint name="kafelek_2_to_latarnia_base_2_E" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 2.25 0.5"/>
+    <parent link="kafelek_2"/>
+    <child link="latarnia_base_2_E"/>
+  </joint>
+
+  <joint name="latarnia_base_2_E_to_latarnia_2_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_2_E"/>
+    <child link="latarnia_2_E"/>
+  </joint>
+
+  <joint name="latarnia_2_E_to_red_light_2_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_2_E"/>
+    <child link="red_light_2_E"/>
+  </joint>
+
+  <joint name="latarnia_2_E_to_green_light_2_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_2_E"/>
+    <child link="green_light_2_E"/>
+  </joint>
+ <joint name="kafelek_2_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_2"/>
+    <child link="droga_2_S"/>
+  </joint>
+  <joint name="kafelek_2_to_latarnia_base_2_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 2.25 0.5"/>
+    <parent link="kafelek_2"/>
+    <child link="latarnia_base_2_S"/>
+  </joint>
+
+  <joint name="latarnia_base_2_S_to_latarnia_2_S" type="fixed">
+    <origin rpy="0 0 -1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_2_S"/>
+    <child link="latarnia_2_S"/>
+  </joint>
+
+  <joint name="latarnia_2_S_to_red_light_2_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_2_S"/>
+    <child link="red_light_2_S"/>
+  </joint>
+
+  <joint name="latarnia_2_S_to_green_light_2_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_2_S"/>
+    <child link="green_light_2_S"/>
+  </joint>
+ <joint name="kafelek_2_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_2"/>
+    <child link="droga_2_W"/>
+  </joint>
+  <joint name="kafelek_2_to_latarnia_base_2_W" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 -2.25 0.5"/>
+    <parent link="kafelek_2"/>
+    <child link="latarnia_base_2_W"/>
+  </joint>
+
+  <joint name="latarnia_base_2_W_to_latarnia_2_W" type="fixed">
+    <origin rpy="0 0 3.14" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_2_W"/>
+    <child link="latarnia_2_W"/>
+  </joint>
+
+  <joint name="latarnia_2_W_to_red_light_2_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_2_W"/>
+    <child link="red_light_2_W"/>
+  </joint>
+
+  <joint name="latarnia_2_W_to_green_light_2_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_2_W"/>
+    <child link="green_light_2_W"/>
+  </joint>
+ <joint name="world_to_kafelek_3" type="fixed">
+    <origin rpy="0 0 0" xyz="15 0 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_3"/>
+  </joint> 
+
+ <joint name="kafelek_3_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_3"/>
+    <child link="droga_3"/>
+  </joint>
+ <joint name="kafelek_3_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_3"/>
+    <child link="droga_3_N"/>
+  </joint>
+  <joint name="kafelek_3_to_latarnia_base_3_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 -2.25 0.5"/>
+    <parent link="kafelek_3"/>
+    <child link="latarnia_base_3_N"/>
+  </joint>
+
+  <joint name="latarnia_base_3_N_to_latarnia_3_N" type="fixed">
+    <origin rpy="0 0 1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_3_N"/>
+    <child link="latarnia_3_N"/>
+  </joint>
+
+  <joint name="latarnia_3_N_to_red_light_3_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_3_N"/>
+    <child link="red_light_3_N"/>
+  </joint>
+
+  <joint name="latarnia_3_N_to_green_light_3_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_3_N"/>
+    <child link="green_light_3_N"/>
+  </joint>
+ <joint name="kafelek_3_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_3"/>
+    <child link="droga_3_E"/>
+  </joint>
+  <joint name="kafelek_3_to_latarnia_base_3_E" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 2.25 0.5"/>
+    <parent link="kafelek_3"/>
+    <child link="latarnia_base_3_E"/>
+  </joint>
+
+  <joint name="latarnia_base_3_E_to_latarnia_3_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_3_E"/>
+    <child link="latarnia_3_E"/>
+  </joint>
+
+  <joint name="latarnia_3_E_to_red_light_3_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_3_E"/>
+    <child link="red_light_3_E"/>
+  </joint>
+
+  <joint name="latarnia_3_E_to_green_light_3_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_3_E"/>
+    <child link="green_light_3_E"/>
+  </joint>
+ <joint name="kafelek_3_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_3"/>
+    <child link="droga_3_S"/>
+  </joint>
+  <joint name="kafelek_3_to_latarnia_base_3_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 2.25 0.5"/>
+    <parent link="kafelek_3"/>
+    <child link="latarnia_base_3_S"/>
+  </joint>
+
+  <joint name="latarnia_base_3_S_to_latarnia_3_S" type="fixed">
+    <origin rpy="0 0 -1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_3_S"/>
+    <child link="latarnia_3_S"/>
+  </joint>
+
+  <joint name="latarnia_3_S_to_red_light_3_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_3_S"/>
+    <child link="red_light_3_S"/>
+  </joint>
+
+  <joint name="latarnia_3_S_to_green_light_3_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_3_S"/>
+    <child link="green_light_3_S"/>
+  </joint>
+ <joint name="world_to_kafelek_4" type="fixed">
+    <origin rpy="0 0 0" xyz="15 25 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_4"/>
+  </joint> 
+
+ <joint name="kafelek_4_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_4"/>
+    <child link="droga_4"/>
+  </joint>
+ <joint name="kafelek_4_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_4"/>
+    <child link="droga_4_E"/>
+  </joint>
+  <joint name="kafelek_4_to_latarnia_base_4_E" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 2.25 0.5"/>
+    <parent link="kafelek_4"/>
+    <child link="latarnia_base_4_E"/>
+  </joint>
+
+  <joint name="latarnia_base_4_E_to_latarnia_4_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_4_E"/>
+    <child link="latarnia_4_E"/>
+  </joint>
+
+  <joint name="latarnia_4_E_to_red_light_4_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_4_E"/>
+    <child link="red_light_4_E"/>
+  </joint>
+
+  <joint name="latarnia_4_E_to_green_light_4_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_4_E"/>
+    <child link="green_light_4_E"/>
+  </joint>
+ <joint name="kafelek_4_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_4"/>
+    <child link="droga_4_S"/>
+  </joint>
+  <joint name="kafelek_4_to_latarnia_base_4_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 2.25 0.5"/>
+    <parent link="kafelek_4"/>
+    <child link="latarnia_base_4_S"/>
+  </joint>
+
+  <joint name="latarnia_base_4_S_to_latarnia_4_S" type="fixed">
+    <origin rpy="0 0 -1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_4_S"/>
+    <child link="latarnia_4_S"/>
+  </joint>
+
+  <joint name="latarnia_4_S_to_red_light_4_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_4_S"/>
+    <child link="red_light_4_S"/>
+  </joint>
+
+  <joint name="latarnia_4_S_to_green_light_4_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_4_S"/>
+    <child link="green_light_4_S"/>
+  </joint>
+ <joint name="kafelek_4_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_4"/>
+    <child link="droga_4_W"/>
+  </joint>
+  <joint name="kafelek_4_to_latarnia_base_4_W" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 -2.25 0.5"/>
+    <parent link="kafelek_4"/>
+    <child link="latarnia_base_4_W"/>
+  </joint>
+
+  <joint name="latarnia_base_4_W_to_latarnia_4_W" type="fixed">
+    <origin rpy="0 0 3.14" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_4_W"/>
+    <child link="latarnia_4_W"/>
+  </joint>
+
+  <joint name="latarnia_4_W_to_red_light_4_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_4_W"/>
+    <child link="red_light_4_W"/>
+  </joint>
+
+  <joint name="latarnia_4_W_to_green_light_4_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_4_W"/>
+    <child link="green_light_4_W"/>
+  </joint>
+ <joint name="world_to_kafelek_5" type="fixed">
+    <origin rpy="0 0 0" xyz="15 35 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_5"/>
+  </joint> 
+
+ <joint name="kafelek_5_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_5"/>
+    <child link="droga_5"/>
+  </joint>
+ <joint name="kafelek_5_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_5"/>
+    <child link="droga_5_N"/>
+  </joint>
+ <joint name="kafelek_5_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_5"/>
+    <child link="droga_5_W"/>
+  </joint>
+ <joint name="world_to_kafelek_6" type="fixed">
+    <origin rpy="0 0 0" xyz="25 15 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_6"/>
+  </joint> 
+
+ <joint name="kafelek_6_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_6"/>
+    <child link="droga_6"/>
+  </joint>
+ <joint name="kafelek_6_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_6"/>
+    <child link="droga_6_N"/>
+  </joint>
+  <joint name="kafelek_6_to_latarnia_base_6_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 -2.25 0.5"/>
+    <parent link="kafelek_6"/>
+    <child link="latarnia_base_6_N"/>
+  </joint>
+
+  <joint name="latarnia_base_6_N_to_latarnia_6_N" type="fixed">
+    <origin rpy="0 0 1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_6_N"/>
+    <child link="latarnia_6_N"/>
+  </joint>
+
+  <joint name="latarnia_6_N_to_red_light_6_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_6_N"/>
+    <child link="red_light_6_N"/>
+  </joint>
+
+  <joint name="latarnia_6_N_to_green_light_6_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_6_N"/>
+    <child link="green_light_6_N"/>
+  </joint>
+ <joint name="kafelek_6_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_6"/>
+    <child link="droga_6_E"/>
+  </joint>
+  <joint name="kafelek_6_to_latarnia_base_6_E" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 2.25 0.5"/>
+    <parent link="kafelek_6"/>
+    <child link="latarnia_base_6_E"/>
+  </joint>
+
+  <joint name="latarnia_base_6_E_to_latarnia_6_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_6_E"/>
+    <child link="latarnia_6_E"/>
+  </joint>
+
+  <joint name="latarnia_6_E_to_red_light_6_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_6_E"/>
+    <child link="red_light_6_E"/>
+  </joint>
+
+  <joint name="latarnia_6_E_to_green_light_6_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_6_E"/>
+    <child link="green_light_6_E"/>
+  </joint>
+ <joint name="kafelek_6_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_6"/>
+    <child link="droga_6_W"/>
+  </joint>
+  <joint name="kafelek_6_to_latarnia_base_6_W" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 -2.25 0.5"/>
+    <parent link="kafelek_6"/>
+    <child link="latarnia_base_6_W"/>
+  </joint>
+
+  <joint name="latarnia_base_6_W_to_latarnia_6_W" type="fixed">
+    <origin rpy="0 0 3.14" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_6_W"/>
+    <child link="latarnia_6_W"/>
+  </joint>
+
+  <joint name="latarnia_6_W_to_red_light_6_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_6_W"/>
+    <child link="red_light_6_W"/>
+  </joint>
+
+  <joint name="latarnia_6_W_to_green_light_6_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_6_W"/>
+    <child link="green_light_6_W"/>
+  </joint>
+ <joint name="world_to_kafelek_7" type="fixed">
+    <origin rpy="0 0 0" xyz="25 0 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_7"/>
+  </joint> 
+
+ <joint name="kafelek_7_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_7"/>
+    <child link="droga_7"/>
+  </joint>
+ <joint name="kafelek_7_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_7"/>
+    <child link="droga_7_N"/>
+  </joint>
+ <joint name="kafelek_7_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_7"/>
+    <child link="droga_7_E"/>
+  </joint>
+ <joint name="world_to_kafelek_8" type="fixed">
+    <origin rpy="0 0 0" xyz="0 35 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_8"/>
+  </joint> 
+
+ <joint name="kafelek_8_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_8"/>
+    <child link="droga_8"/>
+  </joint>
+ <joint name="kafelek_8_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_8"/>
+    <child link="droga_8_S"/>
+  </joint>
+ <joint name="kafelek_8_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_8"/>
+    <child link="droga_8_W"/>
+  </joint>
+ <joint name="world_to_kafelek_9" type="fixed">
+    <origin rpy="0 0 0" xyz="15 15 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_9"/>
+  </joint> 
+
+ <joint name="kafelek_9_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_9"/>
+    <child link="droga_9"/>
+  </joint>
+ <joint name="kafelek_9_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_9"/>
+    <child link="droga_9_N"/>
+  </joint>
+  <joint name="kafelek_9_to_latarnia_base_9_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 -2.25 0.5"/>
+    <parent link="kafelek_9"/>
+    <child link="latarnia_base_9_N"/>
+  </joint>
+
+  <joint name="latarnia_base_9_N_to_latarnia_9_N" type="fixed">
+    <origin rpy="0 0 1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_9_N"/>
+    <child link="latarnia_9_N"/>
+  </joint>
+
+  <joint name="latarnia_9_N_to_red_light_9_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_9_N"/>
+    <child link="red_light_9_N"/>
+  </joint>
+
+  <joint name="latarnia_9_N_to_green_light_9_N" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_9_N"/>
+    <child link="green_light_9_N"/>
+  </joint>
+ <joint name="kafelek_9_to_droga_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0 2.25 0.01"/>
+    <parent link="kafelek_9"/>
+    <child link="droga_9_E"/>
+  </joint>
+  <joint name="kafelek_9_to_latarnia_base_9_E" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 2.25 0.5"/>
+    <parent link="kafelek_9"/>
+    <child link="latarnia_base_9_E"/>
+  </joint>
+
+  <joint name="latarnia_base_9_E_to_latarnia_9_E" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_9_E"/>
+    <child link="latarnia_9_E"/>
+  </joint>
+
+  <joint name="latarnia_9_E_to_red_light_9_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_9_E"/>
+    <child link="red_light_9_E"/>
+  </joint>
+
+  <joint name="latarnia_9_E_to_green_light_9_E" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_9_E"/>
+    <child link="green_light_9_E"/>
+  </joint>
+ <joint name="kafelek_9_to_droga_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 0 0.01"/>
+    <parent link="kafelek_9"/>
+    <child link="droga_9_S"/>
+  </joint>
+  <joint name="kafelek_9_to_latarnia_base_9_S" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 2.25 0.5"/>
+    <parent link="kafelek_9"/>
+    <child link="latarnia_base_9_S"/>
+  </joint>
+
+  <joint name="latarnia_base_9_S_to_latarnia_9_S" type="fixed">
+    <origin rpy="0 0 -1.57" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_9_S"/>
+    <child link="latarnia_9_S"/>
+  </joint>
+
+  <joint name="latarnia_9_S_to_red_light_9_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_9_S"/>
+    <child link="red_light_9_S"/>
+  </joint>
+
+  <joint name="latarnia_9_S_to_green_light_9_S" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_9_S"/>
+    <child link="green_light_9_S"/>
+  </joint>
+ <joint name="kafelek_9_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_9"/>
+    <child link="droga_9_W"/>
+  </joint>
+  <joint name="kafelek_9_to_latarnia_base_9_W" type="fixed">
+    <origin rpy="0 0 0" xyz="2.25 -2.25 0.5"/>
+    <parent link="kafelek_9"/>
+    <child link="latarnia_base_9_W"/>
+  </joint>
+
+  <joint name="latarnia_base_9_W_to_latarnia_9_W" type="fixed">
+    <origin rpy="0 0 3.14" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_9_W"/>
+    <child link="latarnia_9_W"/>
+  </joint>
+
+  <joint name="latarnia_9_W_to_red_light_9_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_9_W"/>
+    <child link="red_light_9_W"/>
+  </joint>
+
+  <joint name="latarnia_9_W_to_green_light_9_W" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_9_W"/>
+    <child link="green_light_9_W"/>
+  </joint>
+ <joint name="world_to_kafelek_10" type="fixed">
+    <origin rpy="0 0 0" xyz="25 25 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_10"/>
+  </joint> 
+
+ <joint name="kafelek_10_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_10"/>
+    <child link="droga_10"/>
+  </joint>
+ <joint name="kafelek_10_to_droga_N" type="fixed">
+    <origin rpy="0 0 0" xyz="-2.25 0 0.01"/>
+    <parent link="kafelek_10"/>
+    <child link="droga_10_N"/>
+  </joint>
+ <joint name="kafelek_10_to_droga_W" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -2.25 0.01"/>
+    <parent link="kafelek_10"/>
+    <child link="droga_10_W"/>
+  </joint>
+
+</robot>

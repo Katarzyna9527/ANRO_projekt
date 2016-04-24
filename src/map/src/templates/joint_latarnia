@@ -1,0 +1,23 @@
+  <joint name="kafelek_{id}_to_latarnia_base_{id}_{dir}" type="fixed">
+    <origin rpy="0 0 0" xyz="{x} {y} 0.5"/>
+    <parent link="kafelek_{id}"/>
+    <child link="latarnia_base_{id}_{dir}"/>
+  </joint>
+
+  <joint name="latarnia_base_{id}_{dir}_to_latarnia_{id}_{dir}" type="fixed">
+    <origin rpy="0 0 {alfa}" xyz="0.0 0.0 0.75"/>
+    <parent link="latarnia_base_{id}_{dir}"/>
+    <child link="latarnia_{id}_{dir}"/>
+  </joint>
+
+  <joint name="latarnia_{id}_{dir}_to_red_light_{id}_{dir}" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 0.125"/>
+    <parent link="latarnia_{id}_{dir}"/>
+    <child link="red_light_{id}_{dir}"/>
+  </joint>
+
+  <joint name="latarnia_{id}_{dir}_to_green_light_{id}_{dir}" type="fixed">
+    <origin rpy="1.57 0 0" xyz="0.0 0.05 -0.125"/>
+    <parent link="latarnia_{id}_{dir}"/>
+    <child link="green_light_{id}_{dir}"/>
+  </joint>
