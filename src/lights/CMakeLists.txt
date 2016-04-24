@@ -193,4 +193,5 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(lights_node src/lights_node.cpp)
 add_dependencies(lights_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(lights_node ${catkin_LIBRARIES})
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 
