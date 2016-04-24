@@ -53,6 +53,8 @@ add_message_files(
 add_service_files(
   FILES
   map_config.srv
+  cross_init.srv
+  car_init.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -118,7 +120,7 @@ include_directories(
 
 
 ## Declare a C++ library
- add_library(crossing src/crossing/crossing.cpp )
+# add_library(crossing src/crossing/crossing.cpp )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -127,6 +129,7 @@ add_dependencies(${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 add_executable(map_node src/map_node.cpp)
+add_executable(car_init_test src/car_init_test.cpp)
 add_executable(map_test src/map_test.cpp)
 
 ## Add cmake target dependencies of the executable
@@ -135,12 +138,17 @@ add_executable(map_test src/map_test.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
-        map_node crossing
+        map_node
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(
-        map_test crossing
+        map_test
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        car_init_test
   ${catkin_LIBRARIES}
 )
 #############

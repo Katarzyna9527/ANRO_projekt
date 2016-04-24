@@ -7,18 +7,24 @@
 #include <cstddef>
 
 #include "map/map_config.h"
+#include "map/car_init.h"
 #include "map/cross_msg.h"
 
-#include "crossing/crossing.h"
+#include "map/crossing_init.h"
 
-bool getConfig(map::map_config::Request  &req,
-         map::map_config::Response &res);
+struct Crossing {
+	int16_t ID;
+	std::vector<int16_t>* neighbours = new std::vector<int16_t>();
+	std::vector<int16_t>* lengths = new std::vector<int16_t>();
+};
 
 class Map
 {
 	Map() {}
 	Map(const Map&) {}
-	
+
+	int16_t lastCarID = 0;
+	int16_t lastCrossingID = 0;
 	//shared_ptr
 	std::vector<Crossing*> crossings;
 
@@ -38,29 +44,25 @@ public:
 		int16_t rbuf;
 		conffile >> rbuf;
 		
-		struct {
-			int16_t ID;
-			std::vector<int16_t>* neightsbuf = new std::vector<int16_t>();
-			std::vector<int16_t>* lenghtsbuf = new std::vector<int16_t>();
-		} crossbuf;
 
 		while (rbuf != 0) {
-			crossbuf.ID = rbuf;
+			Crossing* crossbuf = new Crossing();
+			crossbuf->ID = rbuf;
 
-			crossbuf.neightsbuf = new std::vector<int16_t>();
-			crossbuf.lenghtsbuf = new std::vector<int16_t>();
+			crossbuf->neighbours = new std::vector<int16_t>();
+			crossbuf->lengths = new std::vector<int16_t>();
 			
 			for (int i = 0; i < 4; ++i) {
 				conffile >> rbuf;
-				crossbuf.neightsbuf->push_back(rbuf);
+				crossbuf->neighbours->push_back(rbuf);
 			}
 			
 			for (int i = 0; i < 4; ++i) {
 				conffile >> rbuf;
-				crossbuf.lenghtsbuf->push_back(rbuf);
+				crossbuf->lengths->push_back(rbuf);
 			}
 			
-			crossings.push_back(new Crossing(crossbuf.ID, crossbuf.neightsbuf, crossbuf.lenghtsbuf));
+			crossings.push_back(crossbuf);
 
 			conffile >> rbuf;
 		}
@@ -78,14 +80,14 @@ public:
 	bool getCrossings(map::map_config::Response &res) {
 		for (auto it = crossings.cbegin(); it != crossings.cend(); ++it) {
 			map::cross_msg msg;
-			msg.ID = (**it).getID();
-			std::vector<int16_t>& neighbours = (**it).getNeighbours();
-			for (auto it = neighbours.cbegin(); it!= neighbours.cend(); ++it) {
+			msg.ID = (**it).ID;
+			std::vector<int16_t>* neighbours = (**it).neighbours;
+			for (auto it = neighbours->cbegin(); it!= neighbours->cend(); ++it) {
 				msg.neighbours.push_back(*it);
 			}
 
-			std::vector<int16_t>& lengths = (**it).getLengths();
-			for (auto it = lengths.cbegin(); it!= lengths.cend(); ++it) {
+			std::vector<int16_t>* lengths = (**it).lengths;
+			for (auto it = lengths->cbegin(); it!= lengths->cend(); ++it) {
 				msg.lengths.push_back(*it);
 			}
 
@@ -95,11 +97,34 @@ public:
 		return true;
 	}
 
+	bool initCrossing(map::crossing_init::Response &res) {
+
+		if (lastCrossingID >= crossings.size()) {
+			res.crossing.ID = 0; 	
+			return false;
+		} // nie istniejesz
+
+		Map::getInstance().lastCrossingID += 1;
+		res.crossing.ID = lastCrossingID;
+		res.crossing.neighbours = *(crossings[lastCrossingID-1]->neighbours);
+		res.crossing.lengths = *(crossings[lastCrossingID-1]->lengths);
+
+		return true;
+	}
+
+	bool initCar(map::car_init::Response &res) {
+		res.carID = ++lastCarID;
+		// na razie hardcoded 1-3
+		res.prevCrossing = 1;
+		res.nextCrossing = 3;
+		res.pathLenght   = 2;
+	}
+
 	int16_t getNumberOfCrossings() {
 		return (int16_t)crossings.size();
 	}
 
-	static bool getConfig(map::map_config::Request  &req,
+	static bool configService(map::map_config::Request  &req,
          				  map::map_config::Response &res) {
 
 		Map& map = Map::getInstance();
@@ -107,7 +132,29 @@ public:
 		map.getCrossings(res);
 		res.number_of_crossings = map.getNumberOfCrossings();
 	
-		ROS_INFO("Map server received request %d", req.req);
+		ROS_INFO("Map server received config request %d", req.req);
+		return true;
+	}
+
+	static bool crossingInitService(map::crossing_init::Request  &req,
+	                         map::crossing_init::Response &res) {	
+	
+		if (!Map::getInstance().initCrossing(res)) 
+			ROS_INFO("Map server received bad request");
+		else
+			ROS_INFO("Map server received new init request");
+		
+		return true;
+	}
+
+	static bool carInitService(map::car_init::Request  &req,
+         				  map::car_init::Response &res) {
+
+		Map& map = Map::getInstance();
+
+		map.initCar(res);
+	
+		ROS_INFO("Map server received car init request %d", req.req);
 		return true;
 	}
 };
@@ -121,10 +168,12 @@ int main(int argc, char **argv)
 
 	if (!Map::getInstance().configureFromFile(confname)) { ROS_INFO("Unable to read conf file"); return 1; }
 
-	ros::init(argc, argv, "map_config");
+	ros::init(argc, argv, "map_node");
 	ros::NodeHandle n;
 
-	ros::ServiceServer service = n.advertiseService("get_map_config", Map::getConfig);
+	ros::ServiceServer configService    = n.advertiseService("get_map_config", Map::configService);
+	ros::ServiceServer carFactory = n.advertiseService("init_car" , Map::carInitService);
+	ros::ServiceServer crossFactory  = n.advertiseService("init_crossing" , Map::crossingInitService);
 	ROS_INFO("Map ready");
 	ros::spin();
 
