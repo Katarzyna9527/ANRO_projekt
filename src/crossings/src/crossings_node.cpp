@@ -2,6 +2,8 @@
 #include "map/crossing_init.h"
 #include "map/cross_msg.h"
 #include "crossings/autocross_msg.h"
+#include "lights/LightState.h"
+#include "lights/State.h"
 
 void crossCallback(const crossings::autocross_msg::ConstPtr& msg)
 {
@@ -11,11 +13,27 @@ void crossCallback(const crossings::autocross_msg::ConstPtr& msg)
     }
 }
 
-void lightsCallback(const crossings::autocross_msg::ConstPtr& msg)
+volatile bool isLightsPublishing = false;
+void lightsCallback(const lights::LightState::ConstPtr& msg)
 {
-    ROS_INFO("get data over 2nd callback");
+    isLightsPublishing = true;
+    ROS_INFO("Get data from Lights.");
+    ROS_INFO("n=[%d, %d, %d, %d]", msg->n.A, msg->n.B, msg->n.C, msg->n.D);
+    ROS_INFO("e=[%d, %d, %d, %d]", msg->e.A, msg->e.B, msg->e.C, msg->e.D);
+    ROS_INFO("s=[%d, %d, %d, %d]", msg->s.A, msg->s.B, msg->s.C, msg->s.D);
+    ROS_INFO("w=[%d, %d, %d, %d]", msg->w.A, msg->w.B, msg->w.C, msg->w.D);
 }
 
+void timeoutCallback(const ros::TimerEvent&)
+{
+    if(!isLightsPublishing)
+    {
+        ROS_INFO("Lights topic is not working! Exiting...");
+        ros::shutdown(); // Lights don't send any data. We can't continue;
+    }
+    else
+        isLightsPublishing = false;
+}
 
 int main(int argc, char **argv) 
 {
@@ -46,11 +64,20 @@ int main(int argc, char **argv)
     std::stringstream ss;
     ss << "crossing_" << crossData.ID;
     
-    ros::init(argc, argv, ss.str().c_str());
-
     ros::Publisher crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
     ros::Subscriber crossSub = n.subscribe(ss.str().c_str(), 1000, crossCallback);
-    ros::Subscriber lightsSub = n.subscribe("crossing_3", 1000, lightsCallback);
+
+    ROS_INFO("I received following data:");
+    ROS_INFO("Neighbours: n=%d, e=%d, s=%d, w=%d", 
+            crossData.neighbours[0],crossData.neighbours[1],crossData.neighbours[2],crossData.neighbours[3]);
+    ROS_INFO("Lengths:    n=%d, e=%d, s=%d, w=%d",
+            crossData.lengths[0], crossData.lengths[1], crossData.lengths[2], crossData.lengths[3]);
+
+    ss.str("");
+    ss << "lights_" << crossData.ID;
+
+    ros::Subscriber lightsSub = n.subscribe(ss.str().c_str(), 1000, lightsCallback);
+    ros::Timer timer = n.createTimer(ros::Duration(10), timeoutCallback);
 
     ros::spin();
 
