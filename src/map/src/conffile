@@ -3,37 +3,41 @@
  0 2 2 0
 2
  0 8 9 1
- 0 2 2 2
+ 0 3 2 2
 3
- 1 0 7 9
- 2 0 1 2
+ 1 9 7 0
+ 2 2 1 0
 4
- 0 9 10 5
+ 0 5 10 9
  0 1 1 1
 5
- 8 4 0 0
- 2 1 0 0
+ 8 0 0 4
+ 2 0 0 1
 6
- 9 7 0 10
- 1 2 0 1
+ 9 10 0 7
+ 1 1 0 2
 7
- 3 0 0 6
- 1 0 0 2
+ 3 6 0 0
+ 1 2 0 0
 8
- 0 2 5 0
- 0 2 2 0
+ 0 0 5 2
+ 0 0 2 3
 9
- 2 3 6 4
- 2 2 1 1
+ 2 4 6 3
+ 2 1 1 2
 10
- 4 6 0 0
- 1 1 0 0
+ 4 0 0 6
+ 1 0 0 1
 0
 
+ID
+ N E S W
 
-oooo  o oo
-o1o2  o 8o
-oooo  o oo
-o3o9  4 5o
-o7o6 10 oo
-ooooooo
+oooooooooo
+o1oo2ooo8o
+oooooooooo
+oooooooooo
+o3oo9o4o5o
+oooooooooo
+o7oo6oAooo
+oooooooooo
