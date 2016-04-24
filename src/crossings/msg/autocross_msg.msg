@@ -3,7 +3,7 @@ int16 autoID
 int16 previousCrossID
 int16 direction     
 bool isCrossed       
-int16[] avaibleDirections    
+int16[] availableDirections    
 int16 length         
-int16 nedxtCrossID     
+int16 nextCrossID     
 int16 previousAutoID   

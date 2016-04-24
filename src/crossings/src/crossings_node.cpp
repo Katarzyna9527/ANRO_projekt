@@ -6,7 +6,9 @@
 #include "lights/State.h"
 
 map::cross_msg  crossCfg; // this crossing Configuration
-
+ros::Publisher crossPub;
+ros::Subscriber crossSub;
+ros::Subscriber lightsSub;
 
 bool isLightsPublishing = false;
 lights::LightState currLightsCfg ; // current lights config
@@ -14,27 +16,60 @@ void lightsCallback(const lights::LightState::ConstPtr& msg)
 {
     isLightsPublishing = true;
     ROS_INFO("Get data from Lights.");
-    ROS_INFO("n=[%d, %d, %d, %d]", msg->n.A, msg->n.B, msg->n.C, msg->n.D);
-    ROS_INFO("e=[%d, %d, %d, %d]", msg->e.A, msg->e.B, msg->e.C, msg->e.D);
-    ROS_INFO("s=[%d, %d, %d, %d]", msg->s.A, msg->s.B, msg->s.C, msg->s.D);
-    ROS_INFO("w=[%d, %d, %d, %d]", msg->w.A, msg->w.B, msg->w.C, msg->w.D);
+    ROS_INFO("\tn=[%d, %d, %d, %d]", msg->n.A, msg->e.A, msg->s.A, msg->w.A);
+    ROS_INFO("\te=[%d, %d, %d, %d]", msg->n.B, msg->e.B, msg->s.B, msg->w.B);
+    ROS_INFO("\ts=[%d, %d, %d, %d]", msg->n.C, msg->e.C, msg->s.C, msg->w.C);
+    ROS_INFO("\tw=[%d, %d, %d, %d]", msg->n.D, msg->e.D, msg->s.D, msg->w.D);
     currLightsCfg = lights::LightState(*msg);
 }
 
-int previousCarsID[4]; 
-bool isCrossOccupied;
+int previousCarsID[4] = {0, 0, 0, 0}; 
+bool isCrossOccupied = false;
 void fromCarCallback(const crossings::autocross_msg::ConstPtr& msg)
 {
     if(msg->isMsgFromAuto == true)
     {
-        ROS_INFO("I get msg from auto with ID:%d", msg->autoID);
+        ROS_INFO("I got msg from auto with ID:%d", msg->autoID);
 
         if(msg->direction == -1) // send him all avail directions
         {
+            ROS_INFO("\tI got msg with direction=-1");
             int currCarPos;
             for(currCarPos = 0; currCarPos < 4; currCarPos++)
                 if(crossCfg.neighbours[currCarPos] == msg->previousCrossID)
                     break;
+
+            lights::State dirStates;
+            switch(currCarPos)
+            {
+                case 0:
+                    dirStates = currLightsCfg.n;
+                    break;
+                case 1:
+                    dirStates = currLightsCfg.e;
+                    break;
+                case 2:
+                    dirStates = currLightsCfg.s;
+                    break;
+                case 3:
+                    dirStates = currLightsCfg.w;
+                    break;
+                case 4:
+                    ROS_INFO("Bad previous cross ID=%d ! No response...", msg->previousCrossID);
+                    return;
+            }
+            crossings::autocross_msg response = *msg;
+            response.isMsgFromAuto = false;
+            
+            std::vector<int16_t> vect(4);
+            vect[0] = dirStates.A;
+            vect[1] = dirStates.B;
+            vect[2] = dirStates.C;
+            vect[3] = dirStates.D;
+
+            response.availableDirections = vect;
+            crossPub.publish(response);       
+            ROS_INFO("\tI publish him a response");
         }
     }
 }
@@ -58,18 +93,15 @@ int main(int argc, char **argv)
     ros::ServiceClient client = n.serviceClient<map::crossing_init>("init_crossing");
     map::crossing_init srv ;
     
-    if(client.call(srv))
-    {
-        ROS_INFO("Map Server accepted my request. My ID : %d", srv.response.crossing.ID);
-        if(srv.response.crossing.ID == 0)
-        {
-            ROS_INFO("Map Server didn't accept my request! :(");
-            return 1;
-        }
-    }
-    else
+    if(!client.call(srv))
     {
         ROS_INFO("There is a problem with service calling");
+        return 1;
+    }
+    
+    if(srv.response.crossing.ID == 0)
+    {
+        ROS_INFO("Map Server didn't accept my request! :(");
         return 1;
     }
 
@@ -77,22 +109,21 @@ int main(int argc, char **argv)
     std::stringstream ss;
     ss << "crossing_" << crossCfg.ID;
     
-    ros::Publisher crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
-    ros::Subscriber crossSub = n.subscribe(ss.str().c_str(), 1000, fromCarCallback);
+    crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
+    crossSub = n.subscribe(ss.str().c_str(), 1000, fromCarCallback);
 
     ROS_INFO("I received following data:");
-    ROS_INFO("Neighbours: n=%d, e=%d, s=%d, w=%d", 
+    ROS_INFO("\tMy ID is %d. My topic name is: %s", crossCfg.ID, ss.str().c_str());
+    ROS_INFO("\tNeighbours: n=%d, e=%d, s=%d, w=%d", 
             crossCfg.neighbours[0],crossCfg.neighbours[1],crossCfg.neighbours[2],crossCfg.neighbours[3]);
-    ROS_INFO("Lengths:    n=%d, e=%d, s=%d, w=%d",
+    ROS_INFO("\tLengths:    n=%d, e=%d, s=%d, w=%d",
             crossCfg.lengths[0], crossCfg.lengths[1], crossCfg.lengths[2], crossCfg.lengths[3]);
 
     ss.str("");
     ss << "lights_" << crossCfg.ID;
 
-    ros::Subscriber lightsSub = n.subscribe(ss.str().c_str(), 1000, lightsCallback);
+    lightsSub = n.subscribe(ss.str().c_str(), 1000, lightsCallback);
     ros::Timer timer = n.createTimer(ros::Duration(10), timeoutCallback);
-
     ros::spin();
-
     return 0;
 }

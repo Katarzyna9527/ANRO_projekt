@@ -15,6 +15,10 @@ int main(int argc, char **argv)
     std::cout << "Type this node ID: ";
     std::cin >> id;
 
+    int prev;
+    std::cout << "Type previous cross ID: ";
+    std::cin >> prev;
+
     ros::Publisher testPub = n.advertise<crossings::autocross_msg>(str.c_str(), 1000, true);
     ros::Rate loop_rate(1);
 
@@ -24,7 +28,8 @@ int main(int argc, char **argv)
         crossings::autocross_msg msg;
         msg.autoID = id;
         msg.isMsgFromAuto = true;
-
+        msg.direction = -1;
+        msg.previousCrossID = prev;
         testPub.publish(msg);
 
         ROS_INFO("Send data to topic %s. Count = %d", str.c_str(), count); 
