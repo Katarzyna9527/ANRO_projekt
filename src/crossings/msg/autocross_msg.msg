@@ -1,5 +1,6 @@
 bool isMsgFromAuto
-int16 autoID         
+int16 autoID      
+int16 previousCrossID
 int16 direction     
 bool isCrossed       
 int16[] avaibleDirections    

@@ -5,15 +5,11 @@
 #include "lights/LightState.h"
 #include "lights/State.h"
 
-void crossCallback(const crossings::autocross_msg::ConstPtr& msg)
-{
-    if(msg->isMsgFromAuto == true)
-    {
-        ROS_INFO("I get msg from auto with ID:%d", msg->autoID);
-    }
-}
+map::cross_msg  crossCfg; // this crossing Configuration
 
-volatile bool isLightsPublishing = false;
+
+bool isLightsPublishing = false;
+lights::LightState currLightsCfg ; // current lights config
 void lightsCallback(const lights::LightState::ConstPtr& msg)
 {
     isLightsPublishing = true;
@@ -22,6 +18,25 @@ void lightsCallback(const lights::LightState::ConstPtr& msg)
     ROS_INFO("e=[%d, %d, %d, %d]", msg->e.A, msg->e.B, msg->e.C, msg->e.D);
     ROS_INFO("s=[%d, %d, %d, %d]", msg->s.A, msg->s.B, msg->s.C, msg->s.D);
     ROS_INFO("w=[%d, %d, %d, %d]", msg->w.A, msg->w.B, msg->w.C, msg->w.D);
+    currLightsCfg = lights::LightState(*msg);
+}
+
+int previousCarsID[4]; 
+bool isCrossOccupied;
+void fromCarCallback(const crossings::autocross_msg::ConstPtr& msg)
+{
+    if(msg->isMsgFromAuto == true)
+    {
+        ROS_INFO("I get msg from auto with ID:%d", msg->autoID);
+
+        if(msg->direction == -1) // send him all avail directions
+        {
+            int currCarPos;
+            for(currCarPos = 0; currCarPos < 4; currCarPos++)
+                if(crossCfg.neighbours[currCarPos] == msg->previousCrossID)
+                    break;
+        }
+    }
 }
 
 void timeoutCallback(const ros::TimerEvent&)
@@ -43,8 +58,6 @@ int main(int argc, char **argv)
     ros::ServiceClient client = n.serviceClient<map::crossing_init>("init_crossing");
     map::crossing_init srv ;
     
-    map::cross_msg crossData;
-
     if(client.call(srv))
     {
         ROS_INFO("Map Server accepted my request. My ID : %d", srv.response.crossing.ID);
@@ -60,21 +73,21 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    crossData = srv.response.crossing;
+    crossCfg = srv.response.crossing;
     std::stringstream ss;
-    ss << "crossing_" << crossData.ID;
+    ss << "crossing_" << crossCfg.ID;
     
     ros::Publisher crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
-    ros::Subscriber crossSub = n.subscribe(ss.str().c_str(), 1000, crossCallback);
+    ros::Subscriber crossSub = n.subscribe(ss.str().c_str(), 1000, fromCarCallback);
 
     ROS_INFO("I received following data:");
     ROS_INFO("Neighbours: n=%d, e=%d, s=%d, w=%d", 
-            crossData.neighbours[0],crossData.neighbours[1],crossData.neighbours[2],crossData.neighbours[3]);
+            crossCfg.neighbours[0],crossCfg.neighbours[1],crossCfg.neighbours[2],crossCfg.neighbours[3]);
     ROS_INFO("Lengths:    n=%d, e=%d, s=%d, w=%d",
-            crossData.lengths[0], crossData.lengths[1], crossData.lengths[2], crossData.lengths[3]);
+            crossCfg.lengths[0], crossCfg.lengths[1], crossCfg.lengths[2], crossCfg.lengths[3]);
 
     ss.str("");
-    ss << "lights_" << crossData.ID;
+    ss << "lights_" << crossCfg.ID;
 
     ros::Subscriber lightsSub = n.subscribe(ss.str().c_str(), 1000, lightsCallback);
     ros::Timer timer = n.createTimer(ros::Duration(10), timeoutCallback);
