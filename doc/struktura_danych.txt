@@ -10,7 +10,7 @@ LightNode
 }
 
 Pierwszy element to strona północna i poruszamy się z ruchem wskazówek 0 albo wartości ujemne uznajemy za brak połączenia w tę stronę.
-Podczas pracy skrzyżowania i świateł, te drugie publikują na topic “**/ID”, gdzie ID to ID odebrany przy inicjalizacji od mapy.
+Podczas pracy skrzyżowania i świateł, te drugie publikują na topic “lights_XX”, gdzie XX to ID odebrany przy inicjalizacji od mapy.
 
 Światła => Skrzyżowanie i Wizualizacja
 
@@ -37,10 +37,10 @@ AutoCrossMessage
 	Int16 autoID;			//samochód  zgłaszający albo do którego kierowana jest odpowiedź
 	Int16 direction;		//przy pierwszym zapytaniu = -1
 	Bool isCrossed;			//informuje o tym, czy samochód opuścił skrzyżowanie
-	Int[] avaibleDirections;	//dostępne skręty
-	Int lenght;			//odległość do naspnego skrzyżowania
-	Int nextCrossID;		//
-	Int previusAutoID;		//
+	Int16[] avaibleDirections;	//dostępne skręty
+	Int16 lenght;			//odległość do naspnego skrzyżowania
+	Int16 nextCrossID;		//
+	Int16 previusAutoID;		//
 }
 
 Samochód =>samochód  //sprawdzić czy nie gadam z samym sobą 
