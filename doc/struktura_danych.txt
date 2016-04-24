@@ -36,6 +36,7 @@ AutoCrossMessage
 {
 	Int16 autoID;			//samochód  zgłaszający albo do którego kierowana jest odpowiedź
 	Int16 direction;		//przy pierwszym zapytaniu = -1
+	Int16 previousCrossID;
 	Bool isCrossed;			//informuje o tym, czy samochód opuścił skrzyżowanie
 	Int16[] avaibleDirections;	//dostępne skręty
 	Int16 lenght;			//odległość do naspnego skrzyżowania
