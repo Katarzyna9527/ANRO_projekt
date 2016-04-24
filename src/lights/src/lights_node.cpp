@@ -131,7 +131,9 @@ int main(int argc, char **argv)											//główny program
 	topicName=topicName+number; 
         lightsPubs[i] = lightsNodes[i].advertise<lights::LightState>(topicName, 1000);
     }
-
+	
+	ros::Rate loop_rate(0.33);
+	
     while(ros::ok()){
 			for(int x = 0; x < nNodes; x++){
 
@@ -156,10 +158,9 @@ int main(int argc, char **argv)											//główny program
 				lightsPubs[x].publish(lightStates[x]);
 			}
 			ROS_INFO("Publishing finished");
-			time_t czas;
-			time(&czas);
-			int czas1 = czas;
-			while(time(&czas)-czas1<5);
+			
+			ros:spinOnce();
+			loop_rate.sleep();
     }
 	return 0;
 }
