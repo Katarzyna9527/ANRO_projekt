@@ -10,7 +10,7 @@
 #include "map/car_init.h"
 #include "map/cross_msg.h"
 
-#include "map/crossing_init.h"
+#include "map/cross_init.h"
 
 struct Crossing {
 	int16_t ID;
@@ -97,7 +97,7 @@ public:
 		return true;
 	}
 
-	bool initCrossing(map::crossing_init::Response &res) {
+	bool initCrossing(map::cross_init::Response &res) {
 
 		if (lastCrossingID >= crossings.size()) {
 			res.crossing.ID = 0; 	
@@ -136,8 +136,8 @@ public:
 		return true;
 	}
 
-	static bool crossingInitService(map::crossing_init::Request  &req,
-	                         map::crossing_init::Response &res) {	
+	static bool crossingInitService(map::cross_init::Request  &req,
+	                         map::cross_init::Response &res) {	
 	
 		if (!Map::getInstance().initCrossing(res)) 
 			ROS_INFO("Map server received bad request");
@@ -172,8 +172,8 @@ int main(int argc, char **argv)
 	ros::NodeHandle n;
 
 	ros::ServiceServer configService    = n.advertiseService("get_map_config", Map::configService);
-	ros::ServiceServer carFactory = n.advertiseService("init_car" , Map::carInitService);
-	ros::ServiceServer crossFactory  = n.advertiseService("init_crossing" , Map::crossingInitService);
+	ros::ServiceServer carFactory = n.advertiseService("car_init" , Map::carInitService);
+	ros::ServiceServer crossFactory  = n.advertiseService("cross_init" , Map::crossingInitService);
 	ROS_INFO("Map ready");
 	ros::spin();
 
