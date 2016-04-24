@@ -132,7 +132,7 @@ int main(int argc, char **argv)											//główny program
         lightsPubs[i] = lightsNodes[i].advertise<lights::LightState>(topicName, 1000);
     }
 	
-	ros::Rate loop_rate(0.33);
+	ros::Rate loop_rate(0.25);
 	
     while(ros::ok()){
 			for(int x = 0; x < nNodes; x++){
