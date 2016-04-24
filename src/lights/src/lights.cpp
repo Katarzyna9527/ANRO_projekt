@@ -3,7 +3,7 @@ using namespace std;
 #include "ros/ros.h"
 #include "lights/State.h"
 #include "lights/LightState.h"
-#include "lights/map_config.h"
+#include "map/map_config.h"
 #include "std_msgs/String.h"
 
 #include <stdio.h>
@@ -83,12 +83,12 @@ void DirectionAllower::show(){
 	cout<<'\n';
 }
 
-lights::map_config getMapConfiguration(){								//POBIERANIE INFORMACJI Z MAPY
+::map::map_config getMapConfiguration(){								//POBIERANIE INFORMACJI Z MAPY
 
-    lights::map_config mapConfiguration;
+    ::map::map_config mapConfiguration;
     ros::NodeHandle mapNode;											
 
-    ros::ServiceClient lightsClient = mapNode.serviceClient<lights::map_config>("get_map_config");
+    ros::ServiceClient lightsClient = mapNode.serviceClient<::map::map_config>("get_map_config");
     mapConfiguration.request.req = 1;
     while(1){
 	if(lightsClient.call(mapConfiguration)){
@@ -106,7 +106,7 @@ int main(int argc, char **argv)											//główny program
 {
     ros::init(argc, argv, "lights");
 
-    lights::map_config map = getMapConfiguration();
+    ::map::map_config map = getMapConfiguration();
 
     int nNodes=map.response.number_of_crossings;						//number of nodes
 
