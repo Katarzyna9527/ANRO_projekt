@@ -11,6 +11,12 @@ void crossCallback(const crossings::autocross_msg::ConstPtr& msg)
     }
 }
 
+void lightsCallback(const crossings::autocross_msg::ConstPtr& msg)
+{
+    ROS_INFO("get data over 2nd callback");
+}
+
+
 int main(int argc, char **argv) 
 {
     ros::init(argc, argv, "crossing_node", ros::init_options::AnonymousName );
@@ -44,6 +50,7 @@ int main(int argc, char **argv)
 
     ros::Publisher crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
     ros::Subscriber crossSub = n.subscribe(ss.str().c_str(), 1000, crossCallback);
+    ros::Subscriber lightsSub = n.subscribe("crossing_3", 1000, lightsCallback);
 
     ros::spin();
 
