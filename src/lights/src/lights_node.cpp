@@ -159,7 +159,7 @@ int main(int argc, char **argv)											//główny program
 			}
 			ROS_INFO("Publishing finished");
 			
-			ros:spinOnce();
+			ros::spinOnce();
 			loop_rate.sleep();
     }
 	return 0;

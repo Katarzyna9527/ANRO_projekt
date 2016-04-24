@@ -172,8 +172,8 @@ int main(int argc, char **argv)
 	ros::NodeHandle n;
 
 	ros::ServiceServer configService    = n.advertiseService("get_map_config", Map::configService);
-	ros::ServiceServer carFactory = n.advertiseService("car_init" , Map::carInitService);
-	ros::ServiceServer crossFactory  = n.advertiseService("cross_init" , Map::crossingInitService);
+	ros::ServiceServer carFactory = n.advertiseService("init_car" , Map::carInitService);
+	ros::ServiceServer crossFactory  = n.advertiseService("init_crossing" , Map::crossingInitService);
 	ROS_INFO("Map ready");
 	ros::spin();
 
