@@ -1,5 +1,5 @@
 #include "crossings.h"
-#include "map/crossing_init.h"
+#include "map/cross_init.h"
 #include "map/cross_msg.h"
 #include "crossings/autocross_msg.h"
 #include "lights/LightState.h"
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "crossing_node", ros::init_options::AnonymousName );
     ros::NodeHandle n;
 
-    ros::ServiceClient client = n.serviceClient<map::crossing_init>("init_crossing");
-    map::crossing_init srv ;
+    ros::ServiceClient client = n.serviceClient<map::cross_init>("init_crossing");
+    map::cross_init srv ;
     
     if(!client.call(srv))
     {
