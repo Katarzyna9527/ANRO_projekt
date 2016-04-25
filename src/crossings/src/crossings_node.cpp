@@ -23,6 +23,40 @@ void lightsCallback(const lights::LightState::ConstPtr& msg)
     currLightsCfg = lights::LightState(*msg);
 }
 
+bool getAvailsDirections(crossings::autocross_msg &response)
+{
+    int currCarPos;
+    for(currCarPos = 0; currCarPos < 4; currCarPos++)
+        if(crossCfg.neighbours[currCarPos] == response.previousCrossID)
+            break;
+
+    lights::State dirStates;
+    switch(currCarPos)
+    {
+        case 0:
+            dirStates = currLightsCfg.n;
+            break;
+        case 1:
+            dirStates = currLightsCfg.e;
+            break;
+        case 2:
+            dirStates = currLightsCfg.s;
+            break;
+        case 3:
+            dirStates = currLightsCfg.w;
+            break;
+        case 4:
+            return false;
+    }
+   
+    response.availableDirections.resize(4);
+    response.availableDirections[0] = dirStates.A;
+    response.availableDirections[1] = dirStates.B;
+    response.availableDirections[2] = dirStates.C;
+    response.availableDirections[3] = dirStates.D;
+    return true;
+}
+
 int previousCarsID[4] = {0, 0, 0, 0}; 
 bool isCrossOccupied = false;
 void fromCarCallback(const crossings::autocross_msg::ConstPtr& msg)
@@ -34,42 +68,30 @@ void fromCarCallback(const crossings::autocross_msg::ConstPtr& msg)
         if(msg->direction == -1) // send him all avail directions
         {
             ROS_INFO("\tI got msg with direction=-1");
-            int currCarPos;
-            for(currCarPos = 0; currCarPos < 4; currCarPos++)
-                if(crossCfg.neighbours[currCarPos] == msg->previousCrossID)
-                    break;
-
-            lights::State dirStates;
-            switch(currCarPos)
-            {
-                case 0:
-                    dirStates = currLightsCfg.n;
-                    break;
-                case 1:
-                    dirStates = currLightsCfg.e;
-                    break;
-                case 2:
-                    dirStates = currLightsCfg.s;
-                    break;
-                case 3:
-                    dirStates = currLightsCfg.w;
-                    break;
-                case 4:
-                    ROS_INFO("Bad previous cross ID=%d ! No response...", msg->previousCrossID);
-                    return;
-            }
             crossings::autocross_msg response = *msg;
             response.isMsgFromAuto = false;
             
-            std::vector<int16_t> vect(4);
-            vect[0] = dirStates.A;
-            vect[1] = dirStates.B;
-            vect[2] = dirStates.C;
-            vect[3] = dirStates.D;
+            if(!getAvailsDirections(response))
+            {
+                ROS_INFO("\tBad previous cross ID=%d ! No response...", response.previousCrossID);
+                return;
+            }
 
-            response.availableDirections = vect;
             crossPub.publish(response);       
-            ROS_INFO("\tI publish him a response");
+        }
+        else if(msg->direction >= 0 && msg->direction <= 3)
+        {
+            ROS_INFO("\tI got msg with direction=%d, A car would like to drive!", msg->direction);
+            crossings::autocross_msg response = *msg;
+            response.isMsgFromAuto = false;
+
+            if(!getAvailsDirections(response))
+            {
+                ROS_INFO("\tBad previous cross ID=%d ! No response...", response.previousCrossID);
+                return;
+            }
+
+
         }
     }
 }
