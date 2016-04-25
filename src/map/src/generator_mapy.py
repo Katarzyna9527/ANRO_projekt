@@ -19,7 +19,7 @@ def set_cross(cross):
 		if neighborID!=0:
 			neighbor = crossway_list[neighborID-1]
 			if neighbor.placed==False:
-				print neighborID, neighbor.x, neighbor.y
+				'''print neighborID, neighbor.x, neighbor.y'''
 				lenght = int(cross.lenghts[j])*5
 				if j==0:
 					neighbor.x = cross.x - lenght -5
@@ -34,8 +34,9 @@ def set_cross(cross):
 					neighbor.y = cross.y - lenght -5
 					neighbor.x = cross.x
 				neighbor.placed = True
-				print neighborID, neighbor.x, neighbor.y
+				'''print neighborID, neighbor.x, neighbor.y'''
 				set_cross(neighbor)
+
 
 crossway_list = []
 
@@ -68,10 +69,10 @@ for line in conffile:
 
 conffile.close()
 
-for i in range(0,len(crossway_list)):
+"""for i in range(0,len(crossway_list)):
 	print crossway_list[i].ID
 	print crossway_list[i].neighbors
-	print crossway_list[i].lenghts
+	print crossway_list[i].lenghts"""
 
 crossway_list[0].placed=True
 set_cross(crossway_list[0])
@@ -113,6 +114,29 @@ for i in range(0,len(crossway_list)):
 			filelatarnia.close()
 
 	if crossway_list[i].neighbors[1]!="0":
+
+		numberOfRoadKafeleks = int(crossway_list[i].lenghts[1])
+		if numberOfRoadKafeleks!=0:
+			for j in range(0,numberOfRoadKafeleks):
+				print numberOfRoadKafeleks, crossway_list[i].ID
+				filedroga = open('templates/link_droga', 'r')
+				for line in filedroga:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1))
+					fileout.write(line)
+				filedroga.close()
+				filedrogadir = open('templates/link_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1)).replace("{dir}", "E")
+					line = line.replace("{width}","4").replace("{height}", "0.5")
+					fileout.write(line)
+				filedrogadir.close()
+				filedrogadir = open('templates/link_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1)).replace("{dir}", "W")
+					line = line.replace("{width}","4").replace("{height}", "0.5")
+					fileout.write(line)
+				filedrogadir.close()
+
 		filedrogadir = open('templates/link_droga_dir', 'r')
 		for line in filedrogadir:
 			line = line.replace("{id}",str(crossway_list[i].ID)).replace("{dir}", "E")
@@ -127,6 +151,27 @@ for i in range(0,len(crossway_list)):
 			filelatarnia.close()
 
 	if crossway_list[i].neighbors[2]!="0":
+	
+		if numberOfRoadKafeleks!=0:
+			for j in range(0,numberOfRoadKafeleks):
+				filedroga = open('templates/link_droga', 'r')
+				for line in filedroga:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1))
+					fileout.write(line)
+				filedroga.close()
+				filedrogadir = open('templates/link_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1)).replace("{dir}", "N")
+					line = line.replace("{width}","0.5").replace("{height}", "4")
+					fileout.write(line)
+				filedrogadir.close()
+				filedrogadir = open('templates/link_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1)).replace("{dir}", "S")
+					line = line.replace("{width}","0.5").replace("{height}", "4")
+					fileout.write(line)
+				filedrogadir.close()
+
 		filedrogadir = open('templates/link_droga_dir', 'r')
 		for line in filedrogadir:
 			line = line.replace("{id}",str(crossway_list[i].ID)).replace("{dir}", "S")
@@ -191,6 +236,30 @@ for i in range(0,len(crossway_list)):
 			filelatarnia.close()
 
 	if crossway_list[i].neighbors[1]!="0":
+
+		numberOfRoadKafeleks = int(crossway_list[i].lenghts[1])
+		if numberOfRoadKafeleks!=0:
+			for j in range(0,numberOfRoadKafeleks):
+				filedroga = open('templates/joint_droga', 'r')
+				for line in filedroga:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1))
+					line = line.replace("{x}",str(crossway_list[i].x))
+					line = line.replace("{y}",str(crossway_list[i].y+(j+1)*5))
+					fileout.write(line)
+				filedroga.close()
+				filedrogadir = open('templates/joint_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1)).replace("{dir}", "E")
+					line = line.replace("{x}","0").replace("{y}", "2.25")
+					fileout.write(line)
+				filedrogadir.close()
+				filedrogadir = open('templates/joint_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1)).replace("{dir}", "W")
+					line = line.replace("{x}","0").replace("{y}", "-2.25")
+					fileout.write(line)
+				filedrogadir.close()
+
 		filedrogadir = open('templates/joint_droga_dir', 'r')
 		for line in filedrogadir:
 			line = line.replace("{id}",str(crossway_list[i].ID)).replace("{dir}", "E")
@@ -207,6 +276,29 @@ for i in range(0,len(crossway_list)):
 			filelatarnia.close()
 
 	if crossway_list[i].neighbors[2]!="0":
+		if numberOfRoadKafeleks!=0:
+			for j in range(0,numberOfRoadKafeleks):
+				filedroga = open('templates/joint_droga', 'r')
+				for line in filedroga:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1))
+					line = line.replace("{x}",str(crossway_list[i].x+(j+1)*5))
+					line = line.replace("{y}",str(crossway_list[i].y))
+					fileout.write(line)
+				filedroga.close()
+				filedrogadir = open('templates/joint_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1)).replace("{dir}", "N")
+					line = line.replace("{x}","-2.25").replace("{y}", "0")
+					fileout.write(line)
+				filedrogadir.close()
+				filedrogadir = open('templates/joint_droga_dir', 'r')
+				for line in filedrogadir:
+					line = line.replace("{id}",str(crossway_list[i].ID)+"S"+str(j+1)).replace("{dir}", "S")
+					line = line.replace("{x}","2.25").replace("{y}", "0")
+					fileout.write(line)
+				filedrogadir.close()
+
+
 		filedrogadir = open('templates/joint_droga_dir', 'r')
 		for line in filedrogadir:
 			line = line.replace("{id}",str(crossway_list[i].ID)).replace("{dir}", "S")
