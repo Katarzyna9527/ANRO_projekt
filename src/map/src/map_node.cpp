@@ -114,10 +114,10 @@ public:
 
 	bool initCar(map::car_init::Response &res) {
 		res.carID = ++lastCarID;
-		// na razie hardcoded 1-3
+		// na razie hardcoded 1-2
 		res.prevCrossing = 1;
-		res.nextCrossing = 3;
-		res.pathLenght   = 2;
+		res.nextCrossing = 2;
+		res.pathLenght   = 50;
 	}
 
 	int16_t getNumberOfCrossings() {
