@@ -48,7 +48,7 @@
   <run_depend>message_runtime</run_depend>
   <build_depend>map</build_depend>
   <build_depend>lights</build_depend>
-
+   <build_depend>crossings_lib</build_depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->

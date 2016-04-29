@@ -102,7 +102,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS 
-  LIBRARIES 
+  LIBRARIES crossing 
   CATKIN_DEPENDS roscpp std_msgs message_runtime
   DEPENDS system_lib
 )
@@ -118,10 +118,12 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+include_directories(
+        ${roscpp_INCLUDE_DIRS}
+        )
+
 ## Declare a C++ library
-# add_library(crossings
-#   src/${PROJECT_NAME}/crossings.cpp
-# )
+ add_library(crossings_lib src/crossing.cpp src/auto.cpp src/autos_reg.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -139,12 +141,13 @@ include_directories(
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(crossings_node
-   ${catkin_LIBRARIES}
+   ${catkin_LIBRARIES} crossings_lib
  )
 
  target_link_libraries( crossings_test
     ${catkin_LIBRARIES}
     )
+ target_link_libraries( crossings_lib ${roscpp_LIBRARIES} )
 
 #############
 ## Install ##

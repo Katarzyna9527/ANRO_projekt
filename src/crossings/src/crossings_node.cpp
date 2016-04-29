@@ -1,4 +1,4 @@
-#include "crossings.h"
+#include "crossings_lib.h"
 #include "map/cross_init.h"
 #include "map/cross_msg.h"
 #include "crossings/autocross_msg.h"
@@ -193,61 +193,17 @@ void fromCarCallback(const crossings::autocross_msg::ConstPtr& msg)
     }
 }
 
-void timeoutCallback(const ros::TimerEvent&)
-{
-    if(!isLightsPublishing)
-    {
-        ROS_INFO("Lights topic is not working! Exiting...");
-        ros::shutdown(); // Lights don't send any data. We can't continue;
-    }
-    else
-        isLightsPublishing = false;
-}
-
 int main(int argc, char **argv) 
 {
     ros::init(argc, argv, "crossing_node", ros::init_options::AnonymousName );
-    ros::NodeHandle n;
 
-    ros::ServiceClient client = n.serviceClient<map::cross_init>("init_crossing");
-    map::cross_init srv ;
-    
-    if(!client.call(srv))
+    if(!Crossing::getInstance().initCrossing())
     {
-        ROS_INFO("There is a problem with service calling");
-        return 1;
-    }
-    
-    if(srv.response.crossing.ID == 0)
-    {
-        ROS_INFO("Map Server didn't accept my request! :(");
+        ROS_INFO("crossing_node: I have to exit...");
         return 1;
     }
 
-    crossCfg = srv.response.crossing;
-    std::stringstream ss;
-    ss << "crossing_" << crossCfg.ID;
-    
-    crossPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);
-    crossSub = n.subscribe(ss.str().c_str(), 1000, fromCarCallback);
-
-    ROS_INFO("I received following data:");
-    ROS_INFO("\tMy ID is %d. My topic name is: %s", crossCfg.ID, ss.str().c_str());
-    ROS_INFO("\tNeighbours: n=%d, e=%d, s=%d, w=%d", 
-            crossCfg.neighbours[0],crossCfg.neighbours[1],crossCfg.neighbours[2],crossCfg.neighbours[3]);
-    ROS_INFO("\tLengths:    n=%d, e=%d, s=%d, w=%d",
-            crossCfg.lengths[0], crossCfg.lengths[1], crossCfg.lengths[2], crossCfg.lengths[3]);
-
-    myAvailDirs = std::vector<int16_t>(4);
-    // ustaw, gdzie mozna skrecac, gdzie nie
-    for(int i = 0; i < 4; i++)
-        myAvailDirs[i] = (crossCfg.neighbours[i] == 0 ? 0 : 1);
-
-    ss.str("");
-    ss << "lights_" << crossCfg.ID;
-
-    lightsSub = n.subscribe(ss.str().c_str(), 1000, lightsCallback);
-    ros::Timer timer = n.createTimer(ros::Duration(10), timeoutCallback);
     ros::spin();
+    
     return 0;
 }
