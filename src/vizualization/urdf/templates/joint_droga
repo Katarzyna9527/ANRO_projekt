@@ -1,0 +1,11 @@
+ <joint name="world_to_kafelek_{id}" type="fixed">
+    <origin rpy="0 0 0" xyz="{x} {y} 0.01"/>
+    <parent link="world"/>
+    <child link="kafelek_{id}"/>
+  </joint> 
+
+ <joint name="kafelek_{id}_to_droga" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.01"/>
+    <parent link="kafelek_{id}"/>
+    <child link="droga_{id}"/>
+  </joint>
