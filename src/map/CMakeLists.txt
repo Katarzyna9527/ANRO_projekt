@@ -126,7 +126,7 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(map_node src/map_node.cpp)
-add_executable(car_init_test src/car_init_test.cpp)
+#add_executable(car_init_test src/car_init_test.cpp)
 add_executable(map_test src/map_test.cpp)
 
 ## Add cmake target dependencies of the executable
@@ -144,10 +144,10 @@ target_link_libraries(
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(
-        car_init_test
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(
+#        car_init_test
+#  ${catkin_LIBRARIES}
+#)
 #############
 ## Install ##
 #############
