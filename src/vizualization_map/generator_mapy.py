@@ -46,7 +46,7 @@ lenghts = [0,0,0,0]
 
 line_type = 0
 
-conffile = open('conffile', 'r')
+conffile = open('../map/src/conffile', 'r')
 
 for line in conffile:
    line_type=line_type+1
@@ -118,7 +118,7 @@ for i in range(0,len(crossway_list)):
 		numberOfRoadKafeleks = int(crossway_list[i].lenghts[1])
 		if numberOfRoadKafeleks!=0:
 			for j in range(0,numberOfRoadKafeleks):
-				print numberOfRoadKafeleks, crossway_list[i].ID
+				'''print numberOfRoadKafeleks, crossway_list[i].ID'''
 				filedroga = open('templates/link_droga', 'r')
 				for line in filedroga:
 					line = line.replace("{id}",str(crossway_list[i].ID)+"E"+str(j+1))
