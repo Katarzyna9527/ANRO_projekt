@@ -1,3 +1,0 @@
-W jaki sposób będą tworzone procesy dla obiektów(światła, samochody, skrzyżowania)?
-  1. Albo przez wpisywanie w konsoli poleceń i oprzeć to o skrypty
-  2. Albo tworzymy Fabryki, które pobierają configi od mapy i tworzą odpowiednie obiekty.
