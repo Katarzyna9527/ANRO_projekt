@@ -8,14 +8,14 @@
 #include <ctime>
 
   enum states{
-     crossing,
-     crossed,
-     askingForDir,
-     sendingDir,
-     drivingTowCrossing,
-     waitingForDir,
-     waiting,
-     tailgate
+     crossing,//
+     crossed,//
+     askingForDir,//
+     sendingDir,//
+     drivingTowCrossing,//
+     waitingForDir,//
+     waiting,//
+     tailgate//
    };
 
 class Car{
@@ -57,9 +57,9 @@ public:
    Car(){
 		
       ros::ServiceClient client = n.serviceClient<car::car_init>("init_car");//map
-      //map::
-      car::car_init srv;
+      car::car_init srv; //map::
       uint8_t ReqID = 0;
+      direction =-1;
       srv.request.req = (uint8_t) ReqID;
       if (client.call(srv)){
          carID=srv.response.carID;
@@ -123,7 +123,7 @@ public:
        else if(lenght == 0){
          lenght=newLenght;
        }
-       else if(lenght ==5){
+       else if(lenght ==newLenght-5){
          isCrossed=true;
          state = crossed;
          ROS_INFO("crossed");
@@ -168,8 +168,8 @@ int main(int argc, char **argv)
 
   std::stringstream ss;
   ss << "crossing_" << car.giveNextCrossing();
-  ros::Publisher carPub = n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
-  ros::Subscriber carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
+  ros::Publisher carPub = car.n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
+  ros::Subscriber carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
   ros::Rate loop_rate(10);
 
   while(ros::ok()){
@@ -191,8 +191,8 @@ int main(int argc, char **argv)
          ss.str("");
          ss.clear();
          ss << "crossing_" << car.giveNextCrossing();
-         ros::Publisher carPub = n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
-         ros::Subscriber carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
+         ros::Publisher carPub = car.n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
+         ros::Subscriber carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
          car.changeState(askingForDir);
          ROS_INFO("asking for possible directions");
        }
