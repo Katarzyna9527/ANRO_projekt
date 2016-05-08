@@ -107,6 +107,7 @@ int main(int argc, char **argv)											//główny program
     ros::init(argc, argv, "lights");
 
     ::map::map_config map = getMapConfiguration();
+	cout<<"\n"<<"Map configuration received";
 
     int nNodes=map.response.number_of_crossings;						//number of nodes
 
@@ -130,6 +131,7 @@ int main(int argc, char **argv)											//główny program
 	string number=ss.str();
 	topicName=topicName+number; 
         lightsPubs[i] = lightsNodes[i].advertise<lights::LightState>(topicName, 1000);
+	cout<<"\n"<<"Lights for crossing " + number + " created";
     }
 	
 	ros::Rate loop_rate(0.25);
