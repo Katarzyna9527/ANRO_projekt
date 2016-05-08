@@ -1,0 +1,6 @@
+uint8_t req;
+---
+int16_t carID;
+int16_t pathLenght;
+int16_t prevCrossing;
+int16_t nextCrossing;
