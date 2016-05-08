@@ -133,7 +133,7 @@ int main(int argc, char **argv)											//główny program
         lightsPubs[i] = lightsNodes[i].advertise<lights::LightState>(topicName, 1000);
 	cout<<"\n"<<"Lights for crossing " + number + " created";
     }
-	cout<<"\n"<<"Lights done"";
+	cout<<"\n"<<"Lights done";
 	ros::Rate loop_rate(0.25);
 	
     while(ros::ok()){
