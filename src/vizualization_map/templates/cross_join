@@ -1,0 +1,11 @@
+<joint name="cross_base_to_link_{id}" type="fixed">
+  <origin rpy="0 0 0" xyz="{x} {y} 0.01"/>
+  <parent link="base_link"/>
+  <child link="cross_base_{id}"/>
+</joint> 
+<joint name="cross_to_cross_base_{id}" type="fixed">
+  <origin rpy="0 0 0" xyz="0.0 0.0 0"/>
+  <parent link="cross_base_{id}"/>
+  <child link="cross_{id}"/>
+</joint>
+

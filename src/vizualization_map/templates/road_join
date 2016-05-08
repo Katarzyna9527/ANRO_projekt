@@ -1,0 +1,5 @@
+<joint name="road_{s_id}_{d_id}_to_cross" type="fixed">
+  <origin rpy="0 0 0" xyz="{x_offset} {y_offset} 0"/>
+  <parent link="cross_{s_id}"/>
+  <child link="road_{s_id}_{d_id}"/>
+</joint>
