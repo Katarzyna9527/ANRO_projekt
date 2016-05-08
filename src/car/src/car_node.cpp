@@ -18,7 +18,6 @@
      tailgate
    };
 
-ros::NodeHandle n;
 
 
 class Car{
@@ -59,7 +58,7 @@ public:
 	}
 
    Car(){
-
+		ros::NodeHandle n;
       ros::ServiceClient client = n.serviceClient<car::car_init>("init_car");//map
       //map::
       car::car_init srv;
@@ -158,6 +157,9 @@ int main(int argc, char **argv)
   time_t tm=std::time(NULL);
   std::srand( std::time( NULL ) );
   ros::init(argc, argv, "car_node", ros::init_options::AnonymousName);
+  
+  ros::NodeHandle n;
+
   Car car;
 
   std::stringstream ss;
