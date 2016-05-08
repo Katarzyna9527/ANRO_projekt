@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(car)
+project(map)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -7,10 +7,7 @@ project(car)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  #message_generation
-  crossings
-  map
-  
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -47,16 +44,18 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-#add_message_files(
-#   FILES
-#   autocross_msg.msg
-# )
+add_message_files(
+  FILES
+  cross_msg.msg
+)
 
 ## Generate services in the 'srv' folder
-#add_service_files(
-#   FILES
-#   car_init.srv
-# )
+add_service_files(
+  FILES
+  map_config.srv
+  cross_init.srv
+  car_init.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -66,10 +65,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-#generate_messages(
-#  DEPENDENCIES
- # std_msgs
-#)
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -101,9 +100,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- 
   CATKIN_DEPENDS roscpp std_msgs message_runtime
-  DEPENDS system_lib
+#  DEPENDS system_lib
 )
 
 ###########
@@ -115,32 +113,41 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-)
-
+  )
 
 
 ## Declare a C++ library
-# add_library(car_lib src/car_node.cpp)
+# add_library(crossing src/crossing/crossing.cpp )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(car ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(car_node src/car_node.cpp)
-#add_executable(car_test_srv src/car_test_srv.cpp)
+add_executable(map_node src/map_node.cpp)
+#add_executable(car_init_test src/car_init_test.cpp)
+add_executable(map_test src/map_test.cpp)
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(crossing ${${crossings}crossing} ${catkin_EXPORTED_TARGETS})
-add_dependencies(crossing${${crossings}crossing}${catkin_EXPORTED_TARGETS})
-#add_dependencies(car_test_srv ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(map_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 ## Specify libraries to link a library or executable target against
-target_link_libraries(car_node
-   ${catkin_LIBRARIES}
- )
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
-#target_link_libraries(car_lib ${roscpp_LIBRARIES} )
+target_link_libraries(
+        map_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+        map_test
+  ${catkin_LIBRARIES}
+)
+
+#target_link_libraries(
+#        car_init_test
+#  ${catkin_LIBRARIES}
+#)
 #############
 ## Install ##
 #############
@@ -155,9 +162,40 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-## Mark executables and/or libraries for installation
-# install(TARGETS car car_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#Mark executables and/or libraries for installation
+# install(TARGETS crossing 
+##   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+##   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+
+
+## Mark cpp header files for installation
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
+
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
+
+#############
+## Testing ##
+#############
+
+## Add gtest based cpp test target and link libraries
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_map.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
+
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+
