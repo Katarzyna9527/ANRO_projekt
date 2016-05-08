@@ -23,17 +23,17 @@ def set_cross(cross):
 			if neighbor.placed==False:
 				lenght = int(cross.lenghts[j])*5
 				if j==0:
-					neighbor.x = cross.x - lenght -5
-					neighbor.y = cross.y
+					neighbor.y = cross.y + lenght
+					neighbor.x = cross.x
 				if j==1:
-					neighbor.y = cross.y + lenght +5
-					neighbor.x = cross.x
-				if j==2:
-					neighbor.x = cross.x + lenght +5
+					neighbor.x = cross.x + lenght
 					neighbor.y = cross.y
-				if j==3:
-					neighbor.y = cross.y - lenght -5
+				if j==2:
+					neighbor.y = cross.y - lenght
 					neighbor.x = cross.x
+				if j==3:
+					neighbor.x = cross.x - lenght
+					neighbor.y = cross.y
 				neighbor.placed = True
 
 used_connection = []
@@ -86,6 +86,7 @@ conffile.close()
 
 for cross in crossway_list:
 	set_cross(cross)
+	print "Crossing "+str(cross.ID)+": "+str(cross.x)+" "+str(cross.y)
 
 fileout = open('mapa.urdf', 'w')
 
@@ -112,11 +113,13 @@ for cross in crossway_list:
 				line = road_link.replace("{s_id}",str(cross.ID))
 				line = line.replace("{d_id}",str(cross.neighbors[i]))	
 				if i==1:
-					width = 4
-					height = tmp.y-cross.y
-				elif i==2:
-					width = cross.x-tmp.x
+					width = tmp.x-cross.x
 					height = 4
+					print "Crossing "+str(cross.ID)+" and "+str(cross.neighbors[i])+": "+str(width)+" "+str(height)
+				elif i==2:
+					width = 4
+					height = cross.y-tmp.y
+					print "Crossing "+str(cross.ID)+" and "+str(cross.neighbors[i])+": "+str(width)+" "+str(height)
 					
 				line = line.replace("{height}",str(height))
 				line = line.replace("{width}",str(width))
@@ -125,9 +128,9 @@ for cross in crossway_list:
 				line = road_join.replace("{s_id}",str(cross.ID))
 				line = line.replace("{d_id}",str(cross.neighbors[i]))
 				if i==1:
-					line = line.replace("{y_offset}",str((tmp.y-cross.y)/2))
-				elif i==2:
 					line = line.replace("{x_offset}",str((tmp.x-cross.x)/2))
+				elif i==2:
+					line = line.replace("{y_offset}",str((tmp.y-cross.y)/2))
 					
 				line = line.replace("{x_offset}",str(0))
 				line = line.replace("{y_offset}",str(0))

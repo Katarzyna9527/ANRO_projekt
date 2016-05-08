@@ -18,8 +18,8 @@ using namespace std;
 #include <string>
 
 struct Coordinates{
-	int16_t x;
-	int16_t y;
+	float x;
+	float y;
 };
 
 struct Car{
@@ -29,6 +29,10 @@ struct Car{
 	int32_t distance;
 	int32_t x;
 	int32_t y;
+};
+
+struct Lights{
+	bool direction[4];
 };
 
 class CarCollection{
@@ -112,7 +116,7 @@ public:
 			ROS_INFO("dodaje");
 			CarCollection::getInstance().add(msg.autoID, msg.startCrossID, msg.endCrossID, msg.distance);
 			/*visualization_msgs::Marker *marker = new visualization_msgs::Marker;
-			marker->header.frame_id = "/my_frame";
+			marker->header.frame_id = "/base_link";
 			marker->header.stamp = ros::Time::now();
 
 			marker->ns = "basic_shapes";
@@ -163,17 +167,26 @@ public:
 
 int main(int argc, char **argv) 
 {
-    ros::init(argc, argv, "vizualization_node");
-    ros::NodeHandle n;
+	int16_t roadSize = 2;
+	float lightOffset = 2.5;
+	float lightDistance = 5;
+	
+	ros::init(argc, argv, "vizualization_node");
+	ros::NodeHandle n;
 
-    ros::ServiceClient client = n.serviceClient<::map::map_config>("get_map_config");
-    ::map::map_config srv;
-    
-    uint8_t ReqID = 1;
-    srv.request.req = (uint8_t) ReqID;
-    Coordinates * crossings;
+	ros::ServiceClient client = n.serviceClient<::map::map_config>("get_map_config");
+	::map::map_config srv;
 
-    if (client.call(srv)) {
+	uint8_t ReqID = 1;
+	srv.request.req = (uint8_t) ReqID;
+	Coordinates * crossings;
+	Coordinates lights[100][4];
+	int connections[100][4];
+	
+	visualization_msgs::Marker* lightBulb[100][4][4];
+
+    	if (client.call(srv)) {
+    		int16_t multiplier = 5;
 		crossings = new Coordinates [srv.response.crossings.size()];
 		crossings[0].x = 0;
 		crossings[0].y = 0;
@@ -181,47 +194,91 @@ int main(int argc, char **argv)
 		//Ustalenie wspolrzednych wszystkich skrzyzowan
 		for (int16_t crossingID = 0; crossingID < srv.response.crossings.size(); crossingID++){
 			//if(crossingID!=0 && crossings[crossingID].x == 0 && crossings[crossingID].y == 0) continue;
-			ROS_INFO("Skrzyzowanie: %d", (int16_t)crossingID);
+			ROS_INFO("Skrzyzowanie: %d", ((int16_t)crossingID+1));
+			
 			//NORTH
 			int16_t neighbour=srv.response.crossings[crossingID].neighbours[0];
 			int16_t length = srv.response.crossings[crossingID].lengths[0];
 			if(neighbour != 0){
-				crossings[neighbour-1].y = crossings[crossingID].y + length;
+				crossings[neighbour-1].y = crossings[crossingID].y + length * multiplier;
 				crossings[neighbour-1].x = crossings[crossingID].x;
 				ROS_INFO("north: %d: %d %d", (int16_t)neighbour, (int16_t)crossings[neighbour-1].x, (int16_t)crossings[neighbour-1].y);
+				lights[crossingID][0].x = crossings[crossingID].x - lightOffset;
+				lights[crossingID][0].y = crossings[crossingID].y + lightDistance;
+				connections[crossingID][0] = neighbour-1;
+				//ROS_INFO("north: %d: %d %d", (int16_t)crossingID, (int16_t)lights[crossingID][0.x, (int16_t)crossings[neighbour-1].y);
+			}
+			else{
+				lights[crossingID][0].x = 0;
+				lights[crossingID][0].y = 0;
+				connections[crossingID][0] = -1;
 			}
 			
 			//EAST
 			neighbour=srv.response.crossings[crossingID].neighbours[1];
 			length = srv.response.crossings[crossingID].lengths[1];
 			if(neighbour != 0){
-				crossings[neighbour-1].x = crossings[crossingID].x + length;
+				crossings[neighbour-1].x = crossings[crossingID].x + length * multiplier;
 				crossings[neighbour-1].y = crossings[crossingID].y;
 				ROS_INFO("east: %d: %d %d", (int16_t)neighbour, (int16_t)crossings[neighbour-1].x, (int16_t)crossings[neighbour-1].y);
+				lights[crossingID][1].x = crossings[crossingID].x + lightDistance;
+				lights[crossingID][1].y = crossings[crossingID].y + lightOffset;
+				connections[crossingID][1] = neighbour-1;
 			}
+			else{
+				lights[crossingID][1].x = 0;
+				lights[crossingID][1].y = 0;
+				connections[crossingID][1] = -1;
+			}
+			
 			
 			//SOUTH
 			neighbour=srv.response.crossings[crossingID].neighbours[2];
 			length = srv.response.crossings[crossingID].lengths[2];
 			if(neighbour != 0){
-				crossings[neighbour-1].y = crossings[crossingID].y - length;
+				crossings[neighbour-1].y = crossings[crossingID].y - length * multiplier;
 				crossings[neighbour-1].x = crossings[crossingID].x;
 				ROS_INFO("south: %d: %d %d", (int16_t)neighbour, (int16_t)crossings[neighbour-1].x, (int16_t)crossings[neighbour-1].y);
+				lights[crossingID][2].x = crossings[crossingID].x + lightOffset;
+				lights[crossingID][2].y = crossings[crossingID].y - lightDistance;
+				connections[crossingID][2] = neighbour-1;
+			}
+			else{
+				lights[crossingID][2].x = 0;
+				lights[crossingID][2].y = 0;
+				connections[crossingID][2] = -1;
 			}
 			
 			//WEST
 			neighbour=srv.response.crossings[crossingID].neighbours[3];
 			length = srv.response.crossings[crossingID].lengths[3];
 			if(neighbour != 0){
-				crossings[neighbour-1].x = crossings[crossingID].x - length;
+				crossings[neighbour-1].x = crossings[crossingID].x - length * multiplier;
 				crossings[neighbour-1].y = crossings[crossingID].y;
 				ROS_INFO("west: %d: %d %d", (int16_t)neighbour, (int16_t)crossings[neighbour-1].x, (int16_t)crossings[neighbour-1].y);
+				lights[crossingID][3].x = crossings[crossingID].x - lightDistance;
+				lights[crossingID][3].y = crossings[crossingID].y - lightOffset;
+				connections[crossingID][3] = neighbour-1;
 			}
+			else{
+				lights[crossingID][3].x = 0;
+				lights[crossingID][3].y = 0;
+				connections[crossingID][3] = -1;
+			}
+			
 		}
 		for (int16_t crossingID = 0; crossingID < srv.response.crossings.size(); crossingID++)
 		{
-			ROS_INFO("%d: %d %d", (int16_t)crossingID, (int16_t)crossings[crossingID].x, (int16_t)crossings[crossingID].y);
+			ROS_INFO("%d: %d %d", (int16_t)crossingID+1, (int16_t)crossings[crossingID].x, (int16_t)crossings[crossingID].y);
 		}
+		
+		for (int16_t crossingID = 0; crossingID < srv.response.crossings.size(); crossingID++){
+			for (int16_t i = 0; i < 4; i++){
+			
+				ROS_INFO("%d: %d %d", (int16_t)crossingID+1, (int16_t)lights[crossingID][i].x, (int16_t)lights[crossingID][i].y);
+			}
+		}
+
 
 	} else {
 		ROS_ERROR("Failed to call map for config");
@@ -240,11 +297,18 @@ int main(int argc, char **argv)
 	visualization_msgs::MarkerArray markerArrayC;
 	ros::Publisher crossing_pub = n.advertise<visualization_msgs::MarkerArray>("crossing_marker_array", 100);
 	
+	visualization_msgs::MarkerArray lightsMarkerArray;
+	ros::Publisher lights_pub = n.advertise<visualization_msgs::MarkerArray>("lights_marker_array", 100);
+	
+	visualization_msgs::MarkerArray roadMarkerArray;
+	ros::Publisher road_pub = n.advertise<visualization_msgs::MarkerArray>("road_marker_array", 100);
+	
+	//Wizualizacja skrzyżowań
 	for (int16_t crossingID = 0; crossingID < srv.response.crossings.size(); crossingID++){
-		
+		//Skrzyzowanie
 	    visualization_msgs::Marker *marker = new visualization_msgs::Marker;
 	    
-	    marker->header.frame_id = "/my_frame";
+	    marker->header.frame_id = "/base_link";
 	    marker->header.stamp = ros::Time::now();
 
 	    marker->ns = "basic_shapes";
@@ -256,45 +320,146 @@ int main(int argc, char **argv)
 
 	    marker->pose.position.x = crossings[crossingID].x;
 	    marker->pose.position.y = crossings[crossingID].y;
+	    //marker->pose.position.x = abs(crossings[crossingID].y);
+	    //marker->pose.position.y = abs(crossings[crossingID].x);
 	    marker->pose.position.z = 0;
 	    marker->pose.orientation.x = 0.0;
 	    marker->pose.orientation.y = 0.0;
 	    marker->pose.orientation.z = 0.0;
 	    marker->pose.orientation.w = 1.0;
 
-	    marker->scale.x = 1.0;
-	    marker->scale.y = 1.0;
+	    marker->scale.x = 2 * roadSize;
+	    marker->scale.y = 2 * roadSize;
 	    marker->scale.z = 1.0;
 
 	    marker->color.r = 0.0f;
-	    marker->color.g = 1.0f;
-	    marker->color.b = 0.0f;
+	    marker->color.g = 0.0f;
+	    marker->color.b = 1.0f;
 	    marker->color.a = 1.0;
 
 	    marker->lifetime = ros::Duration();
 	    markerArrayC.markers.push_back(*marker);
+	    
+	    //swiatla
+	    for (int16_t i = 0; i < 4; i++){
+	    	visualization_msgs::Marker *markerS = new visualization_msgs::Marker;
+	    	if(lights[crossingID][i].x !=0 && lights[crossingID][i].y !=0)
+	    	{
+	    		int16_t height = 5;
+	    
+			markerS->header.frame_id = "/base_link";
+			markerS->header.stamp = ros::Time::now();
+
+			markerS->ns = "basic_shapes";
+			markerS->id = crossingID*10+i;
+
+			markerS->type = visualization_msgs::Marker::CUBE;
+
+			markerS->action = visualization_msgs::Marker::ADD;
+
+			markerS->pose.position.x = lights[crossingID][i].x;
+			markerS->pose.position.y = lights[crossingID][i].y;
+			//markerS->pose.position.x = abs(lights[crossingID][i].y);
+			//markerS->pose.position.y = abs(lights[crossingID][i].x);
+			markerS->pose.position.z = height/2;
+			markerS->pose.orientation.x = 0.0;
+			markerS->pose.orientation.y = 0.0;
+			markerS->pose.orientation.z = 0.0;
+			markerS->pose.orientation.w = 1.0;
+
+			markerS->scale.x = 0.5;
+			markerS->scale.y = 0.5;
+			markerS->scale.z = height;
+
+			markerS->color.r = 0.0f;
+			markerS->color.g = 1.0f;
+			markerS->color.b = 1.0f;
+			markerS->color.a = 1.0;
+
+			markerS->lifetime = ros::Duration();
+			lightsMarkerArray.markers.push_back(*markerS);
+	    	}
+	    }
+	    
+	    //drogi
+	    for (int16_t i = 0; i < 4; i++){
+	    	visualization_msgs::Marker *markerS = new visualization_msgs::Marker;
+	    	if(connections[crossingID][i] >= 0)
+	    	{
+	    		Coordinates center;
+	    		center.x = crossings[crossingID].x - 0.5 * (crossings[crossingID].x - crossings[connections[crossingID][i]].x);
+	    		center.y = crossings[crossingID].y - 0.5 * (crossings[crossingID].y - crossings[connections[crossingID][i]].y);
+	    		
+	    		if(i == 0 ||i==2){
+	    		
+	    		}	
+	    		
+			markerS->header.frame_id = "/base_link";
+			markerS->header.stamp = ros::Time::now();
+
+			markerS->ns = "basic_shapes";
+			markerS->id = crossingID*100+i;
+
+			markerS->type = visualization_msgs::Marker::CUBE;
+
+			markerS->action = visualization_msgs::Marker::ADD;
+
+			markerS->pose.position.x = center.x;
+			markerS->pose.position.y = center.y;
+			//markerS->pose.position.x = abs(lights[crossingID][i].y);
+			//markerS->pose.position.y = abs(lights[crossingID][i].x);
+			markerS->pose.position.z = 0;
+			markerS->pose.orientation.x = 0.0;
+			markerS->pose.orientation.y = 0.0;
+			markerS->pose.orientation.z = 0.0;
+			markerS->pose.orientation.w = 1.0;
+
+			if(i == 0 || i==2){
+	    			markerS->scale.x = 2*roadSize;
+				markerS->scale.y = abs(crossings[crossingID].y - crossings[connections[crossingID][i]].y) - 2*roadSize;
+	    		}
+	    		else{
+	    			markerS->scale.x = abs(crossings[crossingID].x - crossings[connections[crossingID][i]].x) - 2*roadSize;
+				markerS->scale.y = 2*roadSize;
+	    		}
+			markerS->scale.z = 0.5;
+
+			markerS->color.r = 1.0f;
+			markerS->color.g = 1.0f;
+			markerS->color.b = 0.0f;
+			markerS->color.a = 1.0;
+
+			markerS->lifetime = ros::Duration();
+			roadMarkerArray.markers.push_back(*markerS);
+	    	}
+	    }
 		
 	}
+	
+	
+	
 	
 	ros::Publisher marker_pub = n.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 100);
 	//ROS_INFO("%f", CarCollection::getInstance().markerArray.markers[0].pose.position.x);
 	while(ros::ok()){
 		crossing_pub.publish(markerArrayC);
+		lights_pub.publish(lightsMarkerArray);
+		road_pub.publish(roadMarkerArray);
 		//ros::Subscriber sub = n.subscribe("viz_auto", 1000, CarCollection::addCar);
 		
 		//ros::Publisher car_pub = n.advertise<visualization_msgs::Marker>("car_marker", 100);
+		
 		//********************************
 		//tworzenie marker array
 		//********************************
 		visualization_msgs::MarkerArray *markerArray = new visualization_msgs::MarkerArray;
 		int16_t ilosc = 0;
-		//visualization_msgs::Marker *markersToDelete = new visualization_msgs::Marker;
 		visualization_msgs::Marker *markersToDelete[100];
 		int16_t i = 0;
 		for(auto it = CarCollection::getInstance().lista->cbegin(); it != CarCollection::getInstance().lista->cend(); ++it)
 		{
 			visualization_msgs::Marker *marker = new visualization_msgs::Marker;
-			marker->header.frame_id = "/my_frame";
+			marker->header.frame_id = "/base_link";
 			marker->header.stamp = ros::Time::now();
 
 			marker->ns = "basic_shapes";
@@ -309,6 +474,8 @@ int main(int argc, char **argv)
 
 			marker->pose.position.y = (*it).y;
 			marker->pose.position.x = (*it).x;
+			//marker->pose.position.y = abs((*it).x);
+			//marker->pose.position.x = abs((*it).y);
 			marker->pose.position.z = 0;
 			
 			marker->pose.orientation.x = 0.0;
@@ -332,9 +499,8 @@ int main(int argc, char **argv)
 			ilosc++;
 		}
 		
+		//Publikowanie
 		if(!CarCollection::getInstance().lista->empty()){
-			//ROS_INFO("publikuje");
-			//ROS_INFO("%f", markerArray->markers[0].pose.position.y);
 			marker_pub.publish(*markerArray);
 		}
 		
@@ -348,22 +514,6 @@ int main(int argc, char **argv)
 		//loop_rate.sleep();
 		
 	}
-	/*
-	while (ros::ok())
-	{
-		while (marker_pub.getNumSubscribers() < 1)
-	    		{
-	      			if (!ros::ok())
-	      				{
-						return 0;
-	      				}
-	      			ROS_WARN_ONCE("Please create a subscriber to the marker");
-	      			sleep(1);
-	    		}
-	    	marker_pub.publish(CarCollection::getInstance().markerArray);
-	}
-*/
-    //ros::spinOnce();
 
     return 0;
 }
