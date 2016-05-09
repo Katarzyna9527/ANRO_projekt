@@ -1,4 +1,6 @@
 int16 carID
+int16 previousCrossing
+int16 nextCrossing
 ---
 int32 distanceSoFar
 int16 carID

@@ -31,8 +31,11 @@ public:
     int distanceSoFar;			//ile juz przejechal samochod od poprzedniego skrzyzowania
     int pickedDirection;
     int isMessageRecieved;		//0- nie, 1- pierwsza, 2-druga
+    //bool firstMessageIsSend;
+    bool secondMessageIsSend;
     int previousCarID;
     bool iCanGo;			//true- nie ma przede mna samochodu albo jest wystarczajac daleko
+    int myPatience;			//ile czekam na odp od skrzyzowania zanim rezygnuje
 
     Car();
     ~Car();
@@ -48,15 +51,17 @@ public:
 	return instance;
     }
 
-    bool carCarResponse(cars::car_to_car::Response &res);
+    bool carCarResponse(cars::car_to_car::Response &res, bool whichOne);
+    bool carCarRequestCheckout(cars::car_to_car::Request &req);
     static bool carCarService(cars::car_to_car::Request &req, cars::car_to_car::Response &res)
-    {	
-        Car& car=Car::getInstance();
-	car.carCarResponse(res);
+    {	        
+	Car& car=Car::getInstance();
+	car.carCarResponse(res, car.carCarRequestCheckout(req));
 	ROS_INFO("I've just send info to car with ID=%d",req.carID);
 	return true;
     };
     void infoForViz();
+    void publicMyInfo();
 
 
 };
@@ -78,16 +83,36 @@ Car::Car()
     velocity=1;
     pickedDirection=0;
     isMessageRecieved=0;
+    secondMessageIsSend=false;
     previousCarID=0;
     iCanGo=true;
+    myPatience=15;
 
 }
 
-    bool Car::carCarResponse(cars::car_to_car::Response &res) {
+bool Car::carCarResponse(cars::car_to_car::Response &res, bool whichOne) 
+{
+    if(whichOne)
+    {	
 	res.carID=car->carID;
-	ROS_INFO("My send car ID %d, my distance send %d", car->carID, car->distanceSoFar);
-        res.distanceSoFar=car->distanceSoFar;
     }
+    else
+    {
+	res.carID=0;
+    }
+        res.distanceSoFar=car->distanceSoFar;
+	ROS_INFO("My send car ID %d, my distance send %d", car->carID, car->distanceSoFar);
+    
+}
+
+
+bool Car::carCarRequestCheckout(cars::car_to_car::Request &req)
+{ 
+    if((req.previousCrossing!=car->previousCrossing)||(req.nextCrossing!=car->nextCrossing))
+	return false;
+    else
+	return true;
+}
 
 void Car::updateCar()
 {
@@ -95,6 +120,8 @@ void Car::updateCar()
     nextCrossing=message.nextCrossID;
     distanceToGo=(message.length);
     distanceSoFar=0;
+    //myPatience=15;
+
 
 }
 void Car::pickDirection(::cars::autocross_msg message)
@@ -173,6 +200,24 @@ void Car::infoForViz()
     carVizMessage.distance=car->distanceSoFar;
 }
 
+void Car::publicMyInfo()
+{
+   ROS_INFO("My ID: %d, previous crossing: %d, next crossing: %d", car->carID, car->previousCrossing, car->nextCrossing);
+}
+
+void clearMessage()
+{
+   message.isMsgFromAuto=true;
+   message.autoID=car->carID;      
+   message.previousCrossID=0;
+   message.direction=-1;
+   message.isCrossed=false;     
+
+   message.length=0;      
+   message.nextCrossID=0;  
+   message.previousAutoID=0;  
+}
+
 int main(int argc, char **argv)											//główny program
 {
 
@@ -243,6 +288,8 @@ int main(int argc, char **argv)											//główny program
             ss <<"car_to_car_"<<car->previousCarID;
 	    ros::ServiceClient carCarClient= carCarNode.serviceClient<cars::car_to_car>(ss.str().c_str());
 	    carCarMessage.request.carID=car->carID;
+	    carCarMessage.request.previousCrossing=car->previousCrossing;
+	    carCarMessage.request.nextCrossing=car->nextCrossing;
 	    ROS_INFO("my Car ID %d, previous Car ID %d",carCarMessage.request.carID, car->previousCarID);
 	    while(ros::ok()){
 	    if(carCarClient.call(carCarMessage))
@@ -253,40 +300,45 @@ int main(int argc, char **argv)											//główny program
 		    car->iCanGo=false;
 		else
 		    car->iCanGo=true;
+		if(carCarMessage.response.carID==0)
+		{
+		   car->previousCarID=0;
+		   car->iCanGo=true;
+		}
 		break;
 	    }
 	    else
-		ROS_INFO("Fail");
+		ROS_INFO("Fail to call carcarMessage, the car is not responding!");
 	    }
- 	    //if(carCarMessage.response.carID!=car->carID)
-	    /*{
-		ROS_INFO("my distance %d, its distance %d", car->distanceSoFar, carCarMessage.response.distanceSoFar);
-		if(carCarMessage.response.distanceSoFar-car->distanceSoFar<=2)
-		    car->iCanGo=false;
-		else
-		    car->iCanGo=true;
-	    }*/	
 	}        
 	if(car->distanceSoFar==1)
         {
             message=car->initialQuestion();
             carToCrossingPub.publish(message);
         }
-        if(car->distanceSoFar==car->distanceToGo-2)
+        if(car->distanceSoFar>=car->distanceToGo-2)
         {
-            if(car->isMessageRecieved==1)
+            if(car->isMessageRecieved==1&&car->secondMessageIsSend==false)
 	    {
 		message=car->secondQuestion();
             	carToCrossingPub.publish(message);
+		car->secondMessageIsSend=true;
 	    }
 	    else
 	    {
-		ROS_INFO("There's no answer from the crossing, I'm out");
-		return 0;
+		if(car->myPatience==0)
+		{		
+		    ROS_INFO("There's no answer from the crossing, I'm out");
+		    return 0;
+		}
+		else
+		{ 
+		    car->myPatience=car->myPatience-1;
+		}
 	    }
 	    
         }
-        if((car->distanceSoFar!=car->distanceToGo)&&(car->iCanGo==true))
+        if((car->distanceSoFar<car->distanceToGo)&&(car->iCanGo==true))
         {
             car->distanceSoFar+=1;
         }
@@ -298,13 +350,21 @@ int main(int argc, char **argv)											//główny program
                 message=message;
                 //carToCrossingPub = carNode.unadvertise(ss.str().c_str(), 1000); - ogarnac czy jest cos takiego 
 
-                car->updateCar();
+                //car->updateCar();
                 loop_rate_2.sleep();
                 message=car->lastQuestion();
                 carToCrossingPub.publish(message);
+		car->secondMessageIsSend=false;
+                car->updateCar();
+		car->publicMyInfo();
+		car->myPatience=15;
 
+		ss.clear();
+		ss.str("");
+		ss << "crossing_" << car->nextCrossing;
                 carToCrossingPub = carNode.advertise<cars::autocross_msg>(ss.str().c_str(), 1000);
                 carToCrossingSub = carNode.subscribe(ss.str().c_str(),1000, carCallback);
+		clearMessage();
             }
         }
         ROS_INFO("Distance so far %d from crossing %d to crossing %d", car->distanceSoFar, car->previousCrossing, car->nextCrossing);
