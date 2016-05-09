@@ -161,15 +161,13 @@ public:
 
 int main(int argc, char **argv)
 {
-	std::string confname;
-	std::cout << "Map config file name is: ";
-	std::cin >> confname;
-
-
-	if (!Map::getInstance().configureFromFile(confname)) { ROS_INFO("Unable to read conf file"); return 1; }
-
 	ros::init(argc, argv, "map_node");
 	ros::NodeHandle n;
+	
+	std::string confname ;
+	n.getParam("map_confname", confname);
+
+	if (!Map::getInstance().configureFromFile(confname)) { ROS_INFO("Unable to read conf file"); return 1; }
 
 	ros::ServiceServer configService    = n.advertiseService("get_map_config", Map::configService);
 	ros::ServiceServer carFactory = n.advertiseService("init_car" , Map::carInitService);
