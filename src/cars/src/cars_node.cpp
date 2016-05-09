@@ -20,6 +20,8 @@ cars::autocross_msg message;
 cars::car_to_car carCarMessage;
 cars::auto_viz carVizMessage;
 
+int multiplication=5;
+
 class Car
 {
 public:
@@ -185,7 +187,7 @@ cars::autocross_msg Car::lastQuestion()
 void Car::getInitialSettings()
 {
     carID=initialCarSettings.response.carID;
-    distanceToGo=(initialCarSettings.response.pathLenght);
+    distanceToGo=(initialCarSettings.response.pathLenght)*multiplication;
     previousCrossing=initialCarSettings.response.prevCrossing;
     nextCrossing=initialCarSettings.response.nextCrossing;
     ROS_INFO("Previous crossing ID: %d", previousCrossing);
@@ -274,7 +276,7 @@ int main(int argc, char **argv)											//główny program
 
     ::cars::autocross_msg message;
 
-    ros::Rate loop_rate(1);
+    ros::Rate loop_rate(5);
     ros::Rate loop_rate_2(2);
 
 
@@ -290,7 +292,7 @@ int main(int argc, char **argv)											//główny program
 	    carCarMessage.request.carID=car->carID;
 	    carCarMessage.request.previousCrossing=car->previousCrossing;
 	    carCarMessage.request.nextCrossing=car->nextCrossing;
-	    ROS_INFO("my Car ID %d, previous Car ID %d",carCarMessage.request.carID, car->previousCarID);
+	    ROS_INFO("My Car ID %d, previous Car ID %d",carCarMessage.request.carID, car->previousCarID);
 	    while(ros::ok()){
 	    if(carCarClient.call(carCarMessage))
 	    {
@@ -311,13 +313,13 @@ int main(int argc, char **argv)											//główny program
 		ROS_INFO("Fail to call carcarMessage, the car is not responding!");
 	    }
 	}        
-	if(car->distanceSoFar==1)
+	if(car->distanceSoFar==1*multiplication)
         {
             message=car->initialQuestion();
             carToCrossingPub.publish(message);
 	    ROS_INFO("I've just send a message to crossing %d asking for directions", car->nextCrossing);
         }
-        if(car->distanceSoFar>=car->distanceToGo-2)
+        if(car->distanceSoFar>=car->distanceToGo-2*multiplication)
         {
             if(car->isMessageRecieved==1&&car->secondMessageIsSend==false)
 	    {
@@ -360,7 +362,7 @@ int main(int argc, char **argv)											//główny program
 		car->secondMessageIsSend=false;
                 car->updateCar();
 		car->publicMyInfo();
-		car->myPatience=15;
+		car->myPatience=15*multiplication;
 
 		ss.clear();
 		ss.str("");
