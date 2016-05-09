@@ -8,8 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
-  #map
-  #crossings
+  map
+  crossings
 )
 
 ## System dependencies are found with CMake's conventions
@@ -46,16 +46,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   autocross_msg.msg
- )
+#add_message_files(
+ #  FILES
+#   autocross_msg.msg
+ #)
 
 ## Generate services in the 'srv' folder
-add_service_files(
-   FILES
-   car_init.srv
- )
+#add_service_files(
+ #  FILES
+ #  car_init.srv
+ #)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -103,7 +103,7 @@ catkin_package(
   #INCLUDE_DIRS include
   #LIBRARIES car
   CATKIN_DEPENDS roscpp std_msgs message_runtime
-  #DEPENDS system_lib
+  DEPENDS system_lib crossings_lib
 )
 
 ###########
@@ -131,23 +131,23 @@ add_library(car_lib src/car_node.cpp)
 
 ## Declare a C++ executable
 add_executable(car_node src/car_node.cpp)
-add_executable(car_init_test src/car_init_test.cpp)
-add_executable(car_comun_test src/car_comun_test.cpp)
+#add_executable(car_init_test src/car_init_test.cpp)
+#add_executable(car_comun_test src/car_comun_test.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(car_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(car_init_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(car_comun_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(car_init_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(car_comun_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 ## Specify libraries to link a library or executable target against
 target_link_libraries(car_node
    ${catkin_LIBRARIES} car_lib
  )
-target_link_libraries(car_init_test
-   ${catkin_LIBRARIES} car_lib
- )
-target_link_libraries(car_comun_test
-   ${catkin_LIBRARIES} car_lib
- )
+#target_link_libraries(car_init_test
+ #  ${catkin_LIBRARIES} car_lib
+ #)
+#target_link_libraries(car_comun_test
+  # ${catkin_LIBRARIES} car_lib
+ #)
 target_link_libraries(car_lib ${roscpp_LIBRARIES} )
 #############
 ## Install ##
