@@ -172,7 +172,7 @@ int main(int argc, char **argv)
   std::stringstream ss;
   ss << "crossing_" << car.giveNextCrossing();
   
-  ros::Publisher carPub = n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
+  ros::Publisher carPub = n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
   ros::Subscriber carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
   ros::Rate loop_rate(10);
 
