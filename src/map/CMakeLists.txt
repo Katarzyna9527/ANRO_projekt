@@ -127,11 +127,7 @@ include_directories(
 ## Declare a C++ executable
 add_executable(map_node src/map_node.cpp)
 #add_executable(car_init_test src/car_init_test.cpp)
-<<<<<<< Updated upstream
-add_executable(map_test src/map_test.cpp)
-=======
 #add_executable(map_test src/map_test.cpp)
->>>>>>> Stashed changes
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
