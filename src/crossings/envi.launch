@@ -1,0 +1,15 @@
+<launch>
+  <param name="map_confname" value="/home/mmorusie/ANRO_projekt/src/map/src/conffile" />
+  <node name="map_node" pkg="map" type="map_node" />
+  <node name="lights_node" pkg="lights" type="lights_node" />
+  <node name="crossing_1" pkg="crossings" type="crossings_node" />
+  <node name="crossing_2" pkg="crossings" type="crossings_node" />
+  <node name="crossing_3" pkg="crossings" type="crossings_node" />
+  <node name="crossing_4" pkg="crossings" type="crossings_node" />
+  <node name="crossing_5" pkg="crossings" type="crossings_node" />
+  <node name="crossing_6" pkg="crossings" type="crossings_node" />
+  <node name="crossing_7" pkg="crossings" type="crossings_node" />
+  <node name="crossing_8" pkg="crossings" type="crossings_node" />
+  <node name="crossing_9" pkg="crossings" type="crossings_node" />
+  <node name="crossing_A" pkg="crossings" type="crossings_node" />
+</launch>
