@@ -3,8 +3,8 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <cstdlib>
-#include "car/car_init.h"//finish the address
-#include "car/autocross_msg.h"
+#include "map/car_init.h"//finish the address
+#include "crossings/autocross_msg.h"
 #include <ctime>
 
   enum states{
@@ -31,13 +31,13 @@ private:
    int16_t nextCrossID;		//
    int16_t previousCrossID;	//
    int16_t previousAutoID;
-   car::autocross_msg msgA;//crossings
+   crossings::autocross_msg msgA;//crossings
    states state;   
 
 public:
 
    ros::NodeHandle n;
-   bool gotMessage;
+   //bool gotMessage;
    void choseADir(){
      while(true){
       int a = std::rand()%4;
@@ -47,9 +47,9 @@ public:
       }
    }
 
-   void carCallback(const car::autocross_msg::ConstPtr& msg){//crossings::
+   void carCallback(const crossings::autocross_msg::ConstPtr& msg){//crossings::
       if(!msg->isMsgFromAuto) {
-          gotMessage=true;
+          //gotMessage=true;
 	  ROS_INFO("I got msg from crossing with ID:%d", msg->nextCrossID);
 	  readTheMessage(msg);
       }
@@ -57,9 +57,9 @@ public:
 
    Car(){
 		
-      ros::ServiceClient client = n.serviceClient<car::car_init>("init_car");//map
+      ros::ServiceClient client = n.serviceClient<map::car_init>("init_car");//map
       //map::
-      car::car_init srv;
+      map::car_init srv;
       uint8_t ReqID = 0;
       srv.request.req = (uint8_t) ReqID;
       if (client.call(srv)){
@@ -71,7 +71,7 @@ public:
          speed = 1;
          direction = -1;
          state=askingForDir;
-         gotMessage=false;
+         //gotMessage=false;
          ROS_INFO("iniciated, asking for directions");
       }
       else{
@@ -80,7 +80,7 @@ public:
    }
 
    //crossings::
-   car::autocross_msg fillTheMessage(){
+   crossings::autocross_msg fillTheMessage(){
        msgA.isMsgFromAuto = true;
        msgA.autoID = carID;        
        msgA.direction = direction;     
@@ -90,7 +90,7 @@ public:
        return msgA;
    }
 
-   void readTheMessage(const car::autocross_msg::ConstPtr& msg){//crossings::
+   void readTheMessage(const crossings::autocross_msg::ConstPtr& msg){//crossings::
         if(!msg->isMsgFromAuto){    
          if(state == waiting){
            newLenght = msg->length+10;       
@@ -116,7 +116,7 @@ public:
        }
    }
    
-   void moveFrd(){
+   void moveFrd(){ROS_INFO("2");
        lenght = lenght - speed;
        if(lenght<=10 && state == drivingTowCrossing){
          speed = 0;
@@ -126,7 +126,7 @@ public:
        else if(lenght == 0){
          lenght=newLenght;
        }
-       else if(lenght ==5){
+       else if(lenght == newLenght-5 && state == crossing){
          isCrossed=true;
          state = crossed;
          ROS_INFO("crossed");
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
   states state;
   int16_t instance = 0;
   //crossings::
-  car::autocross_msg msgB;
+  crossings::autocross_msg msgB;
   time_t tm=std::time(NULL);
   time_t tmsg=std::time(NULL);
   std::srand( std::time( NULL ) );
@@ -172,30 +172,37 @@ int main(int argc, char **argv)
   std::stringstream ss;
   ss << "crossing_" << car.giveNextCrossing();
   
-  ros::Publisher carPub = n.advertise<car::autocross_msg>("crossing_1", 1000);//crossingss.str().c_str()
+  ros::Publisher carPub = n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
   ros::Subscriber carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
   ros::Rate loop_rate(10);
+
+   while(carPub.getNumSubscribers()<2)
+   {
+      ROS_ERROR("Waiting for crossing to cathch on");
+      sleep(1);
+   }
+
   while(ros::ok()){
     if(std::time(NULL)>tm+1){
        car.moveFrd();
-       tm=std::time(NULL);ROS_INFO("2");
+       tm=std::time(NULL);
     }
     state = car.giveState();
     if(state == askingForDir || state == sendingDir || state == crossed){
        msgB = car.fillTheMessage();
        carPub.publish(msgB);
-       car.gotMessage=false;
-       if(state == askingForDir){carPub.publish(msgB);
+       //car.gotMessage=false;
+       if(state == askingForDir){
          car.changeState(waitingForDir);
          ROS_INFO("waiting for possible directions");
        }
        else if(state == crossed){
          msgB = car.fillTheMessage();
-         carPub.publish(msgB);
+         //carPub.publish(msgB);
          ss.str("");
          ss.clear();
          ss << "crossing_" << car.giveNextCrossing();
-         carPub = n.advertise<car::autocross_msg>(ss.str().c_str(), 1000);//crossing
+         carPub = n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
          carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
          car.changeState(askingForDir);
          ROS_INFO("asking for possible directions");
@@ -205,10 +212,10 @@ int main(int argc, char **argv)
          ROS_INFO("waiting for a permission to enter the crossing");
        }
     }
-    else if((state == waiting || state == waitingForDir)&& !car.gotMessage){
+    //else if((state == waiting || state == waitingForDir)&& !car.gotMessage){
           //carPub.publish(msgB);ROS_INFO("5");
-          tmsg=std::time(NULL);
-    }
+          //tmsg=std::time(NULL);
+    ///}
     ros::spinOnce();
   }
 }
