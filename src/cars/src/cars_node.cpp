@@ -279,7 +279,7 @@ int main(int argc, char **argv)											//główny program
 
 
     while(ros::ok())
-    {		ROS_INFO("I can go: %d",car->iCanGo);
+    {
 	car->infoForViz();
 	carToVizPub.publish(carVizMessage);
 	if(car->previousCarID!=0)
@@ -295,7 +295,7 @@ int main(int argc, char **argv)											//główny program
 	    if(carCarClient.call(carCarMessage))
 	    {
 		ROS_INFO("Service carCarMessage successfully called!");
-		ROS_INFO("my distance %d, its distance %d", car->distanceSoFar, carCarMessage.response.distanceSoFar);
+		ROS_INFO("My distance %d, its distance %d", car->distanceSoFar, carCarMessage.response.distanceSoFar);
 		if(carCarMessage.response.distanceSoFar-car->distanceSoFar<=2)
 		    car->iCanGo=false;
 		else
@@ -315,6 +315,7 @@ int main(int argc, char **argv)											//główny program
         {
             message=car->initialQuestion();
             carToCrossingPub.publish(message);
+	    ROS_INFO("I've just send a message to crossing %d asking for directions", car->nextCrossing);
         }
         if(car->distanceSoFar>=car->distanceToGo-2)
         {
@@ -322,6 +323,7 @@ int main(int argc, char **argv)											//główny program
 	    {
 		message=car->secondQuestion();
             	carToCrossingPub.publish(message);
+	        ROS_INFO("I've just send a message to crossing %d with picked direction", car->nextCrossing);
 		car->secondMessageIsSend=true;
 	    }
 	    else
@@ -354,6 +356,7 @@ int main(int argc, char **argv)											//główny program
                 loop_rate_2.sleep();
                 message=car->lastQuestion();
                 carToCrossingPub.publish(message);
+	        ROS_INFO("I've just send a message to crossing %d to say I've crossed it", car->nextCrossing);
 		car->secondMessageIsSend=false;
                 car->updateCar();
 		car->publicMyInfo();
