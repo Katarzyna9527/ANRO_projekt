@@ -166,14 +166,12 @@ int main(int argc, char **argv)
   std::srand( std::time( NULL ) );
   ros::init(argc, argv, "car_node", ros::init_options::AnonymousName);
   
-  ros::NodeHandle n;
-
   Car car;
   std::stringstream ss;
   ss << "crossing_" << car.giveNextCrossing();
   
-  ros::Publisher carPub = n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
-  ros::Subscriber carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
+  ros::Publisher carPub = car.n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
+  ros::Subscriber carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
   ros::Rate loop_rate(10);
 
    while(carPub.getNumSubscribers()<2)
@@ -202,8 +200,8 @@ int main(int argc, char **argv)
          ss.str("");
          ss.clear();
          ss << "crossing_" << car.giveNextCrossing();
-         carPub = n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
-         carSub = n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
+         carPub = car.n.advertise<crossing::autocross_msg>(ss.str().c_str(), 1000);//crossing
+         carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
          car.changeState(askingForDir);
          ROS_INFO("asking for possible directions");
        }
