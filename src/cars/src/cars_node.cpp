@@ -20,7 +20,7 @@ cars::autocross_msg message;
 cars::car_to_car carCarMessage;
 cars::auto_viz carVizMessage;
 
-int multiplication=5;
+int multiplication=1;
 
 class Car
 {
@@ -276,7 +276,7 @@ int main(int argc, char **argv)											//główny program
 
     ::cars::autocross_msg message;
 
-    ros::Rate loop_rate(5);
+    ros::Rate loop_rate(1);
     ros::Rate loop_rate_2(2);
 
 
