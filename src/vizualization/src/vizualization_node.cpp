@@ -22,6 +22,8 @@ using namespace std;
 
 int16_t lightBulbState[100][4][4];
 
+int16_t multiplier = 5;
+
 struct Coordinates{
 	float x;
 	float y;
@@ -144,15 +146,15 @@ public:
 		tmp->distance = distance;
 		int32_t xcheck = crossings[tmp->endCrossID].x - crossings[tmp->startCrossID].x;
 		if(xcheck != 0){
-			if(xcheck > 0) tmp->x = crossings[tmp->startCrossID].x + distance;
-			else tmp->x = crossings[tmp->startCrossID].x - distance;
-			tmp->y = crossings[tmp->startCrossID].y;
+			if(xcheck > 0) tmp->x = (crossings[tmp->startCrossID].x + distance)*multiplier;
+			else tmp->x = (crossings[tmp->startCrossID].x - distance)*multiplier;
+			tmp->y = (crossings[tmp->startCrossID].y) * multiplier;
 		}
 		else{
 			if(crossings[tmp->endCrossID].y - crossings[tmp->startCrossID].y > 0)
-				tmp->y = crossings[tmp->startCrossID].y + distance;
-			else	tmp->y = crossings[tmp->startCrossID].y - distance;
-			tmp->x = crossings[tmp->startCrossID].x;
+				tmp->y = (crossings[tmp->startCrossID].y + distance)*multiplier;
+			else	tmp->y = (crossings[tmp->startCrossID].y - distance)* multiplier;
+			tmp->x = (crossings[tmp->startCrossID].x)* multiplier;
 		}
 		
 		
@@ -168,15 +170,15 @@ public:
 			currentCar->distance = distance;
 			int32_t xcheck = crossings[currentCar->endCrossID].x - crossings[currentCar->startCrossID].x;
 			if(xcheck != 0){
-				if(xcheck > 0) currentCar->x = crossings[currentCar->startCrossID].x + distance;
-				else currentCar->x = crossings[currentCar->startCrossID].x - distance;
-				currentCar->y = crossings[currentCar->startCrossID].y;
+				if(xcheck > 0) currentCar->x = (crossings[currentCar->startCrossID].x + distance)*multiplier;
+				else currentCar->x = (crossings[currentCar->startCrossID].x - distance)*multiplier;
+				currentCar->y = (crossings[currentCar->startCrossID].y)*multiplier;
 			}
 			else{
 				if(crossings[currentCar->endCrossID].y - crossings[currentCar->startCrossID].y > 0)
-					currentCar->y = crossings[currentCar->startCrossID].y + distance;
-				else	currentCar->y = crossings[currentCar->startCrossID].y - distance;
-				currentCar->x = crossings[currentCar->startCrossID].x;
+					currentCar->y = (crossings[currentCar->startCrossID].y + distance)*multiplier;
+				else	currentCar->y = (crossings[currentCar->startCrossID].y - distance)*multiplier;
+				currentCar->x = (crossings[currentCar->startCrossID].x)*multiplier;
 			}
 		}
 	}
@@ -235,7 +237,7 @@ int main(int argc, char **argv)
 			}
 		}
     		
-    		int16_t multiplier = 5;
+    		
 		crossings = new Coordinates [srv.response.crossings.size()];
 		crossings[0].x = 0;
 		crossings[0].y = 0;
@@ -348,7 +350,7 @@ int main(int argc, char **argv)
 	
 	CarCollection::getInstance().crossings = crossings;
 	
-	ros::Subscriber sub = n.subscribe("viz_auto", 1000, CarCollection::addCar);
+	ros::Subscriber sub = n.subscribe("auto_viz", 1000, CarCollection::addCar);
 	
 	ros::Subscriber *lightSubscribers = new ros::Subscriber[numberOfCrossings];
 
@@ -593,6 +595,7 @@ int main(int argc, char **argv)
 			    	{
 			    		if(lightBulbData[crossingID][i][j]==1)
 			    		{
+			    			
 						visualization_msgs::Marker *markerS = new visualization_msgs::Marker;
 						markerS->header.frame_id = "/base_link";
 						markerS->header.stamp = ros::Time::now();
