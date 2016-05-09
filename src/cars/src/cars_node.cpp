@@ -284,7 +284,7 @@ int main(int argc, char **argv)											//główny program
     {
 	car->infoForViz();
 	carToVizPub.publish(carVizMessage);
-	if(car->previousCarID!=0)
+	if(car->previousCarID!=0&&car->previousCarID!=car->carID)
 	{   ss.clear();
    	    ss.str("");
             ss <<"car_to_car_"<<car->previousCarID;
