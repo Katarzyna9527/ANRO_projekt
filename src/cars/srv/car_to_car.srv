@@ -1,0 +1,4 @@
+int16 carID
+---
+int32 distanceSoFar
+int16 carID
