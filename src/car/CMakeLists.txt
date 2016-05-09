@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   map
   crossings
+  vizualization
 )
 
 ## System dependencies are found with CMake's conventions

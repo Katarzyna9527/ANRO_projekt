@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "map/car_init.h"//finish the address
 #include "crossings/autocross_msg.h"
+#include "vizualization/auto_viz.h"
 #include <ctime>
 
   enum states{
@@ -32,12 +33,16 @@ private:
    int16_t previousCrossID;	//
    int16_t previousAutoID;
    crossings::autocross_msg msgA;//crossings
+   vizualization::auto_viz msgV;
    states state;   
+   ros::Publisher carViz;
 
 public:
-
+   
+   ros::NodeHandle viz;
    ros::NodeHandle n;
    //bool gotMessage;
+
    void choseADir(){
      while(true){
       int a = std::rand()%4;
@@ -64,7 +69,7 @@ public:
       srv.request.req = (uint8_t) ReqID;
       if (client.call(srv)){
          carID=srv.response.carID;
-         lenght = srv.response.pathLenght+5;
+         lenght = srv.response.pathLenght;
          previousCrossID =srv.response.prevCrossing;
          nextCrossID = srv.response.nextCrossing;
          isCrossed=false;
@@ -72,6 +77,9 @@ public:
          direction = -1;
          state=askingForDir;
          //gotMessage=false;
+         carViz = viz.advertise<vizualization::auto_viz>("auto_viz", 1000);
+         fillMessageViz();
+         carViz.publish(msgV);
          ROS_INFO("iniciated, asking for directions");
       }
       else{
@@ -89,11 +97,18 @@ public:
        msgA.nextCrossID = nextCrossID;
        return msgA;
    }
+   
+   void fillMessageViz(){
+      msgV.autoID=carID;
+      msgV.startCrossID=previousCrossID;
+      msgV.endCrossID=nextCrossID;	
+      msgV.distance=lenght;
+   }   
 
    void readTheMessage(const crossings::autocross_msg::ConstPtr& msg){//crossings::
         if(!msg->isMsgFromAuto){    
          if(state == waiting){
-           newLenght = msg->length+10;       
+           newLenght = msg->length;       
            nextCrossID = msg->nextCrossID;
 	   speed=1;
            state = crossing;
@@ -118,7 +133,7 @@ public:
    
    void moveFrd(){ROS_INFO("2");
        lenght = lenght - speed;
-       if(lenght<=10 && state == drivingTowCrossing){
+       if(lenght<=5 && state == drivingTowCrossing){
          speed = 0;
          state = sendingDir;
          ROS_INFO("sending the direction I wanna go to the crossing");
@@ -131,6 +146,8 @@ public:
          state = crossed;
          ROS_INFO("crossed");
        }
+       fillMessageViz();
+       
    }
 
    void changeState(states newState){
@@ -165,7 +182,7 @@ int main(int argc, char **argv)
   time_t tmsg=std::time(NULL);
   std::srand( std::time( NULL ) );
   ros::init(argc, argv, "car_node", ros::init_options::AnonymousName);
-
+  
   Car car;
   std::stringstream ss;
   ss << "crossing_" << car.giveNextCrossing();
