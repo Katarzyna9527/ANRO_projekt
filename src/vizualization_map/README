@@ -1,0 +1,6 @@
+Uruchomienie wizualizacji:
+
+	source devel/setup.bash	
+	roslaunch display.launch
+
+
