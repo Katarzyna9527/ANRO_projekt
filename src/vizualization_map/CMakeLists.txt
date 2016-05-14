@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(vizualization)
+project(vizualization_map)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -44,12 +44,6 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
-
-## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   auto_viz.msg
- )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -102,7 +96,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS# include
-  LIBRARIES# vizualization
+  LIBRARIES# vizualization_map
   CATKIN_DEPENDS roscpp std_msgs message_runtime
   DEPENDS system_lib
 )
@@ -127,17 +121,17 @@ include_directories(
 # add_dependencies(vizualization ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(vizualization_node src/vizualization_node.cpp)
+##add_executable(vizualization_node src/vizualization_node.cpp)
 #add_executable(parser src/parser.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
- add_dependencies(vizualization_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+## add_dependencies(vizualization_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(vizualization_node
-   ${catkin_LIBRARIES}
- )
+## target_link_libraries(vizualization_node
+##   ${catkin_LIBRARIES}
+## )
  
 # target_link_libraries(parser ${catkin_LIBRARIES})
 
@@ -189,4 +183,4 @@ add_executable(vizualization_node src/vizualization_node.cpp)
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
-
+roslaunch_add_file_check(launch/display.launch)

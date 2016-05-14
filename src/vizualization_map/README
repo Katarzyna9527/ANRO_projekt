@@ -1,6 +1,7 @@
 Uruchomienie wizualizacji:
-
-	source devel/setup.bash	
+	cd ANRO_projekt
+	source devel/setup.bash
+	cd src/vizualization_map/launch	
 	roslaunch display.launch
 
-
+joint_state_publisher i robot_state_publisher publikują jointy i linki do rviza, jeśli chcecie przetestować ich użyteczność to zakomentujcie sobie te linijki.
