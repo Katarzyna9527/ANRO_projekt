@@ -57,7 +57,7 @@ void updateLightState(const lights::LightState::ConstPtr &msg, const std::string
 		}
 	}
 	crossingID = crossingID-1;
-	ROS_INFO("%d", crossingID+1);
+	//ROS_INFO("%d", crossingID+1);
 	//NORTH CROSSING
 	if(msg->n.A) lightBulbState[crossingID][0][0] = 1;
 	else lightBulbState[crossingID][0][0] = 0;
@@ -146,15 +146,15 @@ public:
 		tmp->distance = distance;
 		int32_t xcheck = crossings[tmp->endCrossID].x - crossings[tmp->startCrossID].x;
 		if(xcheck != 0){
-			if(xcheck > 0) tmp->x = (crossings[tmp->startCrossID].x + distance)*multiplier;
-			else tmp->x = (crossings[tmp->startCrossID].x - distance)*multiplier;
-			tmp->y = (crossings[tmp->startCrossID].y) * multiplier;
+			if(xcheck > 0) tmp->x = (crossings[tmp->startCrossID].x + distance*multiplier);
+			else tmp->x = (crossings[tmp->startCrossID].x - distance *multiplier);
+			tmp->y = (crossings[tmp->startCrossID].y) ;
 		}
 		else{
 			if(crossings[tmp->endCrossID].y - crossings[tmp->startCrossID].y > 0)
-				tmp->y = (crossings[tmp->startCrossID].y + distance)*multiplier;
-			else	tmp->y = (crossings[tmp->startCrossID].y - distance)* multiplier;
-			tmp->x = (crossings[tmp->startCrossID].x)* multiplier;
+				tmp->y = (crossings[tmp->startCrossID].y + distance*multiplier);
+			else	tmp->y = (crossings[tmp->startCrossID].y - distance*multiplier);
+			tmp->x = (crossings[tmp->startCrossID].x);
 		}
 		
 		
@@ -170,15 +170,15 @@ public:
 			currentCar->distance = distance;
 			int32_t xcheck = crossings[currentCar->endCrossID].x - crossings[currentCar->startCrossID].x;
 			if(xcheck != 0){
-				if(xcheck > 0) currentCar->x = (crossings[currentCar->startCrossID].x + distance)*multiplier;
-				else currentCar->x = (crossings[currentCar->startCrossID].x - distance)*multiplier;
-				currentCar->y = (crossings[currentCar->startCrossID].y)*multiplier;
+				if(xcheck > 0) currentCar->x = (crossings[currentCar->startCrossID].x + distance*multiplier);
+				else currentCar->x = (crossings[currentCar->startCrossID].x - distance*multiplier);
+				currentCar->y = (crossings[currentCar->startCrossID].y);
 			}
 			else{
 				if(crossings[currentCar->endCrossID].y - crossings[currentCar->startCrossID].y > 0)
-					currentCar->y = (crossings[currentCar->startCrossID].y + distance)*multiplier;
-				else	currentCar->y = (crossings[currentCar->startCrossID].y - distance)*multiplier;
-				currentCar->x = (crossings[currentCar->startCrossID].x)*multiplier;
+					currentCar->y = (crossings[currentCar->startCrossID].y + distance*multiplier);
+				else	currentCar->y = (crossings[currentCar->startCrossID].y - distance*multiplier);
+				currentCar->x = (crossings[currentCar->startCrossID].x);
 			}
 		}
 	}
@@ -189,12 +189,13 @@ public:
 		if(CarCollection::getInstance().get(msg.autoID) != NULL){
 			ROS_INFO("update");
 			CarCollection::getInstance().updateCar(msg.autoID, msg.startCrossID, msg.endCrossID, msg.distance);
-			ROS_INFO("%d, %d , %d",msg.distance, currentCar->x, currentCar->y);
+			ROS_INFO("x,y: %d , %d", currentCar->x, currentCar->y);
 		}
 		else{
 			ROS_INFO("dodaje");
 			CarCollection::getInstance().add(msg.autoID, msg.startCrossID, msg.endCrossID, msg.distance);
-			
+			currentCar = CarCollection::getInstance().get(msg.autoID);
+			ROS_INFO("x,y: %d , %d", currentCar->x, currentCar->y);
 		}
 
 	}
@@ -620,6 +621,7 @@ int main(int argc, char **argv)
 						markerS->color.a = 1.0;
 						
 						if(lightBulbState[crossingID][i][j] == 0){
+						
 							markerS->color.r = 1.0f;
 							markerS->color.g = 0.0f;
 						}
