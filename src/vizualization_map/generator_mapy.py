@@ -61,7 +61,7 @@ lenghts = [0,0,0,0]
 
 line_type = 0
 
-conffile = open('../map/src/conffile', 'r')
+conffile = open('./src/map/src/conffile', 'r')
 
 for line in conffile:
    line_type=line_type+1
@@ -88,12 +88,12 @@ for cross in crossway_list:
 	set_cross(cross)
 	print "Crossing "+str(cross.ID)+": "+str(cross.x)+" "+str(cross.y)
 
-fileout = open('mapa.urdf', 'w')
+fileout = open('./src/vizualization_map/mapa.urdf', 'w')
 
-cross_link=open('templates/cross_link', 'r').read()
-cross_join=open('templates/cross_join', 'r').read()
-road_link=open('templates/road_link', 'r').read()
-road_join=open('templates/road_join', 'r').read()
+cross_link=open('./src/vizualization_map/templates/cross_link', 'r').read()
+cross_join=open('./src/vizualization_map/templates/cross_join', 'r').read()
+road_link=open('./src/vizualization_map/templates/road_link', 'r').read()
+road_join=open('./src/vizualization_map/templates/road_join', 'r').read()
 fileout.write("<?xml version=\"1.0\"?><robot name=\"lights\"><link name=\"base_link\"></link>")
 for cross in crossway_list:
 	
