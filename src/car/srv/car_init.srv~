@@ -1,6 +1,0 @@
-//uint8 req
----
-int16 carID
-int16 pathLenght
-int16 prevCrossing
-int16 nextCrossing
