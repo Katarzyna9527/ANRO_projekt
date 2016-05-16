@@ -1,5 +1,5 @@
 <launch>
-  <param name="map_confname" value="/home/mmorusie/ANRO_projekt/src/map/src/conffile" />
+  <param name="map_confname" value="$(find map)/src/conffile" />
   <node name="map_node" pkg="map" type="map_node" />
   <node name="lights_node" pkg="lights" type="lights_node" />
   <node name="crossing_1" pkg="crossings" type="crossings_node" />
