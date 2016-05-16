@@ -17,7 +17,6 @@ bool Crossing::AutosReg::deleteAutoFromRegister(const Auto& whichAuto)
 
 Auto* Crossing::AutosReg::getAutoFromMsg(const crossings::autocross_msg::ConstPtr& autoMsg)
 {
-
     // check if is it valid
     if(Crossing::getInstance().calculateCarPosition(autoMsg->previousCrossID) == -1)
         return 0;

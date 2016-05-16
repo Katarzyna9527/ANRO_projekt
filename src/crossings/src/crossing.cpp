@@ -49,38 +49,55 @@ void Crossing::autoHasCrossedMe(Auto& whichAuto)
     int pos = whichAuto.getCurrPos();
 
     AutosReg::getInstance().deleteAutoFromRegister(whichAuto);
-    ROS_INFO("autohascrossedme: deleted from regiser");
+    ROS_INFO("autoHasCrossedme: deleted from regiser");
 
     if(wait4DriveQueues[pos].size() == 0)
         return ; // the queue is empty
 
-    ROS_INFO("autocrossedme: Queue is not empty");
+    ROS_INFO("autoHasCrossedme: Queue is still not empty");
 
-    Auto& secondAuto = *wait4DriveQueues[pos].front();
-    if(secondAuto.getDirection() != -1)
+    while(1)
     {
-        ROS_INFO("autoHasCrossedME: checkinh");
-        if(checkIfCanDrive(secondAuto))
+        if(wait4DriveQueues[pos].size() == 0)
+            break;
+        
+        Auto& secondAuto = *wait4DriveQueues[pos].front();
+        if(secondAuto.getDirection() != -1)
         {
-            ROS_INFO("autoHasCrossedMe: pushing next car");
-            pushIntoTheCrossing(secondAuto);
-            ROS_INFO("autoHasCrossed: Next car can drive! ID=%d", secondAuto.getAutoID());
+            ROS_INFO("autoHasCrossedME: There is another car with decision, where to drive. ID=%d", 
+                    secondAuto.getAutoID());
+            if(checkIfCanDrive(secondAuto))
+            {
+                ROS_INFO("autoHasCrossedMe: Pushing this car into crossing");
+                pushIntoTheCrossing(secondAuto);
+                ROS_INFO("autoHasCrossed: Car successfully pushed into crossing");
+            }
         }
+        else
+            break;
     }
-    ROS_INFO("autohascrossedme: all done");
 }
 
 void Crossing::pushIntoTheCrossing(Auto &whichAuto)
 {
+    if(isCrossOccupied)
+    {
+        ROS_INFO("pushIntoTheCrossing: Cross is arleady occupied!. Aborting.");
+        return;
+    }
+
     isCrossOccupied = true;
 
     int index = whichAuto.getCurrPos();
-    // clear this element from queue
-    wait4DriveQueues[index].pop_front();
+    wait4DriveQueues[index].pop_front(); // clear this car from queue
     
     // prepare answer
     int dir = whichAuto.getDirection();
-    whichAuto.setPreviousAutoID(carsThatCrossed[dir]);
+
+    if(carsThatCrossed[dir] == whichAuto.getAutoID()) // if this is the same car
+        whichAuto.setPreviousAutoID(0);
+    else
+        whichAuto.setPreviousAutoID(carsThatCrossed[dir]);
     whichAuto.setNextCrossData(crossCfg.lengths[dir], crossCfg.neighbours[dir]);
 
     crossPub.publish(whichAuto.getMsgToPublish());
@@ -95,13 +112,12 @@ bool Crossing::checkIfCanDrive(Auto& whichAuto)
  
     if(whichAuto.getDirection() == -1)
         return false;
-    ROS_INFO("checkIfCanDrive: This Auto would like to drive ID=%d", whichAuto.getAutoID());
+    ROS_INFO("checkIfCanDrive: Auto would like to drive. ID=%d", whichAuto.getAutoID());
 
     int16_t pos = whichAuto.getCurrPos(),
             dir = whichAuto.getDirection();
 
-    // if it is not in the front of the queue
-    if(wait4DriveQueues[pos].front() != &whichAuto)
+    if(wait4DriveQueues[pos].front() != &whichAuto)  // if it is not in the front of the queue
         return false;
     ROS_INFO("checkIfCanDrive: This car is on the top of the queue!");
 
@@ -157,30 +173,29 @@ void Crossing::crossSubCallback(const crossings::autocross_msg::ConstPtr& crossM
     {
         Auto* thisAuto = AutosReg::getInstance().getAutoFromMsg(crossMsg);
         if(thisAuto == 0) {
-            ROS_INFO("NullPointer!!!");
+            ROS_INFO("\tNullPointer!!!");
             return;
         }
         
-        ROS_INFO("\tI receive message from auto with ID:%d", thisAuto->getAutoID());
-
+        ROS_INFO("crossSubCallback: It receive message from auto with ID:%d", thisAuto->getAutoID());
         if(crossMsg->isCrossed)
         {
-            ROS_INFO("\t\tCar has left the crossing.");
+            ROS_INFO("crossSubCallback: Car has left the crossing.");
             autoHasCrossedMe(*thisAuto);
         }
         else if(crossMsg->direction == -1)
         {
-            ROS_INFO("\t\tI got msg with direction=-1. A car wants to know about crossing");
+            ROS_INFO("crossSubCallback: I got msg with direction=-1. A car wants to know about crossing");
             autoAskAboutDirections(*thisAuto);
         }
         else if(crossMsg->direction >= 0 && crossMsg->direction <= crossSize-1)
         {
-            ROS_INFO("\t\tI got msg with direction=%d. A car would to drive", crossMsg->direction);
+            ROS_INFO("crossSubCallback: Got msg. Direction=%d. A car would to drive.", crossMsg->direction);
             autoWouldLikeToDrive(*thisAuto, crossMsg->direction);
         }
         else
         {
-            ROS_INFO("\t\tUnrecognized message from this car. No response...");
+            ROS_INFO("crossSubCallback: Unrecognized message from this car. No response...");
         }
     }
 }
@@ -256,8 +271,7 @@ void Crossing::initCrossData()
     isCrossOccupied = false;
     isLightsPublishing = false; // at the init, we don't know, that lights are working
 
-
-    // init topic names
+    // init topics names
     std::stringstream ss;
     ss << DEFAULT_CROSSING_PREFIX << crossCfg.ID;
     myTopicName = ss.str();
@@ -281,12 +295,12 @@ bool Crossing::getCfgFromMap()
 
 bool Crossing::initCrossing()
 {
-    ros::NodeHandle n;
+    isInitiated = false;
 
-    ROS_INFO("sIema");
+    ros::NodeHandle n;
+    ROS_INFO("initCrossing: Rozpoczynam inicjalizacje.");
 
     Crossing& crossing = Crossing::getInstance();
-
     if(crossing.isInitiated)
         return false;
 
@@ -305,7 +319,6 @@ bool Crossing::initCrossing()
     printInfoAboutCrossing();
     initCrossData();
     initCommunication();
-
 
     isInitiated = true;
     return true;
