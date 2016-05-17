@@ -306,6 +306,7 @@ int main(int argc, char **argv)											//główny program
 		if (car->distanceSoFar == 1 * multiplication)
 		{
 			message = car->initialQuestion();
+            message.previousCrossID = car->previousCrossing;
 			carToCrossingPub.publish(message);
 			ROS_INFO("I've just send a message to crossing %d asking for directions", car->nextCrossing);
 		}
