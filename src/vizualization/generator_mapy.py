@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
+import sys
 
 print "Kamila's Map Generator!\n"
 print "+ kierownik w małym stopniu\n"
@@ -52,7 +53,7 @@ def add_to_used_connection(a, b):
 		return True
 
 
-	
+print 'Argument List:', sys.argv[1]
 crossway_list = []
 
 ID=0
@@ -61,7 +62,7 @@ lenghts = [0,0,0,0]
 
 line_type = 0
 
-conffile = open('./src/map/src/conffile', 'r')
+conffile = open(sys.argv[2] + '/src/conffile', 'r')
 
 for line in conffile:
    line_type=line_type+1
@@ -88,12 +89,12 @@ for cross in crossway_list:
 	set_cross(cross)
 	print "Crossing "+str(cross.ID)+": "+str(cross.x)+" "+str(cross.y)
 
-fileout = open('./src/vizualization_map/mapa.urdf', 'w')
+fileout = open(sys.argv[1] + '/mapa.urdf', 'w')
 
-cross_link=open('./src/vizualization_map/templates/cross_link', 'r').read()
-cross_join=open('./src/vizualization_map/templates/cross_join', 'r').read()
-road_link=open('./src/vizualization_map/templates/road_link', 'r').read()
-road_join=open('./src/vizualization_map/templates/road_join', 'r').read()
+cross_link=open(sys.argv[1] +'/templates/cross_link', 'r').read()
+cross_join=open(sys.argv[1] + '/templates/cross_join', 'r').read()
+road_link=open(sys.argv[1] + '/templates/road_link', 'r').read()
+road_join=open(sys.argv[1] + '/templates/road_join', 'r').read()
 fileout.write("<?xml version=\"1.0\"?><robot name=\"lights\"><link name=\"base_link\"></link>")
 for cross in crossway_list:
 	

@@ -1,10 +1,12 @@
 <launch>
   <arg name="gui" default="true" />
-  <arg name="rvizconfig" default="$(find vizualization_map)/rviz/map.rviz" />
+  <arg name="rvizconfig" default="$(find vizualization)/rviz/map.rviz" />
 
-  <param name="robot_description" command="$(find xacro)/xacro.py $(find vizualization_map)/mapa.urdf" />
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find vizualization)/mapa.urdf" />
   <param name="use_gui" value="$(arg gui)"/>
   
+  
+  <node name="generator" pkg="vizualization" type="generator_mapy.py" args="$(find vizualization) $(find map)" output="screen" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
  
  
