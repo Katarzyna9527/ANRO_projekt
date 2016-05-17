@@ -7,5 +7,6 @@
   	<node name="generator" pkg="vizualization" type="generator_mapy.py" args="$(find vizualization) $(find map)" output="screen" />
   	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />\
+	<node name="vizualization" pkg="vizualization" type="vizualization_node" />
 </launch>
