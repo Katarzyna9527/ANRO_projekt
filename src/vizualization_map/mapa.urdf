@@ -32,7 +32,7 @@
 <link name="road_1_2">   
   <visual>
     <geometry>
-      <box size="4 255 0.1"/>
+      <box size="250 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -42,14 +42,14 @@
 
 
 <joint name="road_1_2_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 127 0"/>
+  <origin rpy="0 0 0" xyz="125 0 0"/>
   <parent link="cross_1"/>
   <child link="road_1_2"/>
 </joint>
 <link name="road_1_4">   
   <visual>
     <geometry>
-      <box size="-205 4 0.1"/>
+      <box size="4 200 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -59,7 +59,7 @@
 
 
 <joint name="road_1_4_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="102 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -100 0"/>
   <parent link="cross_1"/>
   <child link="road_1_4"/>
 </joint>
@@ -84,7 +84,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_2" type="fixed">
-  <origin rpy="0 0 0" xyz="0 255 0.01"/>
+  <origin rpy="0 0 0" xyz="250 0 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_2"/>
 </joint> 
@@ -97,7 +97,7 @@
 <link name="road_2_3">   
   <visual>
     <geometry>
-      <box size="4 305 0.1"/>
+      <box size="300 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -107,14 +107,14 @@
 
 
 <joint name="road_2_3_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 152 0"/>
+  <origin rpy="0 0 0" xyz="150 0 0"/>
   <parent link="cross_2"/>
   <child link="road_2_3"/>
 </joint>
 <link name="road_2_5">   
   <visual>
     <geometry>
-      <box size="-205 4 0.1"/>
+      <box size="4 200 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -124,7 +124,7 @@
 
 
 <joint name="road_2_5_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="102 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -100 0"/>
   <parent link="cross_2"/>
   <child link="road_2_5"/>
 </joint>
@@ -149,7 +149,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_3" type="fixed">
-  <origin rpy="0 0 0" xyz="0 560 0.01"/>
+  <origin rpy="0 0 0" xyz="550 0 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_3"/>
 </joint> 
@@ -162,7 +162,7 @@
 <link name="road_3_7">   
   <visual>
     <geometry>
-      <box size="-205 4 0.1"/>
+      <box size="4 200 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -172,7 +172,7 @@
 
 
 <joint name="road_3_7_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="102 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -100 0"/>
   <parent link="cross_3"/>
   <child link="road_3_7"/>
 </joint>
@@ -197,7 +197,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_4" type="fixed">
-  <origin rpy="0 0 0" xyz="205 0 0.01"/>
+  <origin rpy="0 0 0" xyz="0 -200 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_4"/>
 </joint> 
@@ -210,7 +210,7 @@
 <link name="road_4_5">   
   <visual>
     <geometry>
-      <box size="4 255 0.1"/>
+      <box size="250 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -220,14 +220,14 @@
 
 
 <joint name="road_4_5_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 127 0"/>
+  <origin rpy="0 0 0" xyz="125 0 0"/>
   <parent link="cross_4"/>
   <child link="road_4_5"/>
 </joint>
 <link name="road_4_8">   
   <visual>
     <geometry>
-      <box size="-155 4 0.1"/>
+      <box size="4 150 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -237,7 +237,7 @@
 
 
 <joint name="road_4_8_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="77 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -75 0"/>
   <parent link="cross_4"/>
   <child link="road_4_8"/>
 </joint>
@@ -262,7 +262,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_5" type="fixed">
-  <origin rpy="0 0 0" xyz="205 255 0.01"/>
+  <origin rpy="0 0 0" xyz="250 -200 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_5"/>
 </joint> 
@@ -275,7 +275,7 @@
 <link name="road_5_6">   
   <visual>
     <geometry>
-      <box size="4 105 0.1"/>
+      <box size="100 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -285,14 +285,14 @@
 
 
 <joint name="road_5_6_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 52 0"/>
+  <origin rpy="0 0 0" xyz="50 0 0"/>
   <parent link="cross_5"/>
   <child link="road_5_6"/>
 </joint>
 <link name="road_5_9">   
   <visual>
     <geometry>
-      <box size="-155 4 0.1"/>
+      <box size="4 150 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -302,7 +302,7 @@
 
 
 <joint name="road_5_9_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="77 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -75 0"/>
   <parent link="cross_5"/>
   <child link="road_5_9"/>
 </joint>
@@ -327,7 +327,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_6" type="fixed">
-  <origin rpy="0 0 0" xyz="205 360 0.01"/>
+  <origin rpy="0 0 0" xyz="350 -200 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_6"/>
 </joint> 
@@ -340,7 +340,7 @@
 <link name="road_6_7">   
   <visual>
     <geometry>
-      <box size="4 200 0.1"/>
+      <box size="200 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -350,14 +350,14 @@
 
 
 <joint name="road_6_7_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 100 0"/>
+  <origin rpy="0 0 0" xyz="100 0 0"/>
   <parent link="cross_6"/>
   <child link="road_6_7"/>
 </joint>
 <link name="road_6_10">   
   <visual>
     <geometry>
-      <box size="-155 4 0.1"/>
+      <box size="4 150 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -367,7 +367,7 @@
 
 
 <joint name="road_6_10_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="77 0 0"/>
+  <origin rpy="0 0 0" xyz="0 -75 0"/>
   <parent link="cross_6"/>
   <child link="road_6_10"/>
 </joint>
@@ -392,7 +392,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_7" type="fixed">
-  <origin rpy="0 0 0" xyz="205 560 0.01"/>
+  <origin rpy="0 0 0" xyz="550 -200 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_7"/>
 </joint> 
@@ -423,7 +423,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_8" type="fixed">
-  <origin rpy="0 0 0" xyz="360 0 0.01"/>
+  <origin rpy="0 0 0" xyz="0 -350 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_8"/>
 </joint> 
@@ -436,7 +436,7 @@
 <link name="road_8_9">   
   <visual>
     <geometry>
-      <box size="4 255 0.1"/>
+      <box size="250 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -446,7 +446,7 @@
 
 
 <joint name="road_8_9_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 127 0"/>
+  <origin rpy="0 0 0" xyz="125 0 0"/>
   <parent link="cross_8"/>
   <child link="road_8_9"/>
 </joint>
@@ -471,7 +471,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_9" type="fixed">
-  <origin rpy="0 0 0" xyz="360 255 0.01"/>
+  <origin rpy="0 0 0" xyz="250 -350 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_9"/>
 </joint> 
@@ -484,7 +484,7 @@
 <link name="road_9_10">   
   <visual>
     <geometry>
-      <box size="4 105 0.1"/>
+      <box size="100 4 0.1"/>
     </geometry>
     <material name="black">
       <color rgba="0 0 0 1" />
@@ -494,7 +494,7 @@
 
 
 <joint name="road_9_10_to_cross" type="fixed">
-  <origin rpy="0 0 0" xyz="0 52 0"/>
+  <origin rpy="0 0 0" xyz="50 0 0"/>
   <parent link="cross_9"/>
   <child link="road_9_10"/>
 </joint>
@@ -519,7 +519,7 @@
   </visual>
 </link>
 <joint name="cross_base_to_link_10" type="fixed">
-  <origin rpy="0 0 0" xyz="360 360 0.01"/>
+  <origin rpy="0 0 0" xyz="350 -350 0.01"/>
   <parent link="base_link"/>
   <child link="cross_base_10"/>
 </joint> 
