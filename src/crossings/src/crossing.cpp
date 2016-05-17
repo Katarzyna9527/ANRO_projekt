@@ -5,6 +5,9 @@ const std::string Crossing::DEFAULT_LIGHTS_PREFIX = "lights_";
 
 int Crossing::calculateCarPosition(int16_t previousCrossID)
 {
+    if(previousCrossID == 0)
+        return -1;
+
     int i ;
     for(i = 0; i < crossSize; i++)
         if(crossCfg.neighbours[i] == previousCrossID)
@@ -36,9 +39,7 @@ void Crossing::autoWouldLikeToDrive(Auto& whichAuto, int16_t direction)
     whichAuto.setDirection(direction);
     // so, we've to check if auto can be pushed into the crossing
     if(checkIfCanDrive(whichAuto))
-    {
         pushIntoTheCrossing(whichAuto);
-    }
 }
 
 void Crossing::autoHasCrossedMe(Auto& whichAuto)
@@ -56,26 +57,7 @@ void Crossing::autoHasCrossedMe(Auto& whichAuto)
 
     ROS_INFO("autoHasCrossedme: Queue is still not empty");
 
-    while(1)
-    {
-        if(wait4DriveQueues[pos].size() == 0)
-            break;
-        
-        Auto& secondAuto = *wait4DriveQueues[pos].front();
-        if(secondAuto.getDirection() != -1)
-        {
-            ROS_INFO("autoHasCrossedME: There is another car with decision, where to drive. ID=%d", 
-                    secondAuto.getAutoID());
-            if(checkIfCanDrive(secondAuto))
-            {
-                ROS_INFO("autoHasCrossedMe: Pushing this car into crossing");
-                pushIntoTheCrossing(secondAuto);
-                ROS_INFO("autoHasCrossed: Car successfully pushed into crossing");
-            }
-        }
-        else
-            break;
-    }
+    scanQueuesOnce();
 }
 
 void Crossing::pushIntoTheCrossing(Auto &whichAuto)
@@ -119,7 +101,7 @@ bool Crossing::checkIfCanDrive(Auto& whichAuto)
 
     if(wait4DriveQueues[pos].front() != &whichAuto)  // if it is not in the front of the queue
         return false;
-    ROS_INFO("checkIfCanDrive: This car is on the top of the queue!");
+    ROS_INFO("checkIfCanDrive: This car is on the top of the queue! From=%d To=%d", pos, dir);
 
     lights::State dirStates;
     switch(pos)
@@ -137,33 +119,44 @@ bool Crossing::checkIfCanDrive(Auto& whichAuto)
             dirStates = currLightsCfg.w;
             break;
         default:
+            ROS_INFO("checkIfCanDrive: Car is in undefined position!");
             return false;
     }
 
+    bool destAvail = true;
     switch(dir)
     {
         case 0:
             if(!dirStates.A)
-                return false;
+                destAvail = false;
             break;
         case 1:
             if(!dirStates.B)
-                return false;
+                destAvail = false;           
             break;
         case 2:
             if(!dirStates.C)
-                return false;
+                destAvail = false;
             break;
         case 3:
             if(!dirStates.D)
-                return false;
+                destAvail = false;
             break;
         default:
+            ROS_INFO("checkIfCanDrive: Car runs to undefined position!");
             return false;
     }
 
-    ROS_INFO("checkIfCanDrive: This Car can drive!");
-    return true;
+    if(destAvail)
+    {
+        ROS_INFO("checkIfCanDrive: This Car can drive!");
+        return true;
+    }
+    else
+    {
+        ROS_INFO("checkIfCanDrive: This Car can NOT drive!");
+        return false;
+    }
 }
 
 void Crossing::crossSubCallback(const crossings::autocross_msg::ConstPtr& crossMsg)
@@ -177,7 +170,7 @@ void Crossing::crossSubCallback(const crossings::autocross_msg::ConstPtr& crossM
             return;
         }
         
-        ROS_INFO("crossSubCallback: It receive message from auto with ID:%d", thisAuto->getAutoID());
+        ROS_INFO("crossSubCallback: I receive message from auto with ID:%d", thisAuto->getAutoID());
         if(crossMsg->isCrossed)
         {
             ROS_INFO("crossSubCallback: Car has left the crossing.");
@@ -200,6 +193,23 @@ void Crossing::crossSubCallback(const crossings::autocross_msg::ConstPtr& crossM
     }
 }
 
+void Crossing::scanQueuesOnce()
+{
+    Auto* waitingAuto;
+    for(auto wQueue = wait4DriveQueues.begin() ; wQueue != wait4DriveQueues.end(); wQueue++)
+    {
+        if(wQueue->size() > 0) // if there is anyone in queue
+        {
+            waitingAuto = wQueue->front();
+            if(checkIfCanDrive(*waitingAuto))
+            {
+                ROS_INFO("scanQueuesOnce: Next auto can drive! ID=%d", waitingAuto->getAutoID());
+                pushIntoTheCrossing(*waitingAuto);
+            }
+        }
+    } 
+}
+
 void Crossing::lightsSubCallback(const lights::LightState::ConstPtr& lightsMsg)
 {
     isLightsPublishing = true;
@@ -211,19 +221,7 @@ void Crossing::lightsSubCallback(const lights::LightState::ConstPtr& lightsMsg)
 
     currLightsCfg = *lightsMsg;
 
-    Auto* waitingAuto;
-    for(auto wQueue = wait4DriveQueues.begin() ; wQueue != wait4DriveQueues.end(); wQueue++)
-    {
-        if(wQueue->size() > 0) // if there is anyone in queue
-        {
-            waitingAuto = wQueue->front();
-            if(checkIfCanDrive(*waitingAuto))
-            {
-                ROS_INFO("lightsCallback: Next auto can drive! ID=%d", waitingAuto->getAutoID());
-                pushIntoTheCrossing(*waitingAuto);
-            }
-        }
-    }
+    scanQueuesOnce();
 }
 
 void Crossing::timeoutCallback(const ros::TimerEvent&)
@@ -291,6 +289,16 @@ bool Crossing::getCfgFromMap()
 
     crossCfg = srv.response.crossing;
     return true;
+}
+
+void Crossing::shutdownAll()
+{
+    if(!isInitiated)
+        return;
+    
+    timer.stop();
+    crossSub.shutdown();
+    lightsSub.shutdown();
 }
 
 bool Crossing::initCrossing()

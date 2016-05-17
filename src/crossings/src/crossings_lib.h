@@ -13,6 +13,7 @@
 #include "map/cross_init.h"
 #include "map/cross_msg.h"
 
+#define TURNING_BACK_ENABLE    
 class Auto
 {
         int currPos;
@@ -53,6 +54,7 @@ class Crossing
         void autoWouldLikeToDrive(Auto& whichAuto, int16_t direction);
         void autoHasCrossedMe(Auto& whichAuto);
 
+        void scanQueuesOnce();
         bool checkIfCanDrive(Auto &whichAuto);
         void pushIntoTheCrossing(Auto& whichAuto);
 
@@ -114,5 +116,6 @@ class Crossing
         void printInfoAboutCrossing();
 
         bool initCrossing();
+        void shutdownAll();
 };
 #endif
