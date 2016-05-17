@@ -1,0 +1,11 @@
+<launch>
+ 	<arg name="rvizconfig" default="$(find vizualization)/rviz_config.rviz" />
+
+ 	<param name="robot_description" command="cat $(find vizualization)/mapa.urdf" />
+  	<param name="use_gui" value="true"/>
+  
+  	<node name="generator" pkg="vizualization" type="generator_mapy.py" args="$(find vizualization) $(find map)" output="screen" />
+  	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+</launch>
