@@ -53,7 +53,7 @@ def add_to_used_connection(a, b):
 		return True
 
 
-print 'Argument List:', sys.argv[1]
+
 crossway_list = []
 
 ID=0
