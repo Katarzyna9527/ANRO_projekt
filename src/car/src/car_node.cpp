@@ -22,33 +22,33 @@
 class Car{
   
 private:
+   bool isCrossed;		//informuje o tym, czy samochód opuścił skrzyżowanie
    int16_t speed;
    int16_t newLenght;
    int16_t carID;		//samochód  zgłaszający albo do którego kierowana jest odpowiedź
    int16_t direction;		//przy pierwszym zapytaniu = -1
-   bool isCrossed;		//informuje o tym, czy samochód opuścił skrzyżowanie
-   std::vector<int16_t> avaibleDirections;	//dosprtępne skręty
    int16_t lenght;		//odległość do naspnego skrzyżowania
    int16_t nextCrossID;		//
    int16_t previousCrossID;	//
    int16_t previousAutoID;
    crossings::autocross_msg msgA;//crossings
    vizualization::auto_viz msgV;
-   states state;   
+   states state;
    ros::Publisher carViz;
+   std::vector<int16_t> avaibleDirections;	//dosprtępne skręty
 
 public:
    
-   ros::NodeHandle viz;
+   //ros::NodeHandle viz;
    ros::NodeHandle n;
    //bool gotMessage;
 
    void choseADir(){
      while(true){
       int a = std::rand()%4;
-      if(avaibleDirections[a]>0)
+      if(avaibleDirections[a]>0){
            direction = a;
-	   break;
+	   break;}
       }
    }
 
@@ -77,7 +77,7 @@ public:
          direction = -1;
          state=askingForDir;
          //gotMessage=false;
-         carViz = viz.advertise<vizualization::auto_viz>("auto_viz", 1000);
+         carViz = n.advertise<vizualization::auto_viz>("auto_viz", 1000);
          fillMessageViz();
          carViz.publish(msgV);
          ROS_INFO("iniciated, asking for directions");
@@ -101,9 +101,9 @@ public:
    void fillMessageViz(){
       msgV.autoID=carID;
       msgV.startCrossID=previousCrossID;
-      msgV.endCrossID=nextCrossID;	
+      msgV.endCrossID=nextCrossID;
       msgV.distance=lenght;
-   }   
+   }
 
    void readTheMessage(const crossings::autocross_msg::ConstPtr& msg){//crossings::
         if(!msg->isMsgFromAuto){    
@@ -131,7 +131,7 @@ public:
        }
    }
    
-   void moveFrd(){ROS_INFO("2");
+   void moveFrd(){ROS_INFO("%d", lenght);
        lenght = lenght - speed;
        if(lenght<=5 && state == drivingTowCrossing){
          speed = 0;
@@ -147,7 +147,7 @@ public:
          ROS_INFO("crossed");
        }
        fillMessageViz();
-       
+       carViz.publish(msgV);
    }
 
    void changeState(states newState){
