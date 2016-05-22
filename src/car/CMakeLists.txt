@@ -5,10 +5,10 @@ project(car)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  anro_msgs
   roscpp
   std_msgs
   message_generation
-  map
   crossings
   vizualization
 )
@@ -104,7 +104,7 @@ catkin_package(
   #INCLUDE_DIRS include
   #LIBRARIES car
   CATKIN_DEPENDS roscpp std_msgs message_runtime
-  DEPENDS system_lib crossings_lib
+  DEPENDS system_lib crossings_lib anro_msgs
 )
 
 ###########

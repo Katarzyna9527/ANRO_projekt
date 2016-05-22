@@ -6,11 +6,11 @@
 #include <fstream>
 #include <cstddef>
 
-#include "map/map_config.h"
-#include "map/car_init.h"
-#include "map/cross_msg.h"
+#include "anro_msgs/map_config.h"
+#include "anro_msgs/car_init.h"
+#include "anro_msgs/map_cross_msg.h"
 
-#include "map/cross_init.h"
+#include "anro_msgs/cross_init.h"
 
 struct Crossing {
 	int16_t ID;
@@ -77,9 +77,9 @@ public:
 		return instance;
 	}
 
-	bool getCrossings(map::map_config::Response &res) {
+	bool getCrossings(anro_msgs::map_config::Response &res) {
 		for (auto it = crossings.cbegin(); it != crossings.cend(); ++it) {
-			map::cross_msg msg;
+			anro_msgs::map_cross_msg msg;
 			msg.ID = (**it).ID;
 			std::vector<int16_t>* neighbours = (**it).neighbours;
 			for (auto it = neighbours->cbegin(); it!= neighbours->cend(); ++it) {
@@ -97,7 +97,7 @@ public:
 		return true;
 	}
 
-	bool initCrossing(map::cross_init::Response &res) {
+	bool initCrossing(anro_msgs::cross_init::Response &res) {
 
 		if (lastCrossingID >= crossings.size()) {
 			res.crossing.ID = 0; 	
@@ -112,7 +112,7 @@ public:
 		return true;
 	}
 
-	bool initCar(map::car_init::Response &res) {
+	bool initCar(anro_msgs::car_init::Response &res) {
 		res.carID = ++lastCarID;
 		// na razie hardcoded 1-2
 		res.prevCrossing = 1;
@@ -124,8 +124,8 @@ public:
 		return (int16_t)crossings.size();
 	}
 
-	static bool configService(map::map_config::Request  &req,
-         				  map::map_config::Response &res) {
+	static bool configService(anro_msgs::map_config::Request  &req,
+         				  anro_msgs::map_config::Response &res) {
 
 		Map& map = Map::getInstance();
 
@@ -136,8 +136,8 @@ public:
 		return true;
 	}
 
-	static bool crossingInitService(map::cross_init::Request  &req,
-	                         map::cross_init::Response &res) {	
+	static bool crossingInitService(anro_msgs::cross_init::Request  &req,
+	                         anro_msgs::cross_init::Response &res) {	
 	
 		if (!Map::getInstance().initCrossing(res)) 
 			ROS_INFO("Map server received bad request");
@@ -147,8 +147,8 @@ public:
 		return true;
 	}
 
-	static bool carInitService(map::car_init::Request  &req,
-         				  map::car_init::Response &res) {
+	static bool carInitService(anro_msgs::car_init::Request  &req,
+         				  anro_msgs::car_init::Response &res) {
 
 		Map& map = Map::getInstance();
 

@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "map/car_init.h"
+#include "anro_msgs/car_init.h"
 #include "cars/car_to_car.h"
 #include "cars/auto_viz.h"
 #include "std_msgs/String.h"
@@ -11,7 +11,7 @@
 
 #include <string>
 
-map::car_init initialCarSettings;
+anro_msgs::car_init initialCarSettings;
 cars::autocross_msg message;
 cars::car_to_car carCarMessage;
 cars::auto_viz carVizMessage;
@@ -225,7 +225,7 @@ int main(int argc, char **argv)											//główny program
 	ros::NodeHandle carCarNode;
 	ros::NodeHandle vizNode;
 
-	ros::ServiceClient carToMap = mapNode.serviceClient<::map::car_init>("init_car");
+	ros::ServiceClient carToMap = mapNode.serviceClient<::anro_msgs::car_init>("init_car");
 	initialCarSettings.request.req = 1;
 
 	ros::Publisher carToVizPub = vizNode.advertise<cars::auto_viz>("auto_viz", 1000);

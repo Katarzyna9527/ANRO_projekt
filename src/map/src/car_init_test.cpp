@@ -4,15 +4,15 @@
 #include <iostream>
 #include <cstddef>
 
-#include "map/car_init.h"
+#include "anro_msgs/car_init.h"
 
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "map_car_init_test");
 
 	ros::NodeHandle n;
-	ros::ServiceClient client = n.serviceClient<map::car_init>("init_car");
-	map::car_init srv;
+	ros::ServiceClient client = n.serviceClient<anro_msgs::car_init>("init_car");
+	anro_msgs::car_init srv;
 
 	uint8_t ReqID = 0;
 	srv.request.req = (uint8_t) ReqID;

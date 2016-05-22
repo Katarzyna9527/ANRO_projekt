@@ -1,0 +1,4 @@
+uint8 req
+---
+map_cross_msg[] crossings
+int16 number_of_crossings
