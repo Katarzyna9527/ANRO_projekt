@@ -284,12 +284,10 @@ public:
     return mapConfiguration;
 }
 
-
-
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "lights");
-
+    ros::NodeHandle dataNode;
     map_data = getMapConfiguration();
         cout<<"/n"<<"Map configuration received"<<endl;
 
@@ -302,7 +300,10 @@ int main(int argc, char **argv)
     }
 
 	cout<<"\n"<<"Lights done";
-	ros::Rate loop_rate(0.25);
+	
+	double time;
+	dataNode.param("rate", time, 0.25);
+	ros::Rate loop_rate(time);
 
     while(ros::ok()){
             for(int i =0; i < nNodes; ++i){
