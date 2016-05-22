@@ -13,6 +13,17 @@ find_package(catkin REQUIRED COMPONENTS
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
+include_directories(
+  ${roscpp_INCLUDE_DIRS}
+)
+
+add_service_files(
+  FILES
+  map_config.srv
+  cross_init.srv
+  car_init.srv
+)
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -105,10 +116,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+#  INCLUDE_DIRS
 #  LIBRARIES anro_msgs
-  CATKIN_DEPENDS std_msgs message_runtime
-#  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp std_msgs message_runtime
+#i  DEPENDS system_lib
 )
 
 ###########
@@ -124,9 +135,9 @@ include_directories(
 
 
 ## Declare a C++ library
-# add_library(anro_msgs
-#   src/${PROJECT_NAME}/anro_msgs.cpp
-# )
+#add_library(
+#  anro_msgs
+#)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
