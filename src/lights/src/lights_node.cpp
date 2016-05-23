@@ -275,15 +275,8 @@ public:
     ::anro_msgs::map_config mapConfiguration;
     ros::NodeHandle mapNode;
 
-    string comeback;
-    mapNode.param<string>("ret", comeback, "n");
-    cout<<'\n'<<comeback<<'\n';
-    if(comeback == "r")
-	r = true;
-    else
-	r = false;
-
-    mapNode.param("rate", timerate, 0.25);
+    mapNode.param("ret", r, false);
+    mapNode.param("rate", timerate, 4.0);
 
     ros::ServiceClient lightsClient = mapNode.serviceClient<::anro_msgs::map_config>("get_map_config");
     mapConfiguration.request.req = 1;
@@ -313,7 +306,7 @@ int main(int argc, char **argv)
 
 	cout<<"\n"<<"Lights done";
 
-    ros::Rate loop_rate(timerate);
+    ros::Rate loop_rate(1.0/timerate);
 
     while(ros::ok()){
             for(int i =0; i < nNodes; ++i){
