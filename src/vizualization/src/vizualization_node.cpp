@@ -87,7 +87,7 @@ public:
 		marker->id = (*it).ID;
 
         marker->type = visualization_msgs::Marker::MESH_RESOURCE;
-        marker->mesh_resource = "package://vizualization/meshes/car_4/car_4.dae";
+        marker->mesh_resource = "package://vizualization/meshes/car_1/car_1.dae";
 
 		marker->action = visualization_msgs::Marker::ADD;
 		
