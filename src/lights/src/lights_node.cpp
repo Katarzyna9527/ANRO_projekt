@@ -14,6 +14,7 @@ using namespace std;
 #include <string>
 
 bool r;
+double timerate;
 
 ::anro_msgs::map_config map_data;		//structure with map configure
 
@@ -274,6 +275,16 @@ public:
     ::anro_msgs::map_config mapConfiguration;
     ros::NodeHandle mapNode;
 
+    string comeback;
+    mapNode.param<string>("ret", comeback, "n");
+    cout<<'\n'<<comeback<<'\n';
+    if(comeback == "r")
+	r = true;
+    else
+	r = false;
+
+    mapNode.param("rate", timerate, 0.25);
+
     ros::ServiceClient lightsClient = mapNode.serviceClient<::anro_msgs::map_config>("get_map_config");
     mapConfiguration.request.req = 1;
     ROS_INFO("Waiting for map...");
@@ -289,16 +300,6 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "lights");
 
-    ros::NodeHandle dataNode;
-
-    string comeback;
-    dataNode.param<string>("ret", comeback, "n");
-    cout<<'\n'<<comeback<<'\n';
-    if(comeback == "r")
-	r = true;
-    else
-	r = false;
-
     map_data = getMapConfiguration();
         cout<<"/n"<<"Map configuration received"<<endl;
 
@@ -311,10 +312,8 @@ int main(int argc, char **argv)
     }
 
 	cout<<"\n"<<"Lights done";
-	
-	double time;
-	dataNode.param("rate", time, 0.25);
-	ros::Rate loop_rate(time);
+
+    ros::Rate loop_rate(timerate);
 
     while(ros::ok()){
             for(int i =0; i < nNodes; ++i){
