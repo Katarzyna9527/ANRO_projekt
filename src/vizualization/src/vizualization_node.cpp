@@ -86,7 +86,8 @@ public:
 		marker->ns = "car_markers";
 		marker->id = (*it).ID;
 
-		marker->type = visualization_msgs::Marker::CUBE;
+        marker->type = visualization_msgs::Marker::MESH_RESOURCE;
+        marker->mesh_resource = "package://vizualization/meshes/car_4/car_4.dae";
 
 		marker->action = visualization_msgs::Marker::ADD;
 		
@@ -104,20 +105,22 @@ public:
 		marker->pose.position.z = 0.5;
 		
 		marker->pose.orientation.x = 0.0;
-		marker->pose.orientation.y = 0.0;
-		marker->pose.orientation.z = 0.0;
+        marker->pose.orientation.y = 0.0;
+        marker->pose.orientation.z = 1.0;
 		marker->pose.orientation.w = 1.0;
 	
-		marker->scale.x = 1.0;
-		marker->scale.y = 1.0;
-		marker->scale.z = 1.0;
-		if((*it).direction == 0 || (*it).direction == 2) marker->scale.y = 2.0;
-		if((*it).direction == 1 || (*it).direction == 3) marker->scale.x = 2.0;
+        marker->scale.x = 0.25;
+        marker->scale.y = 0.25;
+        marker->scale.z = 0.25;
+        if((*it).direction == 0 || (*it).direction == 2) marker->scale.y = 0.5;
+        if((*it).direction == 1 || (*it).direction == 3) marker->scale.x = 0.5;
 
-		marker->color.r = 1.0f;
+        /*marker->color.r = 0.0f;
 		marker->color.g = 0.0f;
-		marker->color.b = 0.0f;
-		marker->color.a = 1.0;
+        marker->color.b = 1.0f;
+        marker->color.a = 1.0;*/
+
+        marker->mesh_use_embedded_materials = true;
 
 		marker->lifetime = ros::Duration();
 		carMarkerArray->markers.push_back(*marker);
@@ -139,11 +142,11 @@ public:
 				carMarkerArray->markers[i].pose.position.y = it->y + yOffset;
 				carMarkerArray->markers[i].pose.position.x = it->x + xOffset;
 				
-				carMarkerArray->markers[i].scale.x = 1.0;
-				carMarkerArray->markers[i].scale.y = 1.0;
-				carMarkerArray->markers[i].scale.z = 1.0;
-				if((*it).direction == 0 || (*it).direction == 2) carMarkerArray->markers[i].scale.y = 2.0;
-				if((*it).direction == 1 || (*it).direction == 3) carMarkerArray->markers[i].scale.x = 2.0;
+                carMarkerArray->markers[i].scale.x = 0.25;
+                carMarkerArray->markers[i].scale.y = 0.25;
+                carMarkerArray->markers[i].scale.z = 0.25;
+                if((*it).direction == 0 || (*it).direction == 2) carMarkerArray->markers[i].scale.y = 0.5;
+                if((*it).direction == 1 || (*it).direction == 3) carMarkerArray->markers[i].scale.x = 0.5;
 			}
 		} 
 	}
