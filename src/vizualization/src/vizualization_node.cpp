@@ -25,11 +25,12 @@ int16_t lightBulbState[100][4][4];
 int16_t multiplier = 5;
 
 float roadSize = 2;
-float lightOffset = 2.5;
+float lightOffset = 0; //2.5
 float lightDistance = 5;
 int16_t height = 5;
 float lightBulbOffset = 0.3;
-float lightBulbLenght = 0.7;
+float lightBulbLenght = 2;
+int16_t lightMode = 3; //1 dla widocznych z samochodu, 2 dla strzalek widocznych z góry
 
 struct Coordinates{
 	float x;
@@ -482,7 +483,9 @@ int main(int argc, char **argv)
 		{
 			ROS_INFO("%d: %d %d", (int16_t)crossingID+1, (int16_t)crossings[crossingID].x, (int16_t)crossings[crossingID].y);
 		}
+		float lightMode2Offset = 0.5;	
 		
+		//Stworzenie lightBulbs
 		for (int16_t crossingID = 0; crossingID < srv.response.crossings.size(); crossingID++){
 			for (int16_t i = 0; i < 4; i++){
 				if(connections[crossingID][i] >= 0){
@@ -504,24 +507,29 @@ int main(int argc, char **argv)
 
 							markerS->ns = "light_bulb_shapes";
 							markerS->id = crossingID*100 + 10*i + 1*j;
-
-							markerS->type = visualization_msgs::Marker::ARROW;
+							if(lightMode == 1 || lightMode == 2 || lightMode == 3)
+								markerS->type = visualization_msgs::Marker::ARROW;
 
 							markerS->action = visualization_msgs::Marker::ADD;
 							
 							geometry_msgs::Point startPoint;
-							
-							startPoint.x = lights[crossingID][i].x;
-							startPoint.y = lights[crossingID][i].y;
-							startPoint.z = height;
-							
-							
 							geometry_msgs::Point endPoint;
+							geometry_msgs::Point middlePoint;
+							middlePoint.z = 0;
 							
-							endPoint.x = lights[crossingID][i].x;
-							endPoint.y = lights[crossingID][i].y;
-							endPoint.z = height;
+							if(lightMode == 1 || lightMode == 3){
+								startPoint.x = lights[crossingID][i].x;
+								startPoint.y = lights[crossingID][i].y;
+								startPoint.z = height;
 							
+								endPoint.x = lights[crossingID][i].x;
+								endPoint.y = lights[crossingID][i].y;
+								endPoint.z = height;
+							}
+							if(lightMode == 2 || lightMode == 3){
+								startPoint.z = 0.0;
+								endPoint.z = 0.0;
+							}
 							markerS->color.b = 0.0f;
 							markerS->color.a = 1.0;
 							markerS->color.r = 0.0f;
@@ -531,88 +539,273 @@ int main(int argc, char **argv)
 
 							//NORTH Light
 							if(i==0){
+								if(lightMode == 2){
+									startPoint.x = crossings[crossingID].x - 0.5*roadSize;
+									startPoint.y = crossings[crossingID].y + (1+lightMode2Offset)*roadSize;
+								}
 								if(j==0){
-									endPoint.z += -(lightBulbLenght + lightBulbOffset);
-									startPoint.z += - (lightBulbOffset);
+									if(lightMode == 1){
+										endPoint.z += -(lightBulbLenght + lightBulbOffset);
+										startPoint.z += - (lightBulbOffset);
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - roadSize;
+										endPoint.y = crossings[crossingID].y + (1.5+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += (lightBulbOffset);
+									}
+									
 								}
 								if(j==1){
-									endPoint.x += lightBulbLenght + lightBulbOffset;
-									startPoint.x += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.x += lightBulbLenght + lightBulbOffset;
+										startPoint.x += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y -0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += lightBulbLenght + lightBulbOffset;
+										startPoint.x += lightBulbOffset;
+									}
 								}
 								if(j==2){
-									endPoint.z += lightBulbLenght + lightBulbOffset;
-									startPoint.z += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += lightBulbLenght + lightBulbOffset;
+										startPoint.z += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y - (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += -(lightBulbLenght + lightBulbOffset);
+										startPoint.y += -(lightBulbOffset);
+									}
 								}
 								if(j==3){
-									endPoint.x += -(lightBulbLenght + lightBulbOffset);
-									startPoint.x += -(lightBulbOffset);
+									if(lightMode == 1){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -(lightBulbOffset);
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y + 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -(lightBulbOffset);
+									}
+									
 								}
 							}
 
 							//EAST Light
 							if(i==1){
+								if(lightMode == 2){
+									startPoint.x = crossings[crossingID].x + (1+lightMode2Offset)*roadSize;
+									startPoint.y = crossings[crossingID].y + 0.5*roadSize;
+								}
 								if(j==0){
-									endPoint.y += (lightBulbLenght + lightBulbOffset);
-									startPoint.y += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y + (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += lightBulbOffset;
+									}
 								}
 								if(j==1){
-									endPoint.z += -(lightBulbLenght + lightBulbOffset);
-									startPoint.z += -(lightBulbOffset);
+									if(lightMode == 1){
+										endPoint.z += -(lightBulbLenght + lightBulbOffset);
+										startPoint.z += -(lightBulbOffset);
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + (1.5+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y + 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += (lightBulbLenght + lightBulbOffset);
+										startPoint.x += (lightBulbOffset);
+									}
 								}
 								if(j==2){
-									endPoint.y += -(lightBulbLenght+lightBulbOffset);
-									startPoint.y += -(lightBulbOffset);
+									if(lightMode == 1){
+										endPoint.y += -(lightBulbLenght+lightBulbOffset);
+										startPoint.y += -(lightBulbOffset);
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y - (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += -(lightBulbLenght+lightBulbOffset);
+										startPoint.y += -(lightBulbOffset);
+									}
 								}
 								if(j==3){
-									endPoint.z += lightBulbLenght + lightBulbOffset;
-									startPoint.z += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += lightBulbLenght + lightBulbOffset;
+										startPoint.z += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y + 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -(lightBulbOffset);
+									}
 								}
 							}
 							//SOUTH Light
 							if(i==2){
+								if(lightMode == 2){
+									startPoint.x = crossings[crossingID].x + 0.5*roadSize;
+									startPoint.y = crossings[crossingID].y - (1+lightMode2Offset)*roadSize;
+								}
 								if(j==0){
-									endPoint.z += (lightBulbLenght + lightBulbOffset);
-									startPoint.z += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += (lightBulbLenght + lightBulbOffset);
+										startPoint.z += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y + (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += (lightBulbOffset);
+									}
 								}
 								if(j==1){
-									endPoint.x += (lightBulbLenght + lightBulbOffset);
-									startPoint.x += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.x += (lightBulbLenght + lightBulbOffset);
+										startPoint.x += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y - 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += (lightBulbLenght + lightBulbOffset);
+										startPoint.x += lightBulbOffset;
+									}
 								}
 								if(j==2){
-									endPoint.z += -(lightBulbLenght + lightBulbOffset);
-									startPoint.z += -lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += -(lightBulbLenght + lightBulbOffset);
+										startPoint.z += -lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y - (1.5+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += -(lightBulbLenght + lightBulbOffset);
+										startPoint.y += -lightBulbOffset;
+									}
 								}
 								if(j==3){
-									endPoint.x += -(lightBulbLenght + lightBulbOffset);
-									startPoint.x += -lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y + 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -lightBulbOffset;
+									}
 								}
 							}
 
-							//SOUTH Light
+							//WEST Light
 							if(i==3){
+								if(lightMode == 2){
+									startPoint.x = crossings[crossingID].x - (1+lightMode2Offset)*roadSize;
+									startPoint.y = crossings[crossingID].y - 0.5*roadSize;
+								}
 								if(j==0){
-									endPoint.y += (lightBulbLenght + lightBulbOffset);
-									startPoint.y += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y + (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += (lightBulbLenght + lightBulbOffset);
+										startPoint.y += lightBulbOffset;
+									}
 								}
 								if(j==1){
-									endPoint.z += (lightBulbLenght + lightBulbOffset);
-									startPoint.z += lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += (lightBulbLenght + lightBulbOffset);
+										startPoint.z += lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x + (1+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y - 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += (lightBulbLenght + lightBulbOffset);
+										startPoint.x += lightBulbOffset;
+									}
 								}
 								if(j==2){
-									endPoint.y += -(lightBulbLenght + lightBulbOffset);
-									startPoint.y += -lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.y += -(lightBulbLenght + lightBulbOffset);
+										startPoint.y += -lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - 0.5*roadSize;
+										endPoint.y = crossings[crossingID].y - (1+lightMode2Offset)*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.y += -(lightBulbLenght + lightBulbOffset);
+										startPoint.y += -lightBulbOffset;
+									}
 								}
 								if(j==3){
-									endPoint.z += -(lightBulbLenght + lightBulbOffset);
-									startPoint.z += -lightBulbOffset;
+									if(lightMode == 1){
+										endPoint.z += -(lightBulbLenght + lightBulbOffset);
+										startPoint.z += -lightBulbOffset;
+									}
+									if(lightMode == 2){
+										endPoint.x = crossings[crossingID].x - (1.5+lightMode2Offset)*roadSize;
+										endPoint.y = crossings[crossingID].y - 0.5*roadSize;
+									}
+									if(lightMode == 3){
+										endPoint.x += -(lightBulbLenght + lightBulbOffset);
+										startPoint.x += -lightBulbOffset;
+									}
 								}
 							}
+							if(lightMode == 1 || lightMode == 2 || lightMode == 3){
+								markerS->points.push_back(startPoint);
+								markerS->points.push_back(endPoint);
+								markerS->scale.x = 0.5;
+								markerS->scale.y = 1;
+							}
+							/*if(lightMode == 3){
+								markerS->points.push_back(startPoint);
+								markerS->points.push_back(middlePoint);
+								markerS->points.push_back(endPoint);
+								markerS->scale.x = 2.0;
+							}*/
 							
-							markerS->points.push_back(startPoint);
-							markerS->points.push_back(endPoint);
-							
-							markerS->scale.x = 0.5;
-							markerS->scale.y = 1;
 							
 							LightBulbCollection::getInstance().LightBulbMarkerArray->markers.push_back(*markerS);
 							LightBulbCollection::getInstance().numberOfLightBulbs++;
