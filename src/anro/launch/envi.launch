@@ -1,5 +1,9 @@
 <launch>
   <param name="map_confname" value="$(find map)/src/conffile" />
+  <arg name="rate" default="0.25" />
+  <arg name="ret" default="false" />
+  <param name="rate" value="$(arg rate)" />
+  <param name="ret" value="$(arg ret)" />
   <node name="map_node" pkg="map" type="map_node" />
   <node name="lights_node" pkg="lights" type="lights_node" />
   <node name="crossing_1" pkg="crossings" type="crossings_node" />
