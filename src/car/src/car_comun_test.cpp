@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "car/autocross_msg.h"
+#include "anro_msgs/car_autocross_msg.h"
 #include <iostream>
 ros::Publisher crossPub;
 ros::Subscriber crossSub;
@@ -12,8 +12,8 @@ int16_t availableDirections[4];
 int16_t length=0;
 int16_t nextCrossID=0;
 int16_t previousAutoID=0 ;
-car::autocross_msg msgA;
-void testCallback(const car::autocross_msg::ConstPtr& msg)
+anro_msgs::car_autocross_msg msgA;
+void testCallback(const anro_msgs::car_autocross_msg::ConstPtr& msg)
 {
     if(msg->isMsgFromAuto){
       ROS_INFO("got a message");
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "crossing_test", ros::init_options::AnonymousName);
     ros::NodeHandle n;
     ROS_INFO("ready to iniciate connection");
-    crossPub = n.advertise<car::autocross_msg>("crossing_1", 1000);//crossing
+    crossPub = n.advertise<anro_msgs::car_autocross_msg>("crossing_1", 1000);//crossing
     //ROS_INFO("1");
     crossSub = n.subscribe("crossing_1", 1000, testCallback);
     //ROS_INFO("2");

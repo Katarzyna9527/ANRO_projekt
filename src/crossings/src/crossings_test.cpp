@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "crossings/autocross_msg.h"
+#include "anro_msgs/crossings_autocross_msg.h"
 #include <iostream>
 
 ros::Publisher testPub;
@@ -9,7 +9,7 @@ int stage = 0;
 int prev;
 int crossId;
 
-void testCallback(const crossings::autocross_msg::ConstPtr& msg)
+void testCallback(const anro_msgs::crossings_autocross_msg::ConstPtr& msg)
 {
     ros::NodeHandle n;
     ROS_INFO("Get data from crossing");
@@ -31,7 +31,7 @@ void testCallback(const crossings::autocross_msg::ConstPtr& msg)
         std::cout << "Enter direction to drive to: ";
         std::cin >> destDir;
 
-        crossings::autocross_msg response = *msg;
+        anro_msgs::crossings_autocross_msg response = *msg;
         response.isMsgFromAuto = true;
         response.direction = destDir;
 
@@ -44,7 +44,7 @@ void testCallback(const crossings::autocross_msg::ConstPtr& msg)
         std::cout << "Type enter to leave a crossing";
         std::cin >> str;
 
-        crossings::autocross_msg response = *msg;
+        anro_msgs::crossings_autocross_msg response = *msg;
         response.isMsgFromAuto = true;
         response.isCrossed = true;
         testPub.publish(response);
@@ -61,7 +61,7 @@ void testCallback(const crossings::autocross_msg::ConstPtr& msg)
         
         std::stringstream ss;
         ss << "crossing_" << msg->nextCrossID;
-        testPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000, true);
+        testPub = n.advertise<anro_msgs::crossings_autocross_msg>(ss.str().c_str(), 1000, true);
         testSub = n.subscribe(ss.str().c_str(), 1000, testCallback);
         
         testPub.publish(response);
@@ -85,10 +85,10 @@ int main(int argc, char **argv)
     std::stringstream ss;
     ss << "crossing_" << crossId;
 
-    testPub = n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000, true);
+    testPub = n.advertise<anro_msgs::crossings_autocross_msg>(ss.str().c_str(), 1000, true);
     testSub = n.subscribe(ss.str().c_str(), 1000, testCallback);
     
-    crossings::autocross_msg msg;
+    anro_msgs::crossings_autocross_msg msg;
     msg.autoID = id;
     msg.isMsgFromAuto = true;
     msg.direction = -1;

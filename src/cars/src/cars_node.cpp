@@ -1,9 +1,9 @@
 #include "ros/ros.h"
 #include "anro_msgs/car_init.h"
 #include "cars/car_to_car.h"
-#include "cars/auto_viz.h"
+#include "anro_msgs/cars_auto_viz.h"
 #include "std_msgs/String.h"
-#include "cars/autocross_msg.h"
+#include "anro_msgs/cars_autocross_msg.h"
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -12,9 +12,9 @@
 #include <string>
 
 anro_msgs::car_init initialCarSettings;
-cars::autocross_msg message;
+anro_msgs::cars_autocross_msg message;
 cars::car_to_car carCarMessage;
-cars::auto_viz carVizMessage;
+anro_msgs::cars_auto_viz carVizMessage;
 
 int multiplication = 1;
 
@@ -37,11 +37,11 @@ public:
 	Car();
 	~Car();
 	void updateCar();
-	void pickDirection(::cars::autocross_msg message);
+	void pickDirection(::anro_msgs::cars_autocross_msg message);
 	void getInitialSettings();
-	cars::autocross_msg initialQuestion();
-	cars::autocross_msg secondQuestion();
-	cars::autocross_msg lastQuestion();
+	anro_msgs::cars_autocross_msg initialQuestion();
+	anro_msgs::cars_autocross_msg secondQuestion();
+	anro_msgs::cars_autocross_msg lastQuestion();
 	static Car& getInstance()
 	{
 		static Car instance;
@@ -119,7 +119,7 @@ void Car::updateCar()
 	distanceSoFar = 0;
 }
 
-void Car::pickDirection(::cars::autocross_msg message)
+void Car::pickDirection(::anro_msgs::cars_autocross_msg message)
 {
 	int avaliableDirections[4];
 	for (int i = 0; i < 4; i++)
@@ -137,7 +137,7 @@ void Car::pickDirection(::cars::autocross_msg message)
 
 
 
-void carCallback(const cars::autocross_msg::ConstPtr& messageFromCar)
+void carCallback(const anro_msgs::cars_autocross_msg::ConstPtr& messageFromCar)
 {
 	if ((messageFromCar->isMsgFromAuto == false) && (messageFromCar->autoID == car->carID))
 	{
@@ -149,7 +149,7 @@ void carCallback(const cars::autocross_msg::ConstPtr& messageFromCar)
 	}
 }
 
-cars::autocross_msg Car::initialQuestion()
+anro_msgs::cars_autocross_msg Car::initialQuestion()
 {
 	message.isMsgFromAuto = true;
 	message.autoID = carID;
@@ -158,7 +158,7 @@ cars::autocross_msg Car::initialQuestion()
 	return message;
 }
 
-cars::autocross_msg Car::secondQuestion()
+anro_msgs::cars_autocross_msg Car::secondQuestion()
 {
 	message.isMsgFromAuto = true;
 	message.autoID = carID;
@@ -169,7 +169,7 @@ cars::autocross_msg Car::secondQuestion()
 	return message;
 }
 
-cars::autocross_msg Car::lastQuestion()
+anro_msgs::cars_autocross_msg Car::lastQuestion()
 {
 	message.isMsgFromAuto = true;
 	message.autoID = carID;
@@ -228,7 +228,7 @@ int main(int argc, char **argv)											//główny program
 	ros::ServiceClient carToMap = mapNode.serviceClient<::anro_msgs::car_init>("init_car");
 	initialCarSettings.request.req = 1;
 
-	ros::Publisher carToVizPub = vizNode.advertise<cars::auto_viz>("auto_viz", 1000);
+	ros::Publisher carToVizPub = vizNode.advertise<anro_msgs::cars_auto_viz>("auto_viz", 1000);
 
 	while (ros::ok())
 	{
@@ -253,7 +253,7 @@ int main(int argc, char **argv)											//główny program
 	ss << "crossing_" << car->nextCrossing;
 
 	ros::NodeHandle carNode;
-	ros::Publisher carToCrossingPub = carNode.advertise<cars::autocross_msg>(ss.str().c_str(), 1000);
+	ros::Publisher carToCrossingPub = carNode.advertise<anro_msgs::cars_autocross_msg>(ss.str().c_str(), 1000);
 	ros::Subscriber carToCrossingSub = carNode.subscribe(ss.str().c_str(), 1000, carCallback);
 	std::cout << (ss.str().c_str());
 
@@ -264,7 +264,7 @@ int main(int argc, char **argv)											//główny program
 	std::cout << "\n";
 	std::cout << (ss.str().c_str());
 
-	::cars::autocross_msg message;
+	::anro_msgs::cars_autocross_msg message;
 	ros::Rate loop_rate(1);
 	ros::Rate loop_rate_2(2);
 
@@ -354,7 +354,7 @@ int main(int argc, char **argv)											//główny program
 				ss.clear();
 				ss.str("");
 				ss << "crossing_" << car->nextCrossing;
-				carToCrossingPub = carNode.advertise<cars::autocross_msg>(ss.str().c_str(), 1000);
+				carToCrossingPub = carNode.advertise<anro_msgs::cars_autocross_msg>(ss.str().c_str(), 1000);
 				carToCrossingSub = carNode.subscribe(ss.str().c_str(), 1000, carCallback);
 				clearMessage();
 			}

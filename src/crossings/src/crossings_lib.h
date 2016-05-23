@@ -5,10 +5,10 @@
 #include <vector>
 #include <deque>
 
-#include "crossings/autocross_msg.h"
+#include "anro_msgs/crossings_autocross_msg.h"
 
-#include "lights/LightState.h"
-#include "lights/State.h"
+#include "anro_msgs/LightState.h"
+#include "anro_msgs/State.h"
 
 #include "anro_msgs/cross_init.h"
 #include "anro_msgs/map_cross_msg.h"
@@ -17,10 +17,10 @@
 class Auto
 {
         int currPos;
-        crossings::autocross_msg carMsg;
+        anro_msgs::crossings_autocross_msg carMsg;
 
     public:
-        Auto(const crossings::autocross_msg::ConstPtr& msg);
+        Auto(const anro_msgs::crossings_autocross_msg::ConstPtr& msg);
         
         void setAvailDirs(const std::vector<int16_t> &availDirs);
         void setPreviousAutoID(int16_t previousAutoID);
@@ -30,7 +30,7 @@ class Auto
         int getCurrPos() const { return currPos; }
         int16_t getAutoID() const;
         int16_t getDirection() const { return carMsg.direction ; }
-        const crossings::autocross_msg& getMsgToPublish() const ;
+        const anro_msgs::crossings_autocross_msg& getMsgToPublish() const ;
 };
 
 class Crossing
@@ -46,8 +46,8 @@ class Crossing
         void initCommunication();
         void initCrossData();
 
-        void crossSubCallback(const crossings::autocross_msg::ConstPtr& crossMsg);
-        void lightsSubCallback(const lights::LightState::ConstPtr& lightsMsg);
+        void crossSubCallback(const anro_msgs::crossings_autocross_msg::ConstPtr& crossMsg);
+        void lightsSubCallback(const anro_msgs::LightState::ConstPtr& lightsMsg);
         void timeoutCallback(const ros::TimerEvent&);
 
         void autoAskAboutDirections(Auto& whichAuto);
@@ -71,7 +71,7 @@ class Crossing
             public :
                 static AutosReg& getInstance();
 
-                Auto*  getAutoFromMsg(const crossings::autocross_msg::ConstPtr& autoMsg);
+                Auto*  getAutoFromMsg(const anro_msgs::crossings_autocross_msg::ConstPtr& autoMsg);
                 bool deleteAutoFromRegister(const Auto& whichAuto);
         };
 
@@ -95,7 +95,7 @@ class Crossing
 
         bool isCrossOccupied;
 
-        lights::LightState currLightsCfg;
+        anro_msgs::LightState currLightsCfg;
         bool isLightsPublishing;
 
         // constants

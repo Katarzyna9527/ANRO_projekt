@@ -61,7 +61,7 @@ add_message_files(
   LightState.msg
   State.msg
   cars_autocross_msg.msg
-  crossing_autocross_msg.msg
+  crossings_autocross_msg.msg
   map_cross_msg.msg
   vizualization_auto_viz.msg
 )

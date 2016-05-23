@@ -1,8 +1,8 @@
 using namespace std;
 
 #include "ros/ros.h"
-#include "lights/State.h"
-#include "lights/LightState.h"
+#include "anro_msgs/State.h"
+#include "anro_msgs/LightState.h"
 #include "anro_msgs/map_config.h"
 #include "std_msgs/String.h"
 
@@ -17,36 +17,36 @@ using namespace std;
 ::anro_msgs::map_config map_data;		//structure with map configure
 
 //function to create LightState structures from bool-information
-lights::LightState make_lightState(bool a1, bool b1, bool c1, bool d1, 			//from north to other directions (n,e,s,w)
+anro_msgs::LightState make_lightState(bool a1, bool b1, bool c1, bool d1, 			//from north to other directions (n,e,s,w)
 				   bool a2, bool b2, bool c2, bool d2, 			//from east to other directions (n,e,s,w)
 				   bool a3, bool b3, bool c3, bool d3, 			//from south to other directions (n,e,s,w)
 				   bool a4, bool b4, bool c4, bool d4){			//from west to other directions (n,e,s,w)
 
-    lights::State lightsFor1;
+    anro_msgs::State lightsFor1;
     lightsFor1.A = a1;
     lightsFor1.B = b1;
     lightsFor1.C = c1;
     lightsFor1.D = d1;
 
-    lights::State lightsFor2;
+    anro_msgs::State lightsFor2;
     lightsFor2.A = a2;
     lightsFor2.B = b2;
     lightsFor2.C = c2;
     lightsFor2.D = d2;
 
-    lights::State lightsFor3;
+    anro_msgs::State lightsFor3;
     lightsFor3.A = a3;
     lightsFor3.B = b3;
     lightsFor3.C = c3;
     lightsFor3.D = d3;
 
-    lights::State lightsFor4;
+    anro_msgs::State lightsFor4;
     lightsFor4.A = a4;
     lightsFor4.B = b4;
     lightsFor4.C = c4;
     lightsFor4.D = d4;
 
-    lights::LightState lightsForAll;
+    anro_msgs::LightState lightsForAll;
     lightsForAll.n = lightsFor1;
     lightsForAll.e = lightsFor2;
     lightsForAll.s = lightsFor3;
@@ -65,7 +65,7 @@ protected:
 
 public:
     virtual void change_state()=0;
-    virtual lights::LightState create_message()=0;
+    virtual anro_msgs::LightState create_message()=0;
 
 };
 
@@ -73,7 +73,7 @@ public:
 class Allower4: public Allower{
 
 private:
-    lights::LightState allower_states[4];	//all states that may occure
+    anro_msgs::LightState allower_states[4];	//all states that may occure
 
 public:
 
@@ -87,7 +87,7 @@ public:
         allower_states[3]= make_lightState(0,0,0,0,  0,0,1,0,  0,0,0,0,  1,0,0,0);
     }
 
-     lights::LightState create_message(){
+     anro_msgs::LightState create_message(){
         return allower_states[which_state];
      }
 
@@ -101,7 +101,7 @@ public:
 class Allower3: public Allower{
 
 private:
-    lights::LightState allower_states[3];
+    anro_msgs::LightState allower_states[3];
     int index_of_empty_road;
 
 public:
@@ -154,7 +154,7 @@ public:
         }
     }
 
-    lights::LightState create_message(){
+    anro_msgs::LightState create_message(){
 	return allower_states[which_state];
     }
 
@@ -168,7 +168,7 @@ public:
 class Allower2 : public Allower{
 
 private:
-    lights::LightState state;
+    anro_msgs::LightState state;
     int index_of_empty_road1;
     int index_of_empty_road2;
 
@@ -213,7 +213,7 @@ public:
         }
     }
 
-     lights::LightState create_message(){
+     anro_msgs::LightState create_message(){
         return state;
      }
 
@@ -254,7 +254,7 @@ public:
         string topicName="lights_";
         string number=ss.str();
         topicName=topicName+number;
-            lightsPub = lightsNode.advertise<lights::LightState>(topicName, 1000);
+            lightsPub = lightsNode.advertise<anro_msgs::LightState>(topicName, 1000);
        // cout<<"\n"<<"Lights for crossing " + number + " created";
     }
 

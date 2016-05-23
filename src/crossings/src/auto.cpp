@@ -1,6 +1,6 @@
 #include "crossings_lib.h"
 
-Auto::Auto(const crossings::autocross_msg::ConstPtr& msg)
+Auto::Auto(const anro_msgs::crossings_autocross_msg::ConstPtr& msg)
 {
     carMsg = *msg;
     currPos = Crossing::getInstance().calculateCarPosition(carMsg.previousCrossID);
@@ -31,7 +31,7 @@ void Auto::setNextCrossData(int16_t length, int16_t nextCrossID)
     carMsg.nextCrossID = nextCrossID;
 }
 
-const crossings::autocross_msg& Auto::getMsgToPublish() const 
+const anro_msgs::crossings_autocross_msg& Auto::getMsgToPublish() const 
 {
     return carMsg;
 }

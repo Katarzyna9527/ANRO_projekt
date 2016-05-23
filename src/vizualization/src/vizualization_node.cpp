@@ -1,13 +1,13 @@
 using namespace std;
 
 #include "ros/ros.h"
-#include "lights/State.h"
-#include "lights/LightState.h"
-#include "map/map_config.h"
+#include "anro_msgs/State.h"
+#include "anro_msgs/LightState.h"
+#include "anro_msgs/map_config.h"
 #include "std_msgs/String.h"
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
-#include "vizualization/auto_viz.h"
+#include "anro_msgs/vizualization_auto_viz.h"
 
 
 #include <stdio.h>
@@ -217,7 +217,7 @@ public:
 		updateMarkerArray(currentCar);
 	}
 	
-	static void addCar(const vizualization::auto_viz& msg)
+	static void addCar(const anro_msgs::vizualization_auto_viz& msg)
 	{
 		Car *currentCar = CarCollection::getInstance().get(msg.autoID);
 		if(CarCollection::getInstance().get(msg.autoID) != NULL){
@@ -282,7 +282,7 @@ public:
 		}
 	}
 	
-	void updateLightState(const lights::LightState::ConstPtr &msg, int16_t crossingID){
+	void updateLightState(const anro_msgs::LightState::ConstPtr &msg, int16_t crossingID){
 		//ROS_INFO("%d", crossingID+1);
 		//ROS_INFO("%d", numberOfLightBulbs);
 		//NORTH CROSSING
@@ -341,7 +341,7 @@ public:
 };
 
 
-void updateLightState(const lights::LightState::ConstPtr &msg, const std::string &topic){
+void updateLightState(const anro_msgs::LightState::ConstPtr &msg, const std::string &topic){
 	int16_t lastDigit = topic.size()-1;
 	int16_t crossingID = 0;
 	int16_t power = 1;
@@ -371,8 +371,8 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "vizualization_node");
 	ros::NodeHandle n;
 
-	ros::ServiceClient client = n.serviceClient<::map::map_config>("get_map_config");
-	::map::map_config srv;
+	ros::ServiceClient client = n.serviceClient<::anro_msgs::map_config>("get_map_config");
+	::anro_msgs::map_config srv;
 
 	uint8_t ReqID = 1;
 	srv.request.req = (uint8_t) ReqID;
@@ -838,7 +838,7 @@ int main(int argc, char **argv)
 		string topicName="lights_";
 		string number=ss.str();
 		topicName=topicName+number; 
-		lightSubscribers[i] = n.subscribe<lights::LightState>(topicName, 1, boost::bind(updateLightState, _1, topicName));
+		lightSubscribers[i] = n.subscribe<anro_msgs::LightState>(topicName, 1, boost::bind(updateLightState, _1, topicName));
 	}
 
 	ros::Rate loop_rate(1);

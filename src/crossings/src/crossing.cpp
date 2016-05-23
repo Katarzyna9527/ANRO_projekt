@@ -103,7 +103,7 @@ bool Crossing::checkIfCanDrive(Auto& whichAuto)
         return false;
     ROS_INFO("checkIfCanDrive: This car is on the top of the queue! From=%d To=%d", pos, dir);
 
-    lights::State dirStates;
+    anro_msgs::State dirStates;
     switch(pos)
     {
         case 0:
@@ -159,7 +159,7 @@ bool Crossing::checkIfCanDrive(Auto& whichAuto)
     }
 }
 
-void Crossing::crossSubCallback(const crossings::autocross_msg::ConstPtr& crossMsg)
+void Crossing::crossSubCallback(const anro_msgs::crossings_autocross_msg::ConstPtr& crossMsg)
 {
     ROS_INFO("crossSubCallback: I've got a callback");
     if(crossMsg->isMsgFromAuto)
@@ -210,7 +210,7 @@ void Crossing::scanQueuesOnce()
     } 
 }
 
-void Crossing::lightsSubCallback(const lights::LightState::ConstPtr& lightsMsg)
+void Crossing::lightsSubCallback(const anro_msgs::LightState::ConstPtr& lightsMsg)
 {
     isLightsPublishing = true;
     ROS_INFO("lightsCallback: Get data from Lights.");
@@ -247,7 +247,7 @@ void Crossing::printInfoAboutCrossing()
 void Crossing::initCommunication()
 {
     ros::NodeHandle n;
-    crossPub = n.advertise<crossings::autocross_msg>(myTopicName, CROSS_PUB_BUFF_SZ);
+    crossPub = n.advertise<anro_msgs::crossings_autocross_msg>(myTopicName, CROSS_PUB_BUFF_SZ);
     crossSub = n.subscribe(myTopicName, CROSS_SUB_BUFF_SZ, &Crossing::crossSubCallback, this);
     lightsSub = n.subscribe(lightsTopicName, LIGHTS_SUB_BUFF_SZ, &Crossing::lightsSubCallback, this); 
     

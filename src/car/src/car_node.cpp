@@ -4,8 +4,8 @@
 #include "std_msgs/String.h"
 #include <cstdlib>
 #include "anro_msgs/car_init.h"//finish the address
-#include "crossings/autocross_msg.h"
-#include "vizualization/auto_viz.h"
+#include "anro_msgs/crossings_autocross_msg.h"
+#include "anro_msgs/vizualization_auto_viz.h"
 #include <ctime>
 
 enum states{
@@ -33,8 +33,8 @@ private:
 	int16_t previousCrossID;	//
 	int16_t previousAutoID;
 	int16_t futureGoal;
-	crossings::autocross_msg msgA;//crossings
-	vizualization::auto_viz msgV;
+	anro_msgs::crossings_autocross_msg msgA;//crossings
+	anro_msgs::vizualization_auto_viz msgV;
 	states state;
 	ros::Publisher carViz;
 	std::vector<int16_t> avaibleDirections;	//dosprtępne skręty
@@ -56,7 +56,7 @@ public:
 		direction=aD[i];
 	}
 
-	void carCallback(const crossings::autocross_msg::ConstPtr& msg){//crossings::
+	void carCallback(const anro_msgs::crossings_autocross_msg::ConstPtr& msg){//crossings::
 		if(!msg->isMsgFromAuto) {
 			//gotMessage=true;
 			ROS_INFO("I got msg from crossing with ID:%d", msg->nextCrossID);
@@ -82,7 +82,7 @@ public:
 			lenght=0;
 			state=askingForDir;
 			//gotMessage=false;
-			carViz = n.advertise<vizualization::auto_viz>("auto_viz", 1000);
+			carViz = n.advertise<anro_msgs::vizualization_auto_viz>("auto_viz", 1000);
 			fillMessageViz();
 			carViz.publish(msgV);
 			ROS_INFO("iniciated, asking for directions");
@@ -92,7 +92,7 @@ public:
 		}
 	}
 
-	crossings::autocross_msg fillTheMessage(){
+	anro_msgs::crossings_autocross_msg fillTheMessage(){
 		msgA.isMsgFromAuto = true;
 		msgA.autoID = carID;
 		msgA.direction = direction;
@@ -110,7 +110,7 @@ public:
 		msgV.distance=lenght;
 	}
 
-	void readTheMessage(const crossings::autocross_msg::ConstPtr& msg){//crossings::
+	void readTheMessage(const anro_msgs::crossings_autocross_msg::ConstPtr& msg){//crossings::
 		if(!msg->isMsgFromAuto){
 			if(state == waiting){
 				newLenght = msg->length;
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 	states state;
 	int16_t instance = 0;
 	//crossings::
-	crossings::autocross_msg msgB;
+	anro_msgs::crossings_autocross_msg msgB;
 	time_t tm=std::time(NULL);
 	time_t tmsg=std::time(NULL);
 	std::srand( std::time( NULL ) );
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
 	ss << "crossing_" << car.giveNextCrossing();
 	ROS_INFO("%s",ss.str().c_str());
 	ros::Subscriber carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
-	ros::Publisher carPub = car.n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);//crossing
+	ros::Publisher carPub = car.n.advertise<anro_msgs::crossings_autocross_msg>(ss.str().c_str(), 1000);//crossing
 	ros::Rate loop_rate(10);
 
 	while(ros::ok()){
@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 				ss.str("");
 				ss.clear();
 				ss << "crossing_" << car.giveNextCrossing();
-				carPub = car.n.advertise<crossings::autocross_msg>(ss.str().c_str(), 1000);//crossing
+				carPub = car.n.advertise<anro_msgs::crossings_autocross_msg>(ss.str().c_str(), 1000);//crossing
 				carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
 				car.changeState(askingForDir);
 				car.changeIsCrossed();
