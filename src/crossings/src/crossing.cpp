@@ -281,8 +281,8 @@ void Crossing::initCrossData()
 bool Crossing::getCfgFromMap()
 {
     ros::NodeHandle n;
-    ros::ServiceClient client = n.serviceClient<map::cross_init>("init_crossing");
-    map::cross_init srv ;
+    ros::ServiceClient client = n.serviceClient<anro_msgs::cross_init>("init_crossing");
+    anro_msgs::cross_init srv ;
 
     if(!client.call(srv))
         return false;

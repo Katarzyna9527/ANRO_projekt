@@ -8,7 +8,17 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  anro_msgs
 )
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
+
+include_directories(
+  ${roscpp_INCLUDE_DIRS}
+)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -44,18 +54,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  cross_msg.msg
-)
+#add_message_files(
+#  FILES
+#)
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  map_config.srv
-  cross_init.srv
-  car_init.srv
-)
+
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -65,10 +69,10 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+#generate_messages(
+#  DEPENDENCIES
+#  std_msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -101,7 +105,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   CATKIN_DEPENDS roscpp std_msgs message_runtime
-#  DEPENDS system_lib
+  DEPENDS anro_msgs
 )
 
 ###########
@@ -126,6 +130,7 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(map_node src/map_node.cpp)
+add_dependencies(map_node  ${catkin_EXPORTED_TARGETS})
 #add_executable(car_init_test src/car_init_test.cpp)
 #add_executable(map_test src/map_test.cpp)
 

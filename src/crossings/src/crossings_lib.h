@@ -10,8 +10,8 @@
 #include "lights/LightState.h"
 #include "lights/State.h"
 
-#include "map/cross_init.h"
-#include "map/cross_msg.h"
+#include "anro_msgs/cross_init.h"
+#include "anro_msgs/map_cross_msg.h"
 
 #define TURNING_BACK_ENABLE    
 class Auto
@@ -79,7 +79,7 @@ class Crossing
         std::string myTopicName;
         std::string lightsTopicName;
 
-        map::cross_msg crossCfg;
+        anro_msgs::map_cross_msg crossCfg;
 
         int crossSize;
         bool isInitiated;

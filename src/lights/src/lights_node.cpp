@@ -3,7 +3,7 @@ using namespace std;
 #include "ros/ros.h"
 #include "lights/State.h"
 #include "lights/LightState.h"
-#include "map/map_config.h"
+#include "anro_msgs/map_config.h"
 #include "std_msgs/String.h"
 
 #include <stdio.h>
@@ -14,7 +14,7 @@ using namespace std;
 #include <string>
 
 
-::map::map_config map_data;		//structure with map configure
+::anro_msgs::map_config map_data;		//structure with map configure
 
 //function to create LightState structures from bool-information
 lights::LightState make_lightState(bool a1, bool b1, bool c1, bool d1, 			//from north to other directions (n,e,s,w)
@@ -268,12 +268,12 @@ public:
     }
 };
 
-::map::map_config getMapConfiguration(){								//POBIERANIE INFORMACJI Z MAPY
+::anro_msgs::map_config getMapConfiguration(){								//POBIERANIE INFORMACJI Z MAPY
 
-    ::map::map_config mapConfiguration;
+    ::anro_msgs::map_config mapConfiguration;
     ros::NodeHandle mapNode;
 
-    ros::ServiceClient lightsClient = mapNode.serviceClient<::map::map_config>("get_map_config");
+    ros::ServiceClient lightsClient = mapNode.serviceClient<::anro_msgs::map_config>("get_map_config");
     mapConfiguration.request.req = 1;
     ROS_INFO("Waiting for map...");
     while(1){

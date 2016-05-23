@@ -45,6 +45,8 @@
   <run_depend>roscpp</run_depend>
   <run_depend>std_msgs</run_depend>
   <build_depend>map</build_depend>
+  <build_depend>anro_msgs</build_depend>
+  <run_depend>anro_msgs</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
