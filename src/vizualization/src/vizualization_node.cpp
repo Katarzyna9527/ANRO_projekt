@@ -19,6 +19,9 @@ using namespace std;
 #include <string>
 #include <sstream>
 
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
+
 
 int16_t lightBulbState[100][4][4];
 
@@ -30,7 +33,7 @@ float lightDistance = 5;
 int16_t height = 5;
 float lightBulbOffset = 0.3;
 float lightBulbLenght = 2;
-int16_t lightMode = 3; //1 dla widocznych z samochodu, 2 dla strzalek widocznych z góry
+int16_t lightMode = 3; //1 dla widocznych z samochodu, 2 dla strzalek widocznych z góry, 3 dla kulturalnych
 
 struct Coordinates{
 	float x;
@@ -86,8 +89,7 @@ public:
 		marker->ns = "car_markers";
 		marker->id = (*it).ID;
 
-        marker->type = visualization_msgs::Marker::MESH_RESOURCE;
-        marker->mesh_resource = "package://vizualization/meshes/car_1/car_1.dae";
+		marker->type = visualization_msgs::Marker::CUBE;
 
 		marker->action = visualization_msgs::Marker::ADD;
 		
@@ -100,27 +102,22 @@ public:
 		
 		marker->pose.position.y = (*it).y + yOffset;
 		marker->pose.position.x = (*it).x + xOffset;
-		//marker->pose.position.y = abs((*it).x);
-		//marker->pose.position.x = abs((*it).y);
+
 		marker->pose.position.z = 0.5;
-		
-		marker->pose.orientation.x = 0.0;
-        marker->pose.orientation.y = 0.0;
-        marker->pose.orientation.z = 1.0;
-		marker->pose.orientation.w = 1.0;
 	
-        marker->scale.x = 0.25;
-        marker->scale.y = 0.25;
-        marker->scale.z = 0.25;
-        if((*it).direction == 0 || (*it).direction == 2) marker->scale.y = 0.5;
-        if((*it).direction == 1 || (*it).direction == 3) marker->scale.x = 0.5;
+		marker->scale.x = 1.0;
+		marker->scale.y = 1.0;
+		marker->scale.z = 1.0;
+		tf::Quaternion quat;
+		if((*it).direction == 0) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*2);
+		if((*it).direction == 1) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*1);
+		if((*it).direction == 2) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*4);
+		if((*it).direction == 3) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*3);
 
-        /*marker->color.r = 0.0f;
-		marker->color.g = 0.0f;
-        marker->color.b = 1.0f;
-        marker->color.a = 1.0;*/
+		marker-> mesh_use_embedded_materials=true;
 
-        marker->mesh_use_embedded_materials = true;
+		marker->type  = visualization_msgs::Marker::MESH_RESOURCE;
+		marker->mesh_resource = "package://vizualization/meshes/fake_car_1/fake_car_1.dae";
 
 		marker->lifetime = ros::Duration();
 		carMarkerArray->markers.push_back(*marker);
@@ -142,11 +139,15 @@ public:
 				carMarkerArray->markers[i].pose.position.y = it->y + yOffset;
 				carMarkerArray->markers[i].pose.position.x = it->x + xOffset;
 				
-                carMarkerArray->markers[i].scale.x = 0.25;
-                carMarkerArray->markers[i].scale.y = 0.25;
-                carMarkerArray->markers[i].scale.z = 0.25;
-                if((*it).direction == 0 || (*it).direction == 2) carMarkerArray->markers[i].scale.y = 0.5;
-                if((*it).direction == 1 || (*it).direction == 3) carMarkerArray->markers[i].scale.x = 0.5;
+				carMarkerArray->markers[i].scale.x = 1.0;
+				carMarkerArray->markers[i].scale.y = 1.0;
+				carMarkerArray->markers[i].scale.z = 1.0;
+
+				if((*it).direction == 0) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*2);
+				if((*it).direction == 1) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*1);
+				if((*it).direction == 2) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*4);
+				if((*it).direction == 3) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*3);
+
 			}
 		} 
 	}
@@ -529,7 +530,7 @@ int main(int argc, char **argv)
 								endPoint.y = lights[crossingID][i].y;
 								endPoint.z = height;
 							}
-							if(lightMode == 2 || lightMode == 3){
+							if(lightMode == 2){
 								startPoint.z = 0.0;
 								endPoint.z = 0.0;
 							}
