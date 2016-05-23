@@ -1,6 +1,6 @@
 <launch>
   <param name="map_confname" value="$(find map)/src/conffile" />
-  <arg name="rate" default="0.25" />
+  <arg name="rate" default="6" />
   <arg name="ret" default="false" />
   <param name="rate" value="$(arg rate)" />
   <param name="ret" value="$(arg ret)" />
