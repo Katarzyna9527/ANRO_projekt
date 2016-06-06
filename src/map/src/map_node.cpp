@@ -116,7 +116,6 @@ public:
 	bool initCar(anro_msgs::car_init::Response &res) {
 		int crossA=std::rand()%crossings.size();
 		std::vector<int16_t> avCross;
-		int j=0;
 		for(int i=0; i<4;++i) {
 			if(crossings[crossA]->neighbours->at(i)!=0){
 				avCross.push_back(i);
@@ -124,12 +123,19 @@ public:
 		}
 
 		int crossB = crossings[crossA]->ID;
-		while (crossings[crossA]->ID == crossB )
-			crossB = crossings[crossA]->neighbours->at( avCross[std::rand()%avCross.size()] );
+		int ind = 0;
+		while (crossings[crossA]->ID == crossB ) {
+			ind = std::rand()%avCross.size();
+			crossB = crossings[crossA]->neighbours->at( avCross[ind] );
+			ROS_INFO("Initiating at %d, cross %d", ind,crossB);
+
+		}
+
 		res.carID = ++lastCarID;
 		res.prevCrossing = crossings[crossA]->ID;
 		res.nextCrossing = crossB;
-		res.pathLenght = 5;
+		res.pathLenght = crossings[crossA]->lengths->at(avCross[ind]);
+		ROS_INFO(" %d, cross %d", ind,crossB);
 	}
 
 	int16_t getNumberOfCrossings() {
