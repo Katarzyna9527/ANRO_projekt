@@ -158,7 +158,7 @@ public:
             ROS_INFO("Previous car successfully called!");
             //ROS_INFO("My distance %d, its distance %d", lenght, carCarMessage.response.distance);
 
-            if(carCarMessage.response.distance<5)
+            if(carCarMessage.response.distance<5.0)
             {
                 choseADir();
                 state=drivingTowCrossing;
@@ -166,7 +166,7 @@ public:
                 speed=1;
                 return;
             }
-            if (carCarMessage.response.distance- lenght <= 4.0)
+            if (carCarMessage.response.distance- lenght <= 1.0)
                 speed=0;
             else
                 speed=1;
@@ -199,18 +199,18 @@ public:
                    if(state==tailgate)
                        contactPrevCar();
                    lenght = lenght + 0.04*speed;
-                              if(lenght>currentLenght-2 && state==drivingTowCrossing){
+                              if(lenght>currentLenght-1 && state==drivingTowCrossing){
                                   speed = 0;
                                   state = sendingDir;
                                   ROS_INFO("sending the direction I wanna go to the crossing");
                               }
-                              else if(lenght == currentLenght){
+                              else if(lenght >= currentLenght){
                                   lenght=0.0;
                                   currentLenght=newLenght;
                                   previousCrossIDForViz=nextCrossID;
                                   nextCrossID=futureCrossing;
                               }
-                              else if(lenght == 1.0 && state == crossing){
+                              else if(lenght <= 1.0 && state == crossing){
                                   isCrossed=true;
                                   direction=-1;
                                   state = crossed;
