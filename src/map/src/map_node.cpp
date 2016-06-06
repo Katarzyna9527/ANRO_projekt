@@ -114,20 +114,21 @@ public:
 		return true;
 	}
 	bool initCar(anro_msgs::car_init::Response &res) {
-        int crossA=std::rand()%crossings.size();
-        std::vector<int16_t> avCross;
-        int j=0;
-        for(int i=0; i<4;++i)
-            if(crossings[crossA]->neighbours->at(i)!=0){
-                avCross.push_back(i);
-            }
-        int crossB=std::rand()%avCross.size();
+		int crossA=std::rand()%crossings.size();
+		std::vector<int16_t> avCross;
+		int j=0;
+		for(int i=0; i<4;++i) {
+			if(crossings[crossA]->neighbours->at(i)!=0){
+				avCross.push_back(i);
+			}
+		}
+
+		int crossB = crossings[crossA]->neighbours->at( avCross[std::rand()%avCross.size()] );
 		res.carID = ++lastCarID;
 		res.prevCrossing = crossings[crossA]->ID;
-		res.nextCrossing = crossings[crossA]->neighbours->at(crossB);
-		res.pathLenght = std::rand()%(crossings[crossA]->lengths->at(crossB) - 9) + 4;
-		
-    }
+		res.nextCrossing = crossB;
+		res.pathLenght = 5;
+	}
 
 	int16_t getNumberOfCrossings() {
 		return (int16_t)crossings.size();
