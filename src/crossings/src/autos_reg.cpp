@@ -3,15 +3,21 @@
 bool Crossing::AutosReg::deleteAutoFromRegister(const Auto& whichAuto)
 {   
     // check if exist
-    for(auto it = autosRegistry.begin() ; it != autosRegistry.end(); it++)
+	auto it = autosRegistry.begin();
+    for( ; it != autosRegistry.end(); it++)
     {
         if(*it == &whichAuto)
         {
-            delete *it;
             autosRegistry.erase(it);
             return true;
         }
     }
+
+	if(it == autosRegistry.end())
+	{
+		ROS_INFO("deleteAutoFromRegister: this car isn't in register!";
+	}
+	
     return false;
 }
 
