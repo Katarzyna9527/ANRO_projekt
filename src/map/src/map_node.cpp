@@ -123,7 +123,9 @@ public:
 			}
 		}
 
-		int crossB = crossings[crossA]->neighbours->at( avCross[std::rand()%avCross.size()] );
+		int crossB = crossings[crossA]->ID;
+		while (crossings[crossA]->ID == crossB )
+			crossB = crossings[crossA]->neighbours->at( avCross[std::rand()%avCross.size()] );
 		res.carID = ++lastCarID;
 		res.prevCrossing = crossings[crossA]->ID;
 		res.nextCrossing = crossB;
