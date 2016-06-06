@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstddef>
+#include <ctime>
+#include <cstdlib>
 
 #include "anro_msgs/map_config.h"
 #include "anro_msgs/car_init.h"
@@ -111,14 +113,21 @@ public:
 
 		return true;
 	}
-
 	bool initCar(anro_msgs::car_init::Response &res) {
+        int crossA=std::rand()%crossings.size();
+        std::vector<int16_t> avCross;
+        int j=0;
+        for(int i=0; i<4;++i)
+            if(crossings[crossA]->neighbours->at(i)!=0){
+                avCross.push_back(i);
+            }
+        int crossB=std::rand()%avCross.size();
 		res.carID = ++lastCarID;
-		// na razie hardcoded 1-2
-		res.prevCrossing = 1;
-		res.nextCrossing = 2;
-		res.pathLenght   = 50;
-	}
+		res.prevCrossing = crossings[crossA]->ID;
+		res.nextCrossing = crossings[crossA]->neighbours->at(crossB);
+		res.pathLenght = std::rand()%(crossings[crossA]->lengths->at(crossB) - 9) + 4;
+		
+    }
 
 	int16_t getNumberOfCrossings() {
 		return (int16_t)crossings.size();
@@ -161,6 +170,8 @@ public:
 
 int main(int argc, char **argv)
 {
+    std::srand( std::time( NULL ) );
+
 	ros::init(argc, argv, "map_node");
 	ros::NodeHandle n;
 	
