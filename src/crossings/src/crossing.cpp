@@ -13,6 +13,7 @@ int Crossing::calculateCarPosition(int16_t previousCrossID)
         if(crossCfg.neighbours[i] == previousCrossID)
             return i;
 
+	ROS_INFO("calculateCarPosition: BAD PREVIOUS CROSS ID!");
     return -1;
 }
 
@@ -265,6 +266,11 @@ void Crossing::initCrossData()
     // init arrays with size that our Crossing is
     wait4DriveQueues.resize(crossSize);
     carsThatCrossed.resize(crossSize);
+
+	carsThatCrossed[0] = 0;
+	carsThatCrossed[1] = 0;
+	carsThatCrossed[2] = 0;
+	carsThatCrossed[3] = 0;
 
     isCrossOccupied = false;
     isLightsPublishing = false; // at the init, we don't know, that lights are working

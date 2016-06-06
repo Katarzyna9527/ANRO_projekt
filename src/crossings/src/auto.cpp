@@ -10,9 +10,7 @@ Auto::Auto(const anro_msgs::crossings_autocross_msg::ConstPtr& msg)
 void Auto::setAvailDirs(const std::vector<int16_t> &availDirs)
 {
     carMsg.availableDirections = availDirs;
-#ifdef TURNING_BACK_ENABLE
     carMsg.availableDirections[currPos] = 0;
-#endif
 }
 
 void Auto::setPreviousAutoID(int16_t previousAutoID)
