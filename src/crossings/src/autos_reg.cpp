@@ -15,7 +15,7 @@ bool Crossing::AutosReg::deleteAutoFromRegister(const Auto& whichAuto)
 
 	if(it == autosRegistry.end())
 	{
-		ROS_INFO("deleteAutoFromRegister: this car isn't in register!";
+		ROS_INFO("deleteAutoFromRegister: this car isn't in register!");
 	}
 	
     return false;
