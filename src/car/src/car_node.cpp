@@ -118,7 +118,7 @@ public:
     }
 
     void readTheMessage(const anro_msgs::crossings_autocross_msg::ConstPtr& msg){//anro_msgs::
-        if(!msg->isMsgFromAuto && state!=tailgate){ ROS_INFO("I got msg from crossing with nextID:%d", msg->nextCrossID);
+        if(!msg->isMsgFromAuto && state!=tailgate && msg->autoID==carID){ ROS_INFO("I got msg from crossing with nextID:%d", msg->nextCrossID);
             if(state == waiting){
                 newLenght = (float)msg->length;
                 futureCrossing = msg->nextCrossID;
@@ -158,7 +158,7 @@ public:
             ROS_INFO("Previous car successfully called!");
             //ROS_INFO("My distance %d, its distance %d", lenght, carCarMessage.response.distance);
 
-            if(carCarMessage.response.distance<5.0)
+            if(carCarMessage.response.distance<0.5)
             {
                 choseADir();
                 state=drivingTowCrossing;
@@ -280,9 +280,9 @@ int main(int argc, char **argv)
     std::cout << (sss.str().c_str());
 
     while(ros::ok()){
-       // if(std::time(NULL)>tm+0.004){
+        //if(std::time(NULL)>tm+0.004){
             car.moveFrd();
-          //  tm=std::time(NULL);
+        //    tm=std::time(NULL);
        // }
         state = car.giveState();
         if(((state == askingForDir || state == sendingDir)&&car.giveLenght()>3)|| state == crossed){
