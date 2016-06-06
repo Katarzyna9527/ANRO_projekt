@@ -25,11 +25,11 @@ class Car{
 private:
     bool isCrossed;		//informuje o tym, czy samochód opuścił skrzyżowanie
     int32_t speed;
-    int16_t newLenght;
-    int16_t currentLenght;
+    float newLenght;
+    float currentLenght;
     int16_t carID;		//samochód  zgłaszający albo do którego kierowana jest odpowiedź
     int16_t direction;		//przy pierwszym zapytaniu = -1
-    int32_t lenght;		//odległość do naspnego skrzyżowania
+    float lenght;		//odległość do naspnego skrzyżowania
     int16_t nextCrossID;		//
     int16_t previousCrossID;	//
     int16_t previousCrossIDForViz;
@@ -78,14 +78,14 @@ public:
         srv.request.req = (uint8_t) ReqID;
         if (client.call(srv)){
             carID=srv.response.carID;
-            currentLenght = srv.response.pathLenght;
+            currentLenght = (float)srv.response.pathLenght;
             previousCrossID =srv.response.prevCrossing;//1;
             previousCrossIDForViz=previousCrossID;
             nextCrossID = srv.response.nextCrossing;
             isCrossed=false;
             speed = 1;
             direction = -1;
-            lenght=0;
+            lenght=0.0;
             state=askingForDir;
             //gotMessage=false;
             carViz = n.advertise<anro_msgs::vizualization_auto_viz>("auto_viz", 1000);
@@ -104,7 +104,7 @@ public:
         msgA.autoID = carID;
         msgA.direction = direction;
         msgA.isCrossed = isCrossed;
-        msgA.length = lenght;
+        msgA.length = (int)lenght;
         msgA.previousCrossID=previousCrossID;
         msgA.nextCrossID = nextCrossID;ROS_INFO("i chose :%d", direction);
         return msgA;
@@ -120,7 +120,7 @@ public:
     void readTheMessage(const anro_msgs::crossings_autocross_msg::ConstPtr& msg){//anro_msgs::
         if(!msg->isMsgFromAuto && state!=tailgate){ ROS_INFO("I got msg from crossing with nextID:%d", msg->nextCrossID);
             if(state == waiting){
-                newLenght = msg->length;
+                newLenght = (float)msg->length;
                 futureCrossing = msg->nextCrossID;
                 speed=1;
                 state = crossing;
@@ -166,7 +166,7 @@ public:
                 speed=1;
                 return;
             }
-            if (carCarMessage.response.distance- lenght <= 4)
+            if (carCarMessage.response.distance- lenght <= 4.0)
                 speed=0;
             else
                 speed=1;
@@ -195,22 +195,22 @@ public:
     }*/
 
 
-    void moveFrd(){ROS_INFO("%d", lenght);
+    void moveFrd(){ROS_INFO("%f", lenght);
                    if(state==tailgate)
                        contactPrevCar();
-                   lenght = lenght + speed;
+                   lenght = lenght + 0.04*speed;
                               if(lenght>currentLenght-2 && state==drivingTowCrossing){
                                   speed = 0;
                                   state = sendingDir;
                                   ROS_INFO("sending the direction I wanna go to the crossing");
                               }
                               else if(lenght == currentLenght){
-                                  lenght=0;
+                                  lenght=0.0;
                                   currentLenght=newLenght;
                                   previousCrossIDForViz=nextCrossID;
                                   nextCrossID=futureCrossing;
                               }
-                              else if(lenght == 1 && state == crossing){
+                              else if(lenght == 1.0 && state == crossing){
                                   isCrossed=true;
                                   direction=-1;
                                   state = crossed;
@@ -242,7 +242,7 @@ public:
     void setSpeed(int newSpeed){
         speed = newSpeed;
     }
-    int16_t giveLenght(){
+    float giveLenght(){
         return lenght;
     }
     void changeIsCrossed(){
@@ -269,7 +269,7 @@ int main(int argc, char **argv)
     ROS_INFO("%s",ss.str().c_str());
     ros::Subscriber carSub = car.n.subscribe(ss.str().c_str(), 1000, &Car::carCallback, &car);
     ros::Publisher carPub = car.n.advertise<anro_msgs::crossings_autocross_msg>(ss.str().c_str(), 1000);//crossing
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(25);
 
     std::stringstream sss;
     sss.clear();
@@ -280,10 +280,10 @@ int main(int argc, char **argv)
     std::cout << (sss.str().c_str());
 
     while(ros::ok()){
-        if(std::time(NULL)>tm+0.01){
+       // if(std::time(NULL)>tm+0.004){
             car.moveFrd();
-            tm=std::time(NULL);
-        }
+          //  tm=std::time(NULL);
+       // }
         state = car.giveState();
         if(((state == askingForDir || state == sendingDir)&&car.giveLenght()>3)|| state == crossed){
             msgB = car.fillTheMessage();
@@ -309,5 +309,6 @@ int main(int argc, char **argv)
             }
         }
         ros::spinOnce();
+        loop_rate.sleep();
     }
 }

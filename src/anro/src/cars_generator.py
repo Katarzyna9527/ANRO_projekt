@@ -9,8 +9,8 @@ if len(sys.argv)<3:
 	
 ps = []
 for i in range(int(sys.argv[1])):
-	package = 'cars'
-	executable = 'cars_node'
+	package = 'car'
+	executable = 'car_node'
 	node = roslaunch.core.Node(package, executable)
 
 	launch = roslaunch.scriptapi.ROSLaunch()
