@@ -44,7 +44,7 @@ struct Car{
 	int16_t ID;
 	int16_t startCrossID;
 	int16_t endCrossID;		
-	int32_t distance;
+	float distance;
 	float x;
 	float y;
 	int32_t direction;
@@ -152,7 +152,7 @@ public:
 		} 
 	}
 	
-	void add(int16_t ID, int16_t startCrossID, int16_t endCrossID, int32_t distance){
+	void add(int16_t ID, int16_t startCrossID, int16_t endCrossID, float distance){
 		Car *tmp = new Car;
 		tmp->ID = ID;
 		tmp->startCrossID = startCrossID-1;
@@ -187,7 +187,7 @@ public:
 		addToMarkerArray(tmp);
 	}
 	
-	void updateCar(int16_t ID, int16_t startCrossID, int16_t endCrossID, int32_t distance){
+	void updateCar(int16_t ID, int16_t startCrossID, int16_t endCrossID, float distance){
 		Car *currentCar = CarCollection::getInstance().get(ID);
 		if(currentCar->ID == ID){
 			ROS_INFO("update_car");
