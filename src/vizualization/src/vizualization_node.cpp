@@ -27,6 +27,7 @@ int16_t lightBulbState[100][4][4];
 
 int16_t multiplier = 5;
 
+float carScale = 0.4;
 float roadSize = 2;
 float lightOffset = 0; //2.5
 float lightDistance = 5;
@@ -105,9 +106,9 @@ public:
 
 		marker->pose.position.z = 0.5;
 	
-		marker->scale.x = 1.0;
-		marker->scale.y = 1.0;
-		marker->scale.z = 1.0;
+		marker->scale.x = carScale;
+		marker->scale.y = carScale;
+		marker->scale.z = carScale;
 		tf::Quaternion quat;
 		if((*it).direction == 0) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*2);
 		if((*it).direction == 1) marker->pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*1);
@@ -116,8 +117,9 @@ public:
 
 		marker-> mesh_use_embedded_materials=true;
 
-		marker->type  = visualization_msgs::Marker::MESH_RESOURCE;
-		marker->mesh_resource = "package://vizualization/meshes/fake_car_1/fake_car_1.dae";
+		marker->type  = visualization_msgs::Marker::
+		MESH_RESOURCE;
+		marker->mesh_resource = "package://vizualization/meshes/car_1/car_1.dae";
 
 		marker->lifetime = ros::Duration();
 		carMarkerArray->markers.push_back(*marker);
@@ -139,9 +141,9 @@ public:
 				carMarkerArray->markers[i].pose.position.y = it->y + yOffset;
 				carMarkerArray->markers[i].pose.position.x = it->x + xOffset;
 				
-				carMarkerArray->markers[i].scale.x = 1.0;
-				carMarkerArray->markers[i].scale.y = 1.0;
-				carMarkerArray->markers[i].scale.z = 1.0;
+				carMarkerArray->markers[i].scale.x = carScale;
+				carMarkerArray->markers[i].scale.y = carScale;
+				carMarkerArray->markers[i].scale.z = carScale;
 
 				if((*it).direction == 0) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*2);
 				if((*it).direction == 1) carMarkerArray->markers[i].pose.orientation = tf::createQuaternionMsgFromYaw((3.14/2)*1);
