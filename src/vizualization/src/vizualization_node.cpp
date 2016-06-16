@@ -27,7 +27,7 @@ int16_t lightBulbState[100][4][4];
 
 int16_t multiplier = 5;
 
-float carScale = 0.4;
+float carScale = 0.2;
 float roadSize = 2;
 float lightOffset = 0; //2.5
 float lightDistance = 5;
@@ -119,7 +119,7 @@ public:
 
 		marker->type  = visualization_msgs::Marker::
 		MESH_RESOURCE;
-		marker->mesh_resource = "package://vizualization/meshes/car_1/car_1.dae";
+		marker->mesh_resource = "package://vizualization/meshes/car_2/car_2.dae";
 
 		marker->lifetime = ros::Duration();
 		carMarkerArray->markers.push_back(*marker);
@@ -832,7 +832,7 @@ int main(int argc, char **argv)
 	
 	CarCollection::getInstance().crossings = crossings;
 	
-	ros::Subscriber sub = n.subscribe("auto_viz", 1000, CarCollection::addCar);
+	ros::Subscriber sub = n.subscribe("auto_viz", 1000000, CarCollection::addCar);
 	
 	ros::Subscriber *lightSubscribers = new ros::Subscriber[numberOfCrossings];
 
